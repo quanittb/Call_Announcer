@@ -18,7 +18,12 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
 
     private var currentTurn = false
-    private var currentToggle = false
+    private var currentToggle1 = false
+    private var currentToggle2 = false
+    private var currentToggle3 = false
+    private var currentToggle4 = false
+    private var currentToggle5 = false
+    private var currentToggle6 = false
     override fun initView() {
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -62,15 +67,73 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
 
     private fun changeToggle(view: ImageView){
-        if (!currentToggle){
-            currentToggle = true
-            view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+        when(view){
+            binding.ivToggle1 -> {
+                if (!currentToggle1){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle1 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle1 = false
+                }
+            }
 
+            binding.ivToggle2 -> {
+                if (!currentToggle2){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle2 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle2 = false
+                }
+            }
+
+            binding.ivToggle3 -> {
+                if (!currentToggle3){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle3 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle3 = false
+                }
+            }
+            binding.ivToggle4 -> {
+                if (!currentToggle4){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle4 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle4 = false
+                }
+            }
+
+            binding.ivToggle5 -> {
+                if (!currentToggle5){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle5 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle5 = false
+                }
+            }
+
+            binding.ivToggle6 -> {
+                if (!currentToggle6){
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                    currentToggle6 = true
+                }
+                else{
+                    view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                    currentToggle6 = false
+                }
+            }
         }
-        else{
-            currentToggle = false
-            view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-        }
+
     }
 
     private fun showDialogTurnOn(){
