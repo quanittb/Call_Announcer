@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BaseProject</string>
+    <string name="this_action_can_contain_ad">This action can contain ad</string>
+    <string name="facebook_app_id">1234</string>
+    <string name="language_english" translatable="false">English</string>
+    <string name="language_spain" translatable="false">Espalier</string>
+    <string name="language_portugal" translatable="false">Portuguese</string>
+    <string name="language_hindi" translatable="false">भारतीय भाषा</string>
+    <string name="language_germany" translatable="false">Deutsch</string>
+    <string name="language_brazil" translatable="false">Lingua Brasilia</string>
+    <string name="language_japan" translatable="false">日本</string>
+    <string name="language_korean" translatable="false">한국어</string>
+    <string name="language_france" translatable="false">Francais</string>
+    <string name="language_china" translatable="false">中国人</string>
+    <string name="languages">Languages</string>
+</resources>
