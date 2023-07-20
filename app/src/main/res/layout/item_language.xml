@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_10sdp"
         android:background="@drawable/bg_border_gray_10sdp"
-        android:backgroundTint="@color/md_grey_800"
+        android:backgroundTint="#F2F2F2"
         android:paddingHorizontal="@dimen/_10sdp"
         android:paddingVertical="@dimen/_8sdp">
 
@@ -19,7 +19,7 @@
             android:id="@+id/imgIconLanguage"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -30,10 +30,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
+            android:textColor="@color/color_text_language"
             android:paddingVertical="@dimen/_6sdp"
             android:textSize="@dimen/_14ssp"
             android:text="langugaeeeeeeeeeeeee"
+            android:fontFamily="@font/poppins_semibold"
             app:layout_constraintBottom_toBottomOf="@+id/imgIconLanguage"
             app:layout_constraintEnd_toStartOf="@+id/imgChooseLanguage"
             app:layout_constraintStart_toEndOf="@+id/imgIconLanguage"

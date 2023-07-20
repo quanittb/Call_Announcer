@@ -12,7 +12,7 @@
     <string name="language_korean" translatable="false">한국어</string>
     <string name="language_france" translatable="false">Francais</string>
     <string name="language_china" translatable="false">中国人</string>
-    <string name="languages">Languages</string>
+    <string name="select_languages">Select Language</string>
     <string name="caller_announcer">Caller Announcer</string>
     <string name="sms_announcer">SMS Announcer</string>
     <string name="setting">Setting</string>
@@ -33,4 +33,15 @@
     <string name="you_are_required_to_set_call_announcer_as_default_dialer_to_announce_caller_name_and_manage_calls_to_work_properly">You are required to set Call Announcer as default dialer to announce caller name and manage calls to work properly</string>
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>
+
+    <string name="_onboarding_1_title">The best assistant for you</string>
+    <string name="_onboarding_2_title">Simple and modern interface</string>
+    <string name="_onboarding_3_title">The  best assistant for you</string>
+    <string name="_onboarding_1_description">Bringing you a pleasant experience with the best features</string>
+    <string name="_onboarding_2_description">The interface is simple, modern and helps users to experience calling easily.</string>
+    <string name="_onboarding_3_description">bring you a great experience with interesting features</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="_get_started">Get started</string>
+
 </resources>

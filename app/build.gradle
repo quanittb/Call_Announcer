@@ -123,4 +123,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    //indicator tab layout
+    implementation 'com.tbuonomo:dotsindicator:4.3'
 }
