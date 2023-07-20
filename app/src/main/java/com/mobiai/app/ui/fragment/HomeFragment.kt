@@ -13,6 +13,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
     override fun initView() {
+        addFragment(RingstoneFragment.instance())
     }
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {
