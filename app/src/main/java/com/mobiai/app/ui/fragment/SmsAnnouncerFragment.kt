@@ -7,13 +7,13 @@ import androidx.appcompat.content.res.AppCompatResources
 import com.mobiai.R
 import com.mobiai.app.ui.dialog.TurnOnDialog
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
-import com.mobiai.databinding.FragmentCallAnnouncerBinding
+import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
-class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
+class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     companion object{
-        fun instance() : CallAnnouncerFragment{
-            return newInstance(CallAnnouncerFragment::class.java)
+        fun instance() : SmsAnnouncerFragment{
+            return newInstance(SmsAnnouncerFragment::class.java)
         }
     }
 
@@ -74,11 +74,11 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
 
     private fun showDialogTurnOn(){
-       val turnOnDialog = TurnOnDialog(requireContext()){
-           currentTurn = true
-           binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
-           binding.btnTurn.setTextColor(resources.getColor(R.color.white))
-       }
+        val turnOnDialog = TurnOnDialog(requireContext()){
+            currentTurn = true
+            binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
+            binding.btnTurn.setTextColor(resources.getColor(R.color.white))
+        }
         turnOnDialog.show()
     }
     override fun handlerBackPressed() {
@@ -89,5 +89,5 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentCallAnnouncerBinding = FragmentCallAnnouncerBinding.inflate(inflater,container,false)
+    ): FragmentSmsAnnouncerBinding = FragmentSmsAnnouncerBinding.inflate(inflater,container,false)
 }

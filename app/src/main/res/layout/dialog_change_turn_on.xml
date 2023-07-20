@@ -2,6 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/tt_transparent"
+    android:layout_gravity="center"
     android:focusable="true"
     android:clickable="true"
     android:layout_width="match_parent"
@@ -46,14 +48,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginVertical="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 >
                 <TextView
+                    android:id="@+id/tv_Cancel"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel"
-                    android:padding="@dimen/_10sdp"
+                    android:padding="@dimen/_6sdp"
                     android:textSize="@dimen/_16ssp"
                     android:textColor="#66707A"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -62,6 +66,7 @@
                     />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_Allow"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="#7288FA"
@@ -73,10 +78,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/allow"
-                        android:padding="@dimen/_10sdp"
+                        android:padding="@dimen/_6sdp"
                         android:textSize="@dimen/_16ssp"
                         android:textColor="@color/white"
-
                         android:fontFamily="@font/poppins_semibold"
                         android:gravity="center"
                         />

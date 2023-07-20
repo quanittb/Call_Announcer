@@ -1,5 +1,6 @@
 package com.mobiai.app.ui.fragment
 
+import android.provider.Telephony.Sms
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
@@ -13,16 +14,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
     override fun initView() {
-        binding.cvItemHomeOne.setOnClickListener {
+        binding.cvItemHomeCall.setOnClickListener {
             addFragment(CallAnnouncerFragment.instance())
         }
 
-        binding.cvItemHomeTwo.setOnClickListener {
-
+        binding.cvItemHomeSMS.setOnClickListener {
+            addFragment(SmsAnnouncerFragment.instance())
         }
 
-        binding.cvItemHomeThree.setOnClickListener {
-
+        binding.cvItemHomeSetting.setOnClickListener {
+            // todo setting
         }
     }
 

@@ -35,7 +35,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv_item_home_one"
+        android:id="@+id/cv_item_home_Call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/ln_header"
@@ -75,10 +75,10 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv_item_home_two"
+        android:id="@+id/cv_item_home_SMS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cv_item_home_one"
+        app:layout_constraintTop_toBottomOf="@id/cv_item_home_Call"
         app:cardBackgroundColor="@color/white"
         android:layout_marginHorizontal="@dimen/_20sdp"
         app:cardCornerRadius="@dimen/_10sdp"
@@ -115,10 +115,10 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv_item_home_three"
+        android:id="@+id/cv_item_home_Setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cv_item_home_two"
+        app:layout_constraintTop_toBottomOf="@id/cv_item_home_SMS"
         app:cardBackgroundColor="@color/white"
         android:layout_marginHorizontal="@dimen/_20sdp"
         app:cardCornerRadius="@dimen/_10sdp"
