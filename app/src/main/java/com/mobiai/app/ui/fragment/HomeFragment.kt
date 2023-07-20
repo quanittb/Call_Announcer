@@ -22,8 +22,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.cvItemHomeSetting.setOnClickListener {
-            // todo setting
-            addFragment(RingstoneFragment.instance())
+            addFragment(SettingFragment.instance())
         }
     }
 

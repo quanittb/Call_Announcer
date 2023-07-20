@@ -10,12 +10,12 @@ plugins {
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.mobiai"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -31,8 +31,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding true
@@ -130,5 +130,6 @@ dependencies {
     //indicator tab layout
     implementation 'com.tbuonomo:dotsindicator:4.3'
 
+    implementation 'com.github.MohammedAlaaMorsi:RangeSeekBar:1.0.6'
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 }
