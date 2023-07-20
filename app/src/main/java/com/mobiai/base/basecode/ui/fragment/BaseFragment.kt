@@ -10,9 +10,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.mobiai.app.ui.activity.MainActivity
+import com.mobiai.app.ui.fragment.SettingFragment
 import com.mobiai.base.basecode.ui.activity.BaseActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
+import kotlin.reflect.KProperty1
 
 
 abstract class BaseFragment<T : ViewBinding> : Fragment() {
