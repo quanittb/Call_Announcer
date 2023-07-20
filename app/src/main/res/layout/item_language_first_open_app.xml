@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/bg_border_gray_10sdp"
+        android:backgroundTint="#F5F5F5"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingVertical="@dimen/_8sdp">
+
+        <ImageView
+            android:id="@+id/imgIconLanguage"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_select_language"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtNameLanguage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:fontFamily="@font/gilroy_medium"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/imgIconLanguage"
+            app:layout_constraintEnd_toStartOf="@+id/imgChooseLanguage"
+            app:layout_constraintStart_toEndOf="@+id/imgIconLanguage"
+            app:layout_constraintTop_toTopOf="@+id/imgIconLanguage" />
+
+        <ImageView
+            android:id="@+id/imgChooseLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_select_language"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

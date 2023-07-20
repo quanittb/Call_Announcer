@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="style_description">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/color_description_text</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <style name="Theme_Dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+
+    </style>
+
+
+</resources>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#111111" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imgBack"
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/_4sdp"
+                android:src="@drawable/arrow_left"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="@dimen/_10sdp"/>
+
+            <TextView
+                android:id="@+id/tvSetting"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/languages"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_18ssp"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/_16sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgConfirm"
+                app:layout_constraintStart_toEndOf="@+id/imgBack"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imgConfirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/tvSetting"
+                android:layout_alignBottom="@+id/tvSetting"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_confirm"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/_10sdp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/ll_title"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/frAds"
+            app:layout_constraintTop_toBottomOf="@+id/ll_title">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginBottom="12dp"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/frAds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:layout_margin="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <include
+                android:id="@+id/includeNative"
+                layout="@layout/ads_native_shimmer_language"
+                android:visibility="visible" />
+        </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
