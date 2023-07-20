@@ -38,7 +38,6 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
                 MainActivity.startMain(this, true)
             }
         }
-
     }
 
     private fun addControl() {
