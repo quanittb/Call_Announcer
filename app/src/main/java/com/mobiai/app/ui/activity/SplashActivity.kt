@@ -9,6 +9,7 @@ import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.storage.FirebaseRemote
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.activity.splash.BaseSplashActivity
 import com.mobiai.databinding.ActivitySplashBinding
@@ -25,7 +26,12 @@ class SplashActivity(override val isShowAdsSplash: Boolean = AdsRemote.showAdsSp
     override fun openNextScreen() {
         if (SharedPreferenceUtils.languageCode == null) {
             LanguageActivity.start(this, true)
-        }  else {
+        }
+        else if(!SharedPreferenceUtils.isCompleteOnboarding){
+            LanguageUtil.changeLang(SharedPreferenceUtils.languageCode!!, this)
+            OnBoardingActivity.start(this, true)
+        }
+        else {
             MainActivity.startMain(this, true)
         }
     }

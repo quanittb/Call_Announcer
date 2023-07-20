@@ -12,10 +12,19 @@ class RingstoneFragment : BaseFragment<FragmentSettingRingstoneBinding>() {
         }
     }
     override fun initView() {
-        binding.sbRingtoneVolume?.setProgress(0f, 100f)
-        binding.sbRingtoneVolume?.setIndicatorTextDecimalFormat("0")
-        binding.sbRingtoneVolume?.setIndicatorTextStringFormat("%s%%")
+        binding.sbRingtoneVolume.setProgress(0f, 100f)
+        binding.sbRingtoneVolume.setIndicatorTextDecimalFormat("0")
+        binding.sbRingtoneVolume.setIndicatorTextStringFormat("%s%%")
 
+        binding.icArrowLeft.setOnClickListener {
+            handlerBackPressed()
+        }
+
+    }
+
+    override fun handlerBackPressed() {
+        super.handlerBackPressed()
+        closeFragment(this)
     }
 
     override fun getBinding(

@@ -115,11 +115,14 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
 
     private fun changeLanguage() {
         SharedPreferenceUtils.languageCode = languageCode
-
         LanguageUtil.changeLang(SharedPreferenceUtils.languageCode!!, this)
         SharedPreferenceUtils.firstOpenApp = false
         //TODO start Main
-        MainActivity.startMain(this, true)
+        if (intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
+            MainActivity.startMain(this, true)
+        } else if (!SharedPreferenceUtils.isCompleteOnboarding) {
+            OnBoardingActivity.start(this, true)
+        }
     }
 
     fun initData() {

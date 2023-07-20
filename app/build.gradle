@@ -127,6 +127,9 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
+    //indicator tab layout
+    implementation 'com.tbuonomo:dotsindicator:4.3'
+
     implementation 'com.github.MohammedAlaaMorsi:RangeSeekBar:1.0.6'
     implementation 'com.github.Jay-Goo:RangeSeekBar:v3.0.0'
 }

@@ -13,7 +13,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
     override fun initView() {
-        addFragment(RingstoneFragment.instance())
+        binding.cvItemHomeCall.setOnClickListener {
+            addFragment(CallAnnouncerFragment.instance())
+        }
+
+        binding.cvItemHomeSMS.setOnClickListener {
+            addFragment(SmsAnnouncerFragment.instance())
+        }
+
+        binding.cvItemHomeSetting.setOnClickListener {
+            addFragment(SettingFragment.instance())
+        }
     }
 
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {

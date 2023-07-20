@@ -124,7 +124,6 @@
                 app:circleFillColor="#FF7287F9"
                 app:circleRadius="15dp"
                 app:circleTextColor="@color/white"
-
                 app:rsb_gravity="bottom"
                 app:rsb_indicator_background_color="#FF7287F9"
                 app:rsb_indicator_height="40dp"
@@ -157,6 +156,7 @@
                 android:textSize="@dimen/_16sdp" />
 
             <LinearLayout
+                android:id="@+id/ln_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -208,6 +208,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ln_ringtone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
