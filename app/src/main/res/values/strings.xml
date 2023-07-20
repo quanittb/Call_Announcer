@@ -13,4 +13,24 @@
     <string name="language_france" translatable="false">Francais</string>
     <string name="language_china" translatable="false">中国人</string>
     <string name="languages">Languages</string>
+    <string name="caller_announcer">Caller Announcer</string>
+    <string name="sms_announcer">SMS Announcer</string>
+    <string name="setting">Setting</string>
+    <string name="ringer_mode">Ringer mode</string>
+    <string name="mute_mode">Mute mode</string>
+    <string name="call_notification_on_ringer_mode">Call notification on ringer mode</string>
+    <string name="call_notification_in_silent_mode">Call notification in silent mode</string>
+    <string name="vibrate_mode">Vibrate mode</string>
+    <string name="call_notification_in_vibrate_mode">Call notification in vibrate mode</string>
+    <string name="flash">Flash</string>
+    <string name="call_notification">Call notification</string>
+    <string name="unknown_number">Unknown number</string>
+    <string name="unknown_display_with_numbers_not_in_contacts">Unknown display with numbers not in contacts</string>
+    <string name="name">Name</string>
+    <string name="display_and_read_the_username">Display and read the username</string>
+    <string name="turn_on">Turn on</string>
+    <string name="change_default_dialer">Change default dialer</string>
+    <string name="you_are_required_to_set_call_announcer_as_default_dialer_to_announce_caller_name_and_manage_calls_to_work_properly">You are required to set Call Announcer as default dialer to announce caller name and manage calls to work properly</string>
+    <string name="allow">Allow</string>
+    <string name="cancel">Cancel</string>
 </resources>
