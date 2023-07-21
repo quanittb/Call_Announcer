@@ -287,6 +287,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/privacy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -303,10 +304,10 @@
                     android:id="@+id/textView20"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Privacy policy and Terms of service"
                     android:layout_weight="2"
+                    android:fontFamily="@font/poppins_semibold"
                     android:gravity="center_vertical"
+                    android:text="Privacy policy and Terms of service"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp" />
 

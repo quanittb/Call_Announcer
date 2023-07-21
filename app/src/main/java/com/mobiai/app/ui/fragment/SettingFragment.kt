@@ -30,6 +30,17 @@ class SettingFragment: BaseFragment<FragmentSettingAccountBinding>() {
         binding.lnLanguage.setOnClickListener {
             LanguageActivity.start(requireContext(),true)
         }
+
+        binding.icArrowLeft.setOnClickListener{
+            handlerBackPressed()
+        }
+        binding.privacy.setOnClickListener{
+            addFragment(SecurityPolicyFragment.instance())
+        }
+    }
+    override fun handlerBackPressed() {
+        super.handlerBackPressed()
+        closeFragment(this)
     }
 
     override fun getBinding(
