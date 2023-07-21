@@ -49,10 +49,13 @@ class SettingFragment: BaseFragment<FragmentSettingAccountBinding>() {
             }
         }
         binding.lnTermAndPolicy.setOnSafeClickListener(500) {
-            //todo
+            addFragment(SecurityPolicyFragment.instance())
+        }
+
+        binding.icArrowLeft.setOnClickListener{
+            handlerBackPressed()
         }
     }
-
     override fun handlerBackPressed() {
         super.handlerBackPressed()
         closeFragment(this)
