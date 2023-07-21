@@ -25,7 +25,7 @@ class SplashActivity(override val isShowAdsSplash: Boolean = AdsRemote.showAdsSp
 
     override fun openNextScreen() {
         if (SharedPreferenceUtils.languageCode == null) {
-            LanguageActivity.start(this, true)
+            LanguageActivity.start(this, clearTask = true)
         }
         else if(!SharedPreferenceUtils.isCompleteOnboarding){
             LanguageUtil.changeLang(SharedPreferenceUtils.languageCode!!, this)

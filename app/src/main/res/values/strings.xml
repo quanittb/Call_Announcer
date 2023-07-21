@@ -43,5 +43,15 @@
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="_get_started">Get started</string>
+    <string name="ringstone">Ringstone</string>
+    <string name="ringtone_volume">Ringtone volume</string>
+    <string name="sound_in_the_device">Sound in the device</string>
+    <string name="search">Search</string>
+    <string name="privacy_policy_and_terms_of_service">Privacy policy and Terms of service</string>
+    <string name="share">Share</string>
+    <string name="selection_of_ringstones_in_your_library">Selection of ringstones in your library</string>
+    <string name="language">Language</string>
+    <string name="change_the_application_language">Change the application language</string>
+    <string name="selection_of_ringtones_in_your_library">Selection of ringtones in your library</string>
 
 </resources>
