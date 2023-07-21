@@ -20,11 +20,14 @@ import com.mobiai.databinding.ActivityLanguageBinding
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     companion object {
         const val OPEN_FROM_MAIN = "open_from_main"
-        fun start(context: Context, clearTask : Boolean = true){
+        fun start(context: Context,openFromMain : Boolean = false, clearTask : Boolean = true){
             val intent = Intent(context, LanguageActivity::class.java).apply {
                 if(clearTask){
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                if (openFromMain){
+                    putExtra(OPEN_FROM_MAIN, true)
                 }
             }
             context.startActivity(intent)
@@ -43,6 +46,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         getDataLanguage()
         if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
             initAds()
+            binding.imgBack.visibility = View.INVISIBLE
         } else {
             binding.frAds.visibility = View.GONE
             binding.imgBack.visibility = View.VISIBLE
@@ -97,17 +101,20 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         var languageSystem: Language? = null
         var position = 0
         for (language in listLanguages) {
-            if (language.locale.equals(locale.language)) {
-                languageSystem = language
-                languageCode = locale.language
-            }
             if (intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
                 if (SharedPreferenceUtils.languageCode == language.locale) {
                     languageSystem = language
                     languageCode = languageSystem.locale
                 }
-                position = listLanguages.indexOf(languageSystem)
+            }else
+            if (language.locale.equals(locale.language)) {
+                languageSystem = language
+                languageCode = locale.language
             }
+        }
+        if (languageSystem != null) {
+            listLanguages.remove(languageSystem)
+            listLanguages.add(0, languageSystem)
         }
         listLanguages[position].isChoose = true
         initAdapter()
