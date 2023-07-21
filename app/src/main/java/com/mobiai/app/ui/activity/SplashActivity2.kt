@@ -21,7 +21,7 @@ class SplashActivity2(
 ) : BaseSplashActivity2<ActivitySplashBinding>() {
     override fun openNextScreen() {
         if (SharedPreferenceUtils.languageCode == null) {
-            LanguageActivity.start(this, true)
+            LanguageActivity.start(this, clearTask = true)
         }
         else if(!SharedPreferenceUtils.isCompleteOnboarding){
             LanguageUtil.changeLang(SharedPreferenceUtils.languageCode!!, this)

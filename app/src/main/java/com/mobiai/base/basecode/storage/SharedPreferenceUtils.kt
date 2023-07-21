@@ -7,6 +7,8 @@ object SharedPreferenceUtils {
     private const val FIRST_OPEN_APP = "FIRST_OPEN_APP"
     private const val LANGUAGE = "LANGUAGE"
     private const val IS_COMPLETE_ONBOARDING = "IS_COMPLETE_ONBOARDING"
+    private const val IS_TURN_ON_CALL_ANNOUNCER = "IS_TURN_ON_CALL_ANNOUNCER"
+    private const val IS_TURN_ON_SMS_ANNOUNCER = "IS_TURN_ON_SMS_ANNOUNCER"
 
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
@@ -23,4 +25,11 @@ object SharedPreferenceUtils {
                 App.instanceSharePreference.getValueBool(IS_COMPLETE_ONBOARDING, false)
         set(value) = App.instanceSharePreference.setValueBool(IS_COMPLETE_ONBOARDING, value)
 
+    var isTurnOnCall: Boolean
+        get() = App.instanceSharePreference.getValueBool(IS_TURN_ON_CALL_ANNOUNCER, false)
+        set(value) = App.instanceSharePreference.setValueBool(IS_TURN_ON_CALL_ANNOUNCER, value)
+
+    var isTurnOnSms: Boolean
+        get() = App.instanceSharePreference.getValueBool(IS_TURN_ON_SMS_ANNOUNCER, false)
+        set(value) = App.instanceSharePreference.setValueBool(IS_TURN_ON_SMS_ANNOUNCER, value)
 }

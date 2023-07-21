@@ -6,6 +6,9 @@ import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import com.mobiai.R
 import com.mobiai.app.ui.dialog.TurnOnDialog
+import com.mobiai.base.basecode.extensions.gone
+import com.mobiai.base.basecode.extensions.visible
+import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
@@ -25,6 +28,11 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     private var currentToggle5 = false
     private var currentToggle6 = false
     override fun initView() {
+
+        if (SharedPreferenceUtils.isTurnOnSms ){
+            disableView(true)
+        }
+
         binding.icBack.setOnClickListener {
             handlerBackPressed()
         }
@@ -60,9 +68,8 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             showDialogTurnOn()
         }
         else{
-            currentTurn = false
-            binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
-            binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+            disableView(false)
+
         }
     }
 
@@ -133,14 +140,26 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 }
             }
         }
-
-    }
-
-    private fun showDialogTurnOn(){
-        val turnOnDialog = TurnOnDialog(requireContext()){
+     }
+    private fun disableView(boolean: Boolean){
+        if (!boolean){
+            currentTurn = false
+            binding.frDisable.visible()
+            binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
+            binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+            SharedPreferenceUtils.isTurnOnSms = false
+        }
+        else{
             currentTurn = true
+            binding.frDisable.gone()
             binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
             binding.btnTurn.setTextColor(resources.getColor(R.color.white))
+            SharedPreferenceUtils.isTurnOnSms = true
+        }
+    }
+    private fun showDialogTurnOn(){
+        val turnOnDialog = TurnOnDialog(requireContext()){
+            disableView(true)
         }
         turnOnDialog.show()
     }
