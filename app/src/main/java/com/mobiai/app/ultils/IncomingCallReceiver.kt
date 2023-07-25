@@ -55,7 +55,7 @@ class IncomingCallReceiver : BroadcastReceiver() {
                 val state = extras.getString(TelephonyManager.EXTRA_STATE)
                 when (state) {
                     TelephonyManager.EXTRA_STATE_RINGING -> {
-                        if (SharedPreferenceUtils.isTurnOnAnnouncer) {
+                        if (SharedPreferenceUtils.isTurnOnCall) {
                             if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper?.blinkFlash(
                                 150
                             )

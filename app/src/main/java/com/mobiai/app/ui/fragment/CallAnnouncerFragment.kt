@@ -12,26 +12,17 @@ import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.databinding.FragmentCallAnnouncerBinding
 
-class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
+class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
 
-    companion object {
-        fun instance(): CallAnnouncerFragment {
+    companion object{
+        fun instance() : CallAnnouncerFragment{
             return newInstance(CallAnnouncerFragment::class.java)
         }
     }
 
-    private var currentTurn = SharedPreferenceUtils.isTurnOnAnnouncer
-    private var currentToggle1 = SharedPreferenceUtils.isTurnOnModeNormal
-    private var currentToggle2 = SharedPreferenceUtils.isTurnOnModeSilent
-    private var currentToggle3 = SharedPreferenceUtils.isTurnOnModeVibrate
-    private var currentToggle4 = SharedPreferenceUtils.isTurnOnFlash
-    private var currentToggle5 = SharedPreferenceUtils.isUnknownNumber
-    private var currentToggle6 = SharedPreferenceUtils.isReadName
     override fun initView() {
         checkStatus()
-        if (SharedPreferenceUtils.isTurnOnCall) {
-            disableView(true)
-        }
+
         binding.icBack.setOnClickListener {
             handlerBackPressed()
         }
@@ -62,85 +53,38 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
         }
     }
 
-    private fun checkStatus() {
-        currentTurn = !SharedPreferenceUtils.isTurnOnAnnouncer
-        currentToggle1 = !SharedPreferenceUtils.isTurnOnModeNormal
-        currentToggle2 = !SharedPreferenceUtils.isTurnOnModeSilent
-        currentToggle3 = !SharedPreferenceUtils.isTurnOnModeVibrate
-        currentToggle4 = !SharedPreferenceUtils.isTurnOnFlash
-        currentToggle5 = !SharedPreferenceUtils.isUnknownNumber
-        currentToggle6 = !SharedPreferenceUtils.isReadName
-        changeToggle(binding.ivToggle1)
-        changeToggle(binding.ivToggle2)
-        changeToggle(binding.ivToggle3)
-        changeToggle(binding.ivToggle4)
-        changeToggle(binding.ivToggle5)
-        changeToggle(binding.ivToggle6)
-    }
-
-    private fun turnOfAnnouncer() {
-        currentToggle1 = true
-        currentToggle2 = true
-        currentToggle3 = true
-        currentToggle4 = true
-        currentToggle5 = true
-        currentToggle6 = true
-        changeToggle(binding.ivToggle1)
-        changeToggle(binding.ivToggle2)
-        changeToggle(binding.ivToggle3)
-        changeToggle(binding.ivToggle4)
-        changeToggle(binding.ivToggle5)
-        changeToggle(binding.ivToggle6)
-        SharedPreferenceUtils.isTurnOnModeNormal = currentToggle1
-        SharedPreferenceUtils.isTurnOnModeSilent = currentToggle2
-        SharedPreferenceUtils.isTurnOnModeVibrate = currentToggle3
-        SharedPreferenceUtils.isTurnOnFlash = currentToggle4
-        SharedPreferenceUtils.isUnknownNumber = currentToggle5
-        SharedPreferenceUtils.isReadName = currentToggle6
-    }
-
-    private fun turnOnAnnouncer() {
-        currentToggle1 = false
-        currentToggle2 = true
-        currentToggle3 = true
-        currentToggle4 = true
-        currentToggle5 = false
-        currentToggle6 = false
-        changeToggle(binding.ivToggle1)
-        changeToggle(binding.ivToggle2)
-        changeToggle(binding.ivToggle3)
-        changeToggle(binding.ivToggle4)
-        changeToggle(binding.ivToggle5)
-        changeToggle(binding.ivToggle6)
-        SharedPreferenceUtils.isTurnOnModeNormal = currentToggle1
-        SharedPreferenceUtils.isTurnOnModeSilent = currentToggle2
-        SharedPreferenceUtils.isTurnOnModeVibrate = currentToggle3
-        SharedPreferenceUtils.isTurnOnFlash = currentToggle4
-        SharedPreferenceUtils.isUnknownNumber = currentToggle5
-        SharedPreferenceUtils.isReadName = currentToggle6
+    private fun checkStatus(){
+        if (SharedPreferenceUtils.isTurnOnCall){
+            disableView(true)
+            checkToggle()
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        }
     }
 
     private fun turnOn() {
-        if (!currentTurn) {
+        if (!SharedPreferenceUtils.isTurnOnCall) {
             showDialogTurnOn()
-            SharedPreferenceUtils.isTurnOnAnnouncer = true
         } else {
-            turnOfAnnouncer()
             disableView(false)
-            SharedPreferenceUtils.isTurnOnAnnouncer = false
+            changeAllToggle(false)
         }
     }
 
     private fun disableView(boolean: Boolean) {
         if (!boolean) {
-            currentTurn = false
             binding.frDisable.visible()
             binding.btnTurn.background =
                 AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
             binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
             SharedPreferenceUtils.isTurnOnCall = false
         } else {
-            currentTurn = true
             binding.frDisable.gone()
             binding.btnTurn.background =
                 AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
@@ -149,40 +93,78 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
         }
     }
 
+    private fun changeAllToggle(boolean: Boolean){
+        if (boolean){
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            changeSharePreference(true)
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            changeSharePreference(false)
+        }
+    }
+
+    private fun changeSharePreference(boolean: Boolean){
+        if (boolean){
+            SharedPreferenceUtils.isTurnOnModeNormal = true
+            SharedPreferenceUtils.isTurnOnModeSilent = false
+            SharedPreferenceUtils.isTurnOnModeVibrate = false
+            SharedPreferenceUtils.isTurnOnFlash = false
+            SharedPreferenceUtils.isUnknownNumber = true
+            SharedPreferenceUtils.isReadName = true
+        }
+        else{
+            SharedPreferenceUtils.isTurnOnModeNormal = false
+            SharedPreferenceUtils.isTurnOnModeSilent = false
+            SharedPreferenceUtils.isTurnOnModeVibrate = false
+            SharedPreferenceUtils.isTurnOnFlash = false
+            SharedPreferenceUtils.isUnknownNumber = false
+            SharedPreferenceUtils.isReadName = false
+        }
+    }
+
     private fun changeToggle(view: ImageView) {
         when (view) {
             binding.ivToggle1 -> {
-                if (!currentToggle1) {
+                if (!SharedPreferenceUtils.isTurnOnModeNormal) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle1 = true
                     SharedPreferenceUtils.isTurnOnModeNormal = true
-                } else {
+                }
+                else {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle1 = false
                     SharedPreferenceUtils.isTurnOnModeNormal = false
 
                 }
             }
 
             binding.ivToggle2 -> {
-                if (!currentToggle2) {
+                if (!SharedPreferenceUtils.isTurnOnModeSilent) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle2 = true
                     SharedPreferenceUtils.isTurnOnModeSilent = true
                 } else {
                     view.setImageDrawable(
@@ -191,20 +173,18 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle2 = false
                     SharedPreferenceUtils.isTurnOnModeSilent = false
                 }
             }
 
             binding.ivToggle3 -> {
-                if (!currentToggle3) {
+                if (!SharedPreferenceUtils.isTurnOnModeVibrate) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle3 = true
                     SharedPreferenceUtils.isTurnOnModeVibrate = true
                 } else {
                     view.setImageDrawable(
@@ -213,20 +193,18 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle3 = false
                     SharedPreferenceUtils.isTurnOnModeVibrate = false
                 }
             }
 
             binding.ivToggle4 -> {
-                if (!currentToggle4) {
+                if (!SharedPreferenceUtils.isTurnOnFlash) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle4 = true
                     SharedPreferenceUtils.isTurnOnFlash = true
                 } else {
                     view.setImageDrawable(
@@ -235,21 +213,19 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle4 = false
                     SharedPreferenceUtils.isTurnOnFlash = false
                 }
             }
 
             binding.ivToggle5 -> {
-                if (!currentToggle5) {
+                if (!SharedPreferenceUtils.isUnknownNumber) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle5 = true
-                    SharedPreferenceUtils.isUnknownNumber = currentToggle5
+                    SharedPreferenceUtils.isUnknownNumber = true
                 } else {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
@@ -257,21 +233,19 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle5 = false
-                    SharedPreferenceUtils.isUnknownNumber = currentToggle5
+                    SharedPreferenceUtils.isUnknownNumber = false
                 }
             }
 
             binding.ivToggle6 -> {
-                if (!currentToggle6) {
+                if (!SharedPreferenceUtils.isReadName) {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
                             R.drawable.ic_togle_on
                         )
                     )
-                    currentToggle6 = true
-                    SharedPreferenceUtils.isReadName = currentToggle6
+                    SharedPreferenceUtils.isReadName = true
                 } else {
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
@@ -279,19 +253,119 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
                             R.drawable.ic_togle_off
                         )
                     )
-                    currentToggle6 = false
-                    SharedPreferenceUtils.isReadName = currentToggle6
+                    SharedPreferenceUtils.isReadName = false
                 }
             }
         }
+    }
+    private fun checkToggle() {
+        if (SharedPreferenceUtils.isTurnOnModeNormal) {
+            binding.ivToggle1.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+        if (SharedPreferenceUtils.isTurnOnModeSilent) {
+            binding.ivToggle2.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle2.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
 
+        if (SharedPreferenceUtils.isTurnOnModeVibrate) {
+            binding.ivToggle3.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle3.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isTurnOnFlash) {
+            binding.ivToggle4.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle4.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isUnknownNumber) {
+            binding.ivToggle5.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle5.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isReadName) {
+            binding.ivToggle6.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle6.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
     }
 
-    private fun showDialogTurnOn() {
-        val turnOnDialog = TurnOnDialog(requireContext()) {
-            disableView(true)
-            turnOnAnnouncer()
-        }
+    private fun showDialogTurnOn(){
+       val turnOnDialog = TurnOnDialog(requireContext()){
+           disableView(true)
+           changeAllToggle(true)
+       }
         turnOnDialog.show()
     }
 
@@ -303,10 +377,5 @@ class CallAnnouncerFragment : BaseFragment<FragmentCallAnnouncerBinding>() {
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentCallAnnouncerBinding =
-        FragmentCallAnnouncerBinding.inflate(inflater, container, false)
-
-    private fun checkModeNotification() {
-
-    }
+    ): FragmentCallAnnouncerBinding = FragmentCallAnnouncerBinding.inflate(inflater,container,false)
 }
