@@ -20,18 +20,8 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
     }
 
-    private var currentTurn = false
-    private var currentToggle1 = false
-    private var currentToggle2 = false
-    private var currentToggle3 = false
-    private var currentToggle4 = false
-    private var currentToggle5 = false
-    private var currentToggle6 = false
     override fun initView() {
-
-        if (SharedPreferenceUtils.isTurnOnSms ){
-            disableView(true)
-        }
+        checkStatus()
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -64,102 +54,260 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
 
     private fun turnOn(){
-        if (!currentTurn){
+        if (!SharedPreferenceUtils.isTurnOnSms){
             showDialogTurnOn()
         }
         else{
             disableView(false)
-
+            changeAllToggle(false)
         }
     }
 
+
+    private fun changeAllToggle(boolean: Boolean){
+        if (boolean){
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            changeSharePreference(true)
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            changeSharePreference(false)
+        }
+    }
+    private fun changeSharePreference(boolean: Boolean){
+        if (boolean){
+            SharedPreferenceUtils.isTurnOnSmsNormal = true
+            SharedPreferenceUtils.isTurnOnSmsSilent = false
+            SharedPreferenceUtils.isTurnOnSmsVibrate = false
+            SharedPreferenceUtils.isTurnOnFlashSms = false
+            SharedPreferenceUtils.isUnknownNumberSms = true
+            SharedPreferenceUtils.isReadNameSms = true
+        }
+        else{
+            SharedPreferenceUtils.isTurnOnSmsNormal = false
+            SharedPreferenceUtils.isTurnOnSmsSilent = false
+            SharedPreferenceUtils.isTurnOnSmsVibrate = false
+            SharedPreferenceUtils.isTurnOnFlashSms = false
+            SharedPreferenceUtils.isUnknownNumberSms = false
+            SharedPreferenceUtils.isReadNameSms = false
+        }
+    }
     private fun changeToggle(view: ImageView){
         when(view){
             binding.ivToggle1 -> {
-                if (!currentToggle1){
+                if (!SharedPreferenceUtils.isTurnOnSmsNormal){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle1 = true
+                    SharedPreferenceUtils.isTurnOnSmsNormal = true
+
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle1 = false
+                    SharedPreferenceUtils.isTurnOnSmsNormal = false
                 }
             }
 
             binding.ivToggle2 -> {
-                if (!currentToggle2){
+                if (!SharedPreferenceUtils.isTurnOnSmsSilent){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle2 = true
+                    SharedPreferenceUtils.isTurnOnSmsSilent = true
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle2 = false
+                    SharedPreferenceUtils.isTurnOnSmsSilent = false
                 }
             }
 
             binding.ivToggle3 -> {
-                if (!currentToggle3){
+                if (!SharedPreferenceUtils.isTurnOnSmsVibrate){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle3 = true
+                    SharedPreferenceUtils.isTurnOnSmsVibrate = true
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle3 = false
+                    SharedPreferenceUtils.isTurnOnSmsVibrate = false
                 }
             }
             binding.ivToggle4 -> {
-                if (!currentToggle4){
+                if (!SharedPreferenceUtils.isTurnOnFlashSms){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle4 = true
+                    SharedPreferenceUtils.isTurnOnFlashSms = true
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle4 = false
+                    SharedPreferenceUtils.isTurnOnFlashSms = false
                 }
             }
 
             binding.ivToggle5 -> {
-                if (!currentToggle5){
+                if (!SharedPreferenceUtils.isUnknownNumberSms){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle5 = true
+                    SharedPreferenceUtils.isUnknownNumberSms = true
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle5 = false
+                    SharedPreferenceUtils.isUnknownNumberSms = false
                 }
             }
 
             binding.ivToggle6 -> {
-                if (!currentToggle6){
+                if (!SharedPreferenceUtils.isReadNameSms){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-                    currentToggle6 = true
+                    SharedPreferenceUtils.isReadNameSms = true
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-                    currentToggle6 = false
+                    SharedPreferenceUtils.isReadNameSms = false
                 }
             }
         }
      }
+
     private fun disableView(boolean: Boolean){
         if (!boolean){
-            currentTurn = false
             binding.frDisable.visible()
             binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
             binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
             SharedPreferenceUtils.isTurnOnSms = false
         }
         else{
-            currentTurn = true
             binding.frDisable.gone()
             binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
             binding.btnTurn.setTextColor(resources.getColor(R.color.white))
             SharedPreferenceUtils.isTurnOnSms = true
         }
+
     }
+    private fun checkToggle() {
+        if (SharedPreferenceUtils.isTurnOnSmsNormal) {
+            binding.ivToggle1.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+        if (SharedPreferenceUtils.isTurnOnSmsSilent) {
+            binding.ivToggle2.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle2.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isTurnOnSmsVibrate) {
+            binding.ivToggle3.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle3.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isTurnOnFlashSms) {
+            binding.ivToggle4.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle4.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isUnknownNumberSms) {
+            binding.ivToggle5.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle5.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+
+        if (SharedPreferenceUtils.isReadNameSms) {
+            binding.ivToggle6.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_on
+                )
+            )
+        }
+        else{
+            binding.ivToggle6.setImageDrawable(
+                AppCompatResources.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_togle_off
+                )
+            )
+        }
+    }
+    private fun checkStatus(){
+        if (SharedPreferenceUtils.isTurnOnSms){
+            disableView(true)
+            checkToggle()
+        }
+        else{
+            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        }
+    }
+
     private fun showDialogTurnOn(){
         val turnOnDialog = TurnOnDialog(requireContext()){
             disableView(true)
+            changeAllToggle(true)
         }
         turnOnDialog.show()
     }

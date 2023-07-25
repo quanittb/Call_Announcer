@@ -91,7 +91,7 @@
                 android:id="@+id/iv_toggle_1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>
@@ -152,7 +152,7 @@
                 android:id="@+id/iv_toggle_2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>
@@ -213,7 +213,7 @@
                 android:id="@+id/iv_toggle_3"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>
@@ -274,7 +274,7 @@
                 android:id="@+id/iv_toggle_4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>
@@ -335,7 +335,7 @@
                 android:id="@+id/iv_toggle_5"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>
@@ -396,7 +396,7 @@
                 android:id="@+id/iv_toggle_6"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_togle_off"
+                android:src="@drawable/ic_togle_off_all"
                 android:paddingHorizontal="@dimen/_4sdp"
                 />
         </LinearLayout>

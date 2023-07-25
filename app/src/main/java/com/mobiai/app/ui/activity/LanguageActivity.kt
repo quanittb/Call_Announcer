@@ -135,21 +135,39 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     fun initData() {
         listLanguages = ArrayList()
         listLanguages.add(Language(R.drawable.flag_en, getString(R.string.language_english), "en"))
-        listLanguages.add(Language(R.drawable.flag_es_spain,
-            getString(R.string.language_spain),
-            "es"))
-        listLanguages.add(Language(R.drawable.flag_pt_portugal,
-            getString(R.string.language_portugal),
-            "pt"))
-        listLanguages.add(Language(R.drawable.flag_in_hindi,
-            getString(R.string.language_hindi),
-            "in"))
-        listLanguages.add(Language(R.drawable.flag_de_germany,
-            getString(R.string.language_germany),
-            "de"))
+        listLanguages.add(Language(R.drawable.flag_vn_vietnam, getString(R.string.language_vietnamese), "vi"))
         listLanguages.add(Language(R.drawable.flag_fr_france,
             getString(R.string.language_france),
             "fr"))
+        listLanguages.add(Language(R.drawable.flag_de_germany,
+            getString(R.string.language_germany),
+            "de"))
+        listLanguages.add(Language(R.drawable.flag_ko_korean,
+            getString(R.string.language_korean),
+            "ko"))
+        listLanguages.add(Language(R.drawable.flag_hi_hindi,
+            getString(R.string.language_hindi),
+            "hi"))
+
+        listLanguages.add(Language(R.drawable.flag_lr_liberia,
+            getString(R.string.language_liberia),
+            "lr"))
+
+        listLanguages.add(Language(R.drawable.flag_es_spain,
+            getString(R.string.language_spain),
+            "es"))
+
+        listLanguages.add(Language(R.drawable.flag_it_italy,
+            getString(R.string.language_italian),
+            "it"))
+
+        listLanguages.add(Language(R.drawable.flag_jp_japan,
+            getString(R.string.language_japan),
+            "ja"))
+
+        listLanguages.add(Language(R.drawable.flag_gr_greece,
+            getString(R.string.language_greece),
+            "gr"))
 
     }
 
