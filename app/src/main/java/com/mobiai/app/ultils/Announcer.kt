@@ -20,7 +20,7 @@ import com.google.android.gms.common.util.SharedPreferencesUtils
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.util.Locale
 
-class Announcer(context: Context) : TextToSpeech.OnInitListener  {
+class Announcer(context: Context) : TextToSpeech.OnInitListener {
     var tts: TextToSpeech? = null
     var context = context
     private var selectedLanguage: Locale = Locale.getDefault()
@@ -42,8 +42,9 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener  {
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(
             AudioManager.STREAM_RING,
-            2 ,
-            0)
+            2,
+            0
+        )
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, params, null)
 
     }
@@ -102,7 +103,7 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener  {
 
     fun AnnouncerForMinBattery(minBattery: Float, text: String, context: Context, params: Bundle) {
         if (getBatteryPercentage(context) >= minBattery)
-            readText(text,params)
+            readText(text, params)
     }
 
 //    override fun onUtteranceCompleted(utteranceId: String?) {
