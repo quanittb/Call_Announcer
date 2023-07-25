@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.View
 import com.ads.control.ads.AperoAd
 import com.ads.control.billing.AppPurchase
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.adapter.LanguageAdapter
@@ -79,6 +81,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
             }
         }
     }
+
 
 
     private fun initAdapter(){

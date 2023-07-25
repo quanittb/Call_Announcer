@@ -1,6 +1,8 @@
 package com.mobiai.app.ui.fragment
 
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import android.widget.Toast.*
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.mobiai.app.ui.activity.LanguageActivity
+import com.mobiai.app.ui.dialog.RequestWriteSettingDialog
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
 import com.mobiai.base.basecode.ads.WrapAdsResume
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -25,6 +28,9 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
         }
     }
 
+    private lateinit var requestWriteSettingDialog: RequestWriteSettingDialog
+    private val DEFAULT_WRITE_SETTING_CODE: Int = 1111
+
     override fun initView() {
 
         binding.sbSpeakingSpeed.setIndicatorTextDecimalFormat("0")
@@ -35,8 +41,14 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
         binding.sbVolume.setIndicatorTextStringFormat("%s%%")
         binding.sbVolume.setProgress(0f, 100.0f)
         binding.sbVolume.setProgress(SharedPreferenceUtils.volumeAnnouncer.toFloat())
+
         binding.lnRingtone.setOnSafeClickListener(500) {
-            addFragment(RingstoneFragment.instance())
+            if (!Settings.System.canWrite(requireContext())) {
+                requestWriteSettingPermission(DEFAULT_WRITE_SETTING_CODE)
+            }
+            else{
+                addFragment(RingstoneFragment.instance())
+            }
         }
         binding.lnLanguage.setOnSafeClickListener(500) {
             LanguageActivity.start(requireContext(), true, clearTask = false)
@@ -99,6 +111,32 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
             }
         })
     }
+
+    private fun requestWriteSettingPermission(code: Int) {
+        requestWriteSettingDialog = RequestWriteSettingDialog(
+            requireContext()
+        ) {
+            openWriteSettingInDevice(code)
+        }
+        if (!requestWriteSettingDialog.isShowing) {
+            requestWriteSettingDialog.show()
+        }
+    }
+    private fun openWriteSettingInDevice(code: Int) {
+        val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+        intent.data = Uri.parse("package:" + requireContext().packageName)
+        startActivityForResult(intent, code)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DEFAULT_WRITE_SETTING_CODE) {
+            if (Settings.System.canWrite(requireContext())) {
+                addFragment(RingstoneFragment.instance())
+            }
+        }
+    }
+
     override fun handlerBackPressed() {
         super.handlerBackPressed()
         closeFragment(this)
