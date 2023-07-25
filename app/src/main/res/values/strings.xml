@@ -37,7 +37,7 @@
     <string name="you_are_required_to_set_call_announcer_as_default_dialer_to_announce_caller_name_and_manage_calls_to_work_properly">You are required to set Call Announcer as default dialer to announce caller name and manage calls to work properly</string>
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>
-
+    <string name="device_ringtone">Device ringtone</string>
     <string name="_onboarding_1_title">The best assistant for you</string>
     <string name="_onboarding_2_title">Simple and modern interface</string>
     <string name="_onboarding_3_title">The  best assistant for you</string>
@@ -63,5 +63,9 @@
     <string name="changes_with_service_and_terms">Changes with Service and Terms</string>
     <string name="lorem_ipsum_is_simply">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including</string>
     <string name="t_amp_c"><![CDATA[T & C]]></string>
+    <string name="not_found_ringtones">Not Found Ringtones</string>
+    <string name="in_order_to_use_this_app_we_need_your_permission_to_modify_some_system_settings_on_your_device">In order to use this app, we need your permission to modify some system settings on your device</string>
+    <string name="deny">Deny</string>
+    <string name="later">Later</string>
 
 </resources>

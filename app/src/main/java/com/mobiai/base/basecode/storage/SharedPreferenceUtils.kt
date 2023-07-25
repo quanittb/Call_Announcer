@@ -30,6 +30,8 @@ object SharedPreferenceUtils {
     private const val CURRENT_MUSIC = "CURRENT_MUSIC"
     private const val CURRENT_RING = "CURRENT_RING"
 
+    private const val SAVED_RINGTONE_ID ="SAVED_RINGTONE_ID"
+    private const val SAVED_RINGTONE_PATH ="SAVED_RINGTONE_PATH"
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
         set(value) = App.instanceSharePreference.setValueBool(FIRST_OPEN_APP, value)
@@ -97,15 +99,18 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(READ_NAME, false)
         set(value) = App.instanceSharePreference.setValueBool(READ_NAME, value)
 
-
-
-
-
-
     var currentMusic : Int
         get() = App.instanceSharePreference.getIntValue(CURRENT_MUSIC,100)
         set(value) = App.instanceSharePreference.setIntValue(CURRENT_MUSIC,value)
     var currentRing : Int
         get() = App.instanceSharePreference.getIntValue(CURRENT_RING,100)
         set(value) = App.instanceSharePreference.setIntValue(CURRENT_RING,value)
+
+    var saved_ringtone_id:  Int
+        get() = App.instanceSharePreference.getIntValue(SAVED_RINGTONE_ID, -1)
+        set(value) = App.instanceSharePreference.setIntValue(SAVED_RINGTONE_ID, value)
+    var saved_ringtone_path:  String?
+        get() = App.instanceSharePreference.getValue(SAVED_RINGTONE_PATH, null)
+        set(value) = App.instanceSharePreference.setValue(SAVED_RINGTONE_PATH, value)
+
 }
