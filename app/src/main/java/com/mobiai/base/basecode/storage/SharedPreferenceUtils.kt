@@ -29,6 +29,7 @@ object SharedPreferenceUtils {
     private const val SPEED_SPEAK = "SPEED_SPEAK"
     private const val CURRENT_MUSIC = "CURRENT_MUSIC"
     private const val CURRENT_RING = "CURRENT_RING"
+    private const val VOLUME_RING = "VOLUME_RING"
 
     private const val SAVED_RINGTONE_ID ="SAVED_RINGTONE_ID"
     private const val SAVED_RINGTONE_PATH ="SAVED_RINGTONE_PATH"
@@ -98,6 +99,9 @@ object SharedPreferenceUtils {
     var isReadName: Boolean
         get() = App.instanceSharePreference.getValueBool(READ_NAME, false)
         set(value) = App.instanceSharePreference.setValueBool(READ_NAME, value)
+    var volumeRing: Int
+        get() = App.instanceSharePreference.getIntValue(VOLUME_RING, 30)
+        set(value) = App.instanceSharePreference.setIntValue(VOLUME_RING, value)
 
     var currentMusic : Int
         get() = App.instanceSharePreference.getIntValue(CURRENT_MUSIC,100)
