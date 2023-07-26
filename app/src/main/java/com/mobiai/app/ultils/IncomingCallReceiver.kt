@@ -16,6 +16,7 @@ import android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME
 import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.widget.Toast
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.text.DecimalFormat
 import kotlin.properties.Delegates
@@ -70,15 +71,17 @@ class IncomingCallReceiver : BroadcastReceiver() {
                             if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper?.blinkFlash(
                                 150
                             )
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) readText()
+                            if (announcer.getBatteryPercentage(context) >= SharedPreferenceUtils.batteryMin) {
+                                if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal) readText()
+                                else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) readText()
+                                else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) readText()
+                            }
+
                         }
                     }
 
                     TelephonyManager.EXTRA_STATE_IDLE -> {
                         setVolume()
-                        Log.e("beforetext", "đến đây là tắt ")
                         flashlightHelper?.stopBlink()
                         flashlightHelper?.stopFlash()
                         announcer.tts?.stop()

@@ -45,31 +45,8 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
             2,
             0
         )
-        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, params, null)
+        tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, params, "read")
 
-    }
-
-    // Hàm hiển thị dialog để người dùng chọn ngôn ngữ
-    private fun showLanguageDialog(languages: List<Locale>) {
-        // Tạo dialog chứa danh sách ngôn ngữ
-        val dialog = AlertDialog.Builder(context)
-            .setTitle("Chọn ngôn ngữ")
-            .setItems(languages.map { it.displayLanguage }.toTypedArray()) { _, position ->
-                // Xử lý khi người dùng chọn một ngôn ngữ
-                selectedLanguage = languages[position]
-                tts?.setLanguage(selectedLanguage)
-            }
-            .setCancelable(true)
-            .create()
-
-        // Hiển thị dialog
-        dialog.show()
-    }
-
-    fun showSupportedLanguages() {
-        val supportedLanguages = tts!!.availableLanguages
-        // Hiển thị danh sách ngôn ngữ đã được hỗ trợ
-        showLanguageDialog(supportedLanguages.toList())
     }
 
     fun openTextToSpeechSettings(context: Context) {
@@ -100,32 +77,4 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
         }
         return batteryPercentage
     }
-
-    fun AnnouncerForMinBattery(minBattery: Float, text: String, context: Context, params: Bundle) {
-        if (getBatteryPercentage(context) >= minBattery)
-            readText(text, params)
-    }
-
-//    override fun onUtteranceCompleted(utteranceId: String?) {
-//        isRinging = true
-//        handler.postDelayed({
-//            if(isRinging)
-//                setVolume()
-//        },500)
-//
-//    }
-//    fun setVolume(){
-//        var audioManager =
-//            context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL)
-//        audioManager.setStreamVolume(
-//            AudioManager.STREAM_RING,
-//            SharedPreferenceUtils.currentRing ,
-//            0)
-//        audioManager.setStreamVolume(
-//            AudioManager.STREAM_MUSIC,
-//            SharedPreferenceUtils.currentMusic,
-//            0
-//        )
-//    }
 }

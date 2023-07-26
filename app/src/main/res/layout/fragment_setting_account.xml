@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Volume settings"
+                android:text="@string/volume_settings"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp" />
 
@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Set volume"
+                android:text="@string/set_volume"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
@@ -80,7 +80,7 @@
                 android:id="@+id/sb_volume"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                app:baseColor="#EEF0FA"
+                app:baseColor="#247288FA"
                 app:circleFillColor="#FF7287F9"
                 app:circleRadius="15dp"
                 app:circleTextColor="@color/white"
@@ -99,7 +99,7 @@
                 app:rsb_indicator_width="50dp"
                 app:rsb_mode="single"
                 app:rsb_progress_color="#FF7287F9"
-                app:rsb_progress_default_color="#EEF0FA"
+                app:rsb_progress_default_color="#247288FA"
                 app:rsb_progress_height="5dp"
                 app:rsb_thumb_drawable="@drawable/end_point"
                 app:rsb_thumb_height="20dp"
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Speaking speed"
+                android:text="@string/speaking_speed"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
@@ -121,7 +121,7 @@
                 android:layout_height="80dp"
                 android:scrollbarSize="5dp"
                 app:barHeight="5dp"
-                app:baseColor="#EEF0FA"
+                app:baseColor="#247288FA"
                 app:circleFillColor="#FF7287F9"
                 app:circleRadius="15dp"
                 app:circleTextColor="@color/white"
@@ -138,13 +138,56 @@
                 app:rsb_indicator_show_mode="alwaysShow"
                 app:rsb_mode="single"
                 app:rsb_progress_color="#FF7287F9"
-                app:rsb_progress_default_color="#EEF0FA"
+                app:rsb_progress_default_color="#247288FA"
                 app:rsb_progress_height="5dp"
                 app:rsb_thumb_drawable="@drawable/end_point"
                 app:rsb_thumb_height="20dp"
                 app:rsb_thumb_width="20dp"
                 app:rsb_tick_mark_mode="number" />
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/battery_announcer"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12sdp" />
 
+            <com.jaygoo.widget.RangeSeekBar
+                android:id="@+id/sb_battery_min"
+                app:rsb_min="5"
+                app:rsb_max="35"
+                app:rsb_progress_height="5dp"
+                app:rsb_progress_default_color="#247288FA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:rsb_gravity="bottom"
+                app:rsb_mode="single"
+                app:rsb_progress_color="#FF7287F9"
+                app:rsb_step_auto_bonding="true"
+                app:rsb_step_color  ="#7288FA"
+                app:rsb_step_radius="3dp"
+                app:rsb_step_height="3dp"
+                app:rsb_step_width="3dp"
+                app:rsb_steps="6"
+                app:rsb_thumb_drawable="@drawable/end_point"
+                app:rsb_thumb_height="18dp"
+                app:rsb_thumb_width="18dp"
+                app:rsb_tick_mark_gravity="center"
+                app:rsb_tick_mark_layout_gravity="bottom"
+                app:rsb_tick_mark_mode="number"
+                app:rsb_tick_mark_text_color="@color/black"
+                app:rsb_tick_mark_text_size="@dimen/_12sdp"
+                app:rsb_tick_mark_text_array="@array/markArray"
+                app:rsb_tick_mark_text_margin="20dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:gravity="center_vertical"
+                android:text="@string/set_battery_threshold_for_notifications"
+                style="@style/style_content_setting"
+                />
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
@@ -152,7 +195,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Other"
+                android:text="@string/other"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp" />
 
