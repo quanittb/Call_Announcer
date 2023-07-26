@@ -6,8 +6,9 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.HandlerThread
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -26,15 +27,14 @@ import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
-import com.mobiai.databinding.FragmentSettingRingstoneBinding
-import java.util.logging.Handler
+import com.mobiai.databinding.FragmentSettingRingtoneBinding
 import kotlin.math.round
 import kotlin.math.roundToInt
 
-class RingstoneFragment : BaseFragment<FragmentSettingRingstoneBinding>() {
+class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     companion object{
-        fun instance():RingstoneFragment {
-            return newInstance(RingstoneFragment::class.java)
+        fun instance():RingtoneFragment {
+            return newInstance(RingtoneFragment::class.java)
         }
     }
    private lateinit var myRingtoneAdapter: MyRingtoneAdapter
@@ -99,6 +99,21 @@ class RingstoneFragment : BaseFragment<FragmentSettingRingstoneBinding>() {
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
 
 
+            }
+        })
+        binding.edSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Được gọi trước khi văn bản bị thay đổi
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Được gọi khi văn bản đang thay đổi
+                val newText = s.toString()
+                // Xử lý văn bản mới tại đây (nếu cần)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Được gọi sau khi văn bản đã thay đổi
             }
         })
     }
@@ -284,5 +299,5 @@ class RingstoneFragment : BaseFragment<FragmentSettingRingstoneBinding>() {
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentSettingRingstoneBinding = FragmentSettingRingstoneBinding.inflate(inflater,container,false)
+    ): FragmentSettingRingtoneBinding = FragmentSettingRingtoneBinding.inflate(inflater,container,false)
 }

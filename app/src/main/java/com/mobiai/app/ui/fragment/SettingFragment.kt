@@ -3,11 +3,8 @@ package com.mobiai.app.ui.fragment
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.*
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.mobiai.app.ui.activity.LanguageActivity
@@ -17,7 +14,6 @@ import com.mobiai.base.basecode.ads.WrapAdsResume
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.databinding.FragmentSettingAccountBinding
-import java.text.DecimalFormat
 import kotlin.math.round
 import kotlin.math.roundToInt
 
@@ -47,7 +43,7 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
                 requestWriteSettingPermission(DEFAULT_WRITE_SETTING_CODE)
             }
             else{
-                addFragment(RingstoneFragment.instance())
+                addFragment(RingtoneFragment.instance())
             }
         }
         binding.lnLanguage.setOnSafeClickListener(500) {
@@ -110,6 +106,24 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
             }
         })
+
+        binding.sbBatteryMin.setProgress(SharedPreferenceUtils.batteryMin.toFloat())
+        binding.sbBatteryMin.setOnRangeChangedListener(object : OnRangeChangedListener {
+            override fun onRangeChanged(
+                rangeSeekBar: RangeSeekBar,
+                leftValue: Float,
+                rightValue: Float,
+                isFromUser: Boolean
+            ) {
+                SharedPreferenceUtils.batteryMin = round(leftValue).roundToInt()
+            }
+
+            override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+            }
+
+            override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+            }
+        })
     }
 
     private fun requestWriteSettingPermission(code: Int) {
@@ -132,7 +146,7 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DEFAULT_WRITE_SETTING_CODE) {
             if (Settings.System.canWrite(requireContext())) {
-                addFragment(RingstoneFragment.instance())
+                addFragment(RingtoneFragment.instance())
             }
         }
     }

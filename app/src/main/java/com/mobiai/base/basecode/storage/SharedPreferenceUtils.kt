@@ -33,6 +33,8 @@ object SharedPreferenceUtils {
 
     private const val SAVED_RINGTONE_ID ="SAVED_RINGTONE_ID"
     private const val SAVED_RINGTONE_PATH ="SAVED_RINGTONE_PATH"
+
+    private const val BATTERY_MIN = "BATTERY_MIN"
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
         set(value) = App.instanceSharePreference.setValueBool(FIRST_OPEN_APP, value)
@@ -116,5 +118,8 @@ object SharedPreferenceUtils {
     var saved_ringtone_path:  String?
         get() = App.instanceSharePreference.getValue(SAVED_RINGTONE_PATH, null)
         set(value) = App.instanceSharePreference.setValue(SAVED_RINGTONE_PATH, value)
+    var batteryMin : Int
+        get() = App.instanceSharePreference.getIntValue(BATTERY_MIN,5)
+        set(value) = App.instanceSharePreference.setIntValue(BATTERY_MIN,value)
 
 }
