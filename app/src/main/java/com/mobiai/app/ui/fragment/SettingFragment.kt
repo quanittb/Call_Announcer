@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
+import com.mobiai.R
 import com.mobiai.app.ui.activity.LanguageActivity
 import com.mobiai.app.ui.dialog.RequestWriteSettingDialog
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
@@ -150,7 +151,45 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
             }
         }
     }
+    private fun getLanguageName(): String {
+        when (SharedPreferenceUtils.languageCode) {
+            "en" -> {
+                return getString(R.string.language_english)
+            }
+            "vi" -> {
+                return getString(R.string.language_vietnamese)
+            }
+            "de" -> {
+                return getString(R.string.language_germany)
+            }
+            "fr" -> {
+                return getString(R.string.language_france)
+            }
+            "es" -> {
+                return getString(R.string.language_spain)
+            }
 
+            "ko" -> {
+                return getString(R.string.language_korean)
+            }
+            "hi" -> {
+                return getString(R.string.language_hindi)
+            }
+            "lr" -> {
+                return getString(R.string.language_liberia)
+            }
+            "it" -> {
+                return getString(R.string.language_italian)
+            }
+            "ja" -> {
+                return getString(R.string.language_japan)
+            }
+            "gr" -> {
+                return getString(R.string.language_greece)
+            }
+            else -> return getString(R.string.language_english)
+        }
+    }
     override fun handlerBackPressed() {
         super.handlerBackPressed()
         closeFragment(this)

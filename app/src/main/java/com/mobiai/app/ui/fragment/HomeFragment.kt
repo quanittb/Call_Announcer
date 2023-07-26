@@ -30,13 +30,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             addFragment(SettingFragment.instance())
         }
 
-        permissionSms()
+        //permissionSms()
       //  permissionDefault()
     }
 
     private fun permissionSms(){
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.READ_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.RECEIVE_SMS), 111)
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(android.Manifest.permission.READ_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.RECEIVE_SMS), 111)
         }
 
 

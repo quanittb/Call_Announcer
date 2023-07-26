@@ -1,11 +1,17 @@
 package com.mobiai.app.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
 import com.mobiai.R
 import com.mobiai.app.ui.dialog.TurnOnDialog
+import com.mobiai.app.ultils.IsTurnOnCall
+import com.mobiai.app.ultils.IsTurnOnSms
+import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -51,11 +57,34 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         binding.ivToggle6.setOnClickListener {
             changeToggle(binding.ivToggle6)
         }
+        handlerEvent()
     }
 
     private fun turnOn(){
         if (!SharedPreferenceUtils.isTurnOnSms){
-            showDialogTurnOn()
+            val permissions = arrayOf(
+                Manifest.permission.READ_SMS,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.RECEIVE_SMS,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.RECORD_AUDIO
+            )
+
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Quyền không được cấp, xử lý tương ứng
+                    addFragment(SmsPermisionFragment.instance())
+                    return
+                }
+            }
+            // full permission
+            disableView(true)
+            changeAllToggle(true)
+            //showDialogTurnOn()
         }
         else{
             disableView(false)
@@ -63,6 +92,16 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
     }
 
+    private fun handlerEvent() {
+        addDispose(listenEvent({
+            when (it) {
+                is IsTurnOnSms -> {
+                    disableView(true)
+                    changeAllToggle(true)
+                }
+            }
+        }))
+    }
 
     private fun changeAllToggle(boolean: Boolean){
         if (boolean){

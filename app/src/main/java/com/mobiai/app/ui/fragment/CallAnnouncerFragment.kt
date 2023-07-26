@@ -1,11 +1,16 @@
 package com.mobiai.app.ui.fragment
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.app.ActivityCompat
 import com.mobiai.R
 import com.mobiai.app.ui.dialog.TurnOnDialog
+import com.mobiai.app.ultils.IsTurnOnCall
+import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -19,9 +24,12 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             return newInstance(CallAnnouncerFragment::class.java)
         }
     }
+    private var isFlashAvailable = false
 
     override fun initView() {
         checkStatus()
+        isFlashAvailable =
+            requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -41,6 +49,12 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             changeToggle(binding.ivToggle3)
         }
         binding.ivToggle4.setOnClickListener {
+           /* if (isFlashAvailable){
+                changeToggle(binding.ivToggle4)
+            }
+            else{
+
+            }*/
             changeToggle(binding.ivToggle4)
         }
 
@@ -51,8 +65,19 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         binding.ivToggle6.setOnClickListener {
             changeToggle(binding.ivToggle6)
         }
+        handlerEvent()
     }
 
+    private fun handlerEvent() {
+        addDispose(listenEvent({
+            when (it) {
+                is IsTurnOnCall -> {
+                    disableView(true)
+                    changeAllToggle(true)
+                }
+            }
+        }))
+    }
     private fun checkStatus(){
         if (SharedPreferenceUtils.isTurnOnCall){
             disableView(true)
@@ -70,7 +95,27 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
 
     private fun turnOn() {
         if (!SharedPreferenceUtils.isTurnOnCall) {
-            showDialogTurnOn()
+            val permissions = arrayOf(
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.RECORD_AUDIO
+            )
+
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Quyền không được cấp, xử lý tương ứng
+                    addFragment(CallPermisionFragment.instance())
+                    return
+                }
+            }
+            // full permission
+            disableView(true)
+            changeAllToggle(true)
+
         } else {
             disableView(false)
             changeAllToggle(false)
@@ -360,7 +405,6 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             )
         }
     }
-
     private fun showDialogTurnOn(){
        val turnOnDialog = TurnOnDialog(requireContext()){
            disableView(true)
