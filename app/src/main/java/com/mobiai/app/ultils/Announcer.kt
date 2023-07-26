@@ -37,7 +37,7 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
         tts = TextToSpeech(context, this)
     }
 
-    fun readText(text: String, params: Bundle) {
+    fun readText(text: String, params: Bundle?) {
         var audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(

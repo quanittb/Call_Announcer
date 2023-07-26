@@ -1,5 +1,7 @@
 package com.mobiai.base.basecode.ui.fragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -93,6 +95,13 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
         transaction.commit()
     }
 
+    fun gotoSetting() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri = Uri.fromParts("package", requireContext().packageName, null)
+        intent.data = uri
+        startActivity(intent)
+        isGoToSetting = true
+    }
 
     fun<T> runBackground(action: () -> T, onSuccess: (result: T) -> Unit = {}, onError: (t: Throwable) -> Unit = {})  {
         (activity as BaseActivity<*>).runBackground(action, onSuccess, onError)

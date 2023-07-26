@@ -6,10 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.ContactsContract
+import android.speech.tts.TextToSpeech
 import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
+import com.mobiai.app.ultils.Announcer
 
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
@@ -45,6 +48,11 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         cursor?.close()
                     }
                     Log.d("TAG", "onReceive: $smsMessagebody ")
+                  /*  val anc = context?.let { Announcer(it) }
+                    if (context != null) {
+                        anc?.initTTS(context)
+                    }
+                    smsMessagebody?.let { anc?.tts?.speak(smsMessagebody,TextToSpeech.QUEUE_FLUSH,null,null) }*/
                 }
             } catch (e: Exception) {
                 Log.d("Exception caught", e.message!!)

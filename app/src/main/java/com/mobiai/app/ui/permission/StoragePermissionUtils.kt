@@ -16,122 +16,33 @@ object StoragePermissionUtils {
     /**
      *  check read_permission to access media files that other apps create
      */
-    fun isReadStorageGranted(context: Context) : Boolean{
-        // android 13 or higher
-        return if (CurrentAPI.isApi33orHigher()){
-            PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
-            )
-
-        }else {
-            //below android 13
-            PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-            )
-        }
+    fun requestPhonePermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.READ_PHONE_STATE),
+            resultLauncher
+        )
     }
 
-    /**
-     * declare read_permission to access media files that other apps create
-     */
-    fun requestReadStoragePermission( resultLauncher: ActivityResultLauncher<String>){
-        if (CurrentAPI.isApi33orHigher()) {
-            //  android 13 or higher
-            PermissionUtils.requestPermission(
-                (Manifest.permission.READ_MEDIA_AUDIO),
-                resultLauncher
-            )
-        }else{
-            //  android 12 or lower
-            PermissionUtils.requestPermission(
-                (Manifest.permission.READ_EXTERNAL_STORAGE),
-                resultLauncher
-            )
-        }
-
+    fun requestSmsPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(  Manifest.permission.READ_SMS,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.RECEIVE_SMS),
+            resultLauncher
+        )
     }
 
-
-    /**
-     * in android 9 or lower, app must have write_permission to modify media files
-     */
-    fun isWriteStorageGranted(context: Any?): Boolean{
-
-        return if (CurrentAPI.isApi33orHigher()){
-            (PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
-            ))
-
-        }else {
-            (PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            ))
-        }
-
+    fun requestAudioPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.RECORD_AUDIO),
+            resultLauncher
+        )
     }
 
-    /**
-     * request write_permission in android 9 or lower to modify media file
-     */
-    fun requestWriteStoragePermission(resultLauncher: ActivityResultLauncher<String>){
-
-        if (CurrentAPI.isApi33orHigher()) {
-            //  android 13 or higher
-            PermissionUtils.requestPermission(
-                (Manifest.permission.READ_MEDIA_AUDIO),
-                resultLauncher
-            )
-        }else{
-            //  android 12 or lower
-            PermissionUtils.requestPermission(
-                (Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                resultLauncher
-            )
-        }
-
-    }
-
-    fun isHasStoragePermission(context: Context) : Boolean{
-        // android 13 or higher
-        return if (CurrentAPI.isApi33orHigher()){
-            PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.READ_MEDIA_AUDIO)
-            )
-
-        }else {
-            //below android 13
-            PermissionUtils.isPermissionGrandted(
-                context,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            )
-        }
-    }
-    fun requestStoragePermission(resultLauncher: ActivityResultLauncher<Array<String>>){
-        if (CurrentAPI.isApi33orHigher()) {
-            //  android 13 or higher
-            PermissionUtils.requestMultiplePermission(
-                (arrayOf(Manifest.permission.READ_MEDIA_AUDIO)),
-                resultLauncher
-            )
-        }else{
-            //  android 12 or lower
-            PermissionUtils.requestMultiplePermission(
-                (arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)),
-                resultLauncher
-            )
-        }
-
-    }
-
-    fun goToSetting(context: Context){
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val  uri = Uri.fromParts("package", context.packageName, null)
-        intent.data = uri
-        context.startActivity(intent)
+    fun requestContactPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            resultLauncher
+        )
     }
 }

@@ -67,10 +67,22 @@
     <string name="in_order_to_use_this_app_we_need_your_permission_to_modify_some_system_settings_on_your_device">In order to use this app, we need your permission to modify some system settings on your device</string>
     <string name="deny">Deny</string>
     <string name="later">Later</string>
-    <string name="battery_announcer">Battery announcer</string>
-    <string name="speaking_speed">Speaking speed</string>
+    <string name="we_need_the_following_permissions_to_work_properly">We need the following permissions to work properly</string>
+    <string name="phone">Phone</string>
+    <string name="to_detect_incoming_calls">To detect incoming calls</string>
+    <string name="contacts">Contacts</string>
+    <string name="required_for_contacts_notification">Required for contacts notification</string>
+    <string name="audio_recorder">Audio recorder</string>
+    <string name="required_for_call">Required for call</string>
+    <string name="we_need_some_permissions">We need some permissions</string>
+    <string name="to_work_properly_we_need_some_permissions_please_go_to_settings_and_give_us_permission">to work properly we need some permissions, please go to settings and give us permission</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="read_messages_when_someone_sends_them">Read messages when someone sends them</string>
+    <string name="sms">SMS</string>
     <string name="volume_settings">Volume settings</string>
     <string name="set_volume">Set volume</string>
+    <string name="speaking_speed">Speaking speed</string>
+    <string name="battery_announcer">Battery announcer</string>
     <string name="other">Other</string>
     <string name="set_battery_threshold_for_notifications">Set battery threshold for notifications</string>
 
