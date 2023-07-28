@@ -95,7 +95,7 @@ abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
         imm.hideSoftInputFromWindow(window.decorView.rootView.windowToken, 0)
     }
 
-    fun handleBackpress() {
+    open fun handleBackpress() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)

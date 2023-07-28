@@ -3,6 +3,8 @@ package com.mobiai.app.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import com.ads.control.admob.AppOpenManager
 import com.apero.inappupdate.AppUpdate
 import com.apero.inappupdate.AppUpdateManager
@@ -55,7 +57,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         AppUpdateManager.getInstance(this).checkNewAppVersionState(this)
 
     }
+     override fun handleBackpress() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStackImmediate();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent);
+        }
 
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        handleBackpress()
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

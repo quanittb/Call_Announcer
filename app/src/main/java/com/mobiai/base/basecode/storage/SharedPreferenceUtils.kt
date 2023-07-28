@@ -44,7 +44,7 @@ object SharedPreferenceUtils {
         set(value) = App.instanceSharePreference.setValue(LANGUAGE, value)
 
     var isCompleteOnboarding : Boolean
-        get() =
+        get() = if (BuildConfig.DEBUG) false else
                App.instanceSharePreference.getValueBool(IS_COMPLETE_ONBOARDING, false)
         set(value) = App.instanceSharePreference.setValueBool(IS_COMPLETE_ONBOARDING, value)
 

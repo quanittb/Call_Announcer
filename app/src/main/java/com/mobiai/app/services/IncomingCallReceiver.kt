@@ -13,8 +13,10 @@ import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
 import com.mobiai.app.ultils.Announcer
+import com.mobiai.app.ultils.ContactInfomation
 import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 class IncomingCallReceiver : BroadcastReceiver() {
@@ -30,20 +32,20 @@ class IncomingCallReceiver : BroadcastReceiver() {
         audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         beforeMode = audioManager.ringerMode
-        announcer = context?.let { Announcer(it) }!!
-        announcer?.initTTS(context)
-        val flashlightHelper = context?.let { FlashlightHelper.getInstance(it) }
+        announcer = Announcer(context)
+        announcer.initTTS(context)
+        val flashlightHelper = context.let { FlashlightHelper.getInstance(it) }
         SharedPreferenceUtils.currentMusic =
             audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         SharedPreferenceUtils.currentRing =
             audioManager.getStreamVolume(AudioManager.STREAM_RING)
-        var ratioMusic =
+        val ratioMusic =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
         var speechVolume =
             Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
         var ratioRing =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
-        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
+        volumeRing = (SharedPreferenceUtils.volumeRing.toFloat() / ratioRing).roundToInt()
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, speechVolume, 0
         )
@@ -57,11 +59,12 @@ class IncomingCallReceiver : BroadcastReceiver() {
             val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
             val extras = intent.extras
             if (extras != null) {
-                val state = extras.getString(TelephonyManager.EXTRA_STATE)
-                when (state) {
+                when (extras.getString(TelephonyManager.EXTRA_STATE)) {
                     TelephonyManager.EXTRA_STATE_RINGING -> {
+                        Log.d("TAG", "incomingNumber: ${ContactInfomation.getContactInfo(context,incomingNumber)} --")
+
                         if (SharedPreferenceUtils.isTurnOnCall) {
-                            if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper?.blinkFlash(
+                            if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper.blinkFlash(
                                 150
                             )
                             if (announcer.getBatteryPercentage(context) >= SharedPreferenceUtils.batteryMin) {
@@ -74,16 +77,16 @@ class IncomingCallReceiver : BroadcastReceiver() {
 
                     TelephonyManager.EXTRA_STATE_IDLE -> {
                         setVolume()
-                        flashlightHelper?.stopBlink()
-                        flashlightHelper?.stopFlash()
+                        flashlightHelper.stopBlink()
+                        flashlightHelper.stopFlash()
                         announcer.tts?.stop()
                         announcer.tts?.shutdown()
 
                     }
                     TelephonyManager.EXTRA_STATE_OFFHOOK -> {
                         setVolume()
-                        flashlightHelper?.stopBlink()
-                        flashlightHelper?.stopFlash()
+                        flashlightHelper.stopBlink()
+                        flashlightHelper.stopFlash()
                         announcer.tts?.stop()
                         announcer.tts?.shutdown()
                     }
