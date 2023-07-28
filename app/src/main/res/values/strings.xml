@@ -85,5 +85,7 @@
     <string name="battery_announcer">Battery announcer</string>
     <string name="other">Other</string>
     <string name="set_battery_threshold_for_notifications">Set battery threshold for notifications</string>
+    <string name="permission">Permission</string>
+    <string name="you_need_camera_permission_to_use_this_feature">You need camera permission to use this feature</string>
 
 </resources>

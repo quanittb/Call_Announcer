@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/change_default_dialer"
+                android:text="@string/permission"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:gravity="center"
                 android:layout_marginHorizontal="@dimen/_10sdp"
@@ -35,7 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/you_are_required_to_set_call_announcer_as_default_dialer_to_announce_caller_name_and_manage_calls_to_work_properly"
+                android:text="@string/you_need_camera_permission_to_use_this_feature"
                 android:gravity="center"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:textColor="#434E58"

@@ -5,17 +5,20 @@ import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
+import com.ads.control.admob.AppOpenManager
 import com.mobiai.R
-import com.mobiai.app.ui.dialog.TurnOnDialog
-import com.mobiai.app.ultils.IsTurnOnCall
+import com.mobiai.app.ui.dialog.GotosettingDialog
+import com.mobiai.app.ui.dialog.TurnOnFlashDialog
 import com.mobiai.app.ultils.IsTurnOnSms
 import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
+import com.mobiai.base_storage.permission.StoragePermissionUtils
 import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
 class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
@@ -25,9 +28,16 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             return newInstance(SmsAnnouncerFragment::class.java)
         }
     }
+    private var isFlashAvailable = false
+    private var goToSettingDialog: GotosettingDialog? = null
 
     override fun initView() {
         checkStatus()
+
+        isFlashAvailable =
+            requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+
+        checkPermission()
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -47,7 +57,22 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             changeToggle(binding.ivToggle3)
         }
         binding.ivToggle4.setOnClickListener {
-            changeToggle(binding.ivToggle4)
+            if (isFlashAvailable){
+                changeToggle(binding.ivToggle4)
+            }
+            else{
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ){
+                    showDialogTurnOn()
+
+                }
+                else{
+                    changeToggle(binding.ivToggle4)
+                }
+            }
         }
 
         binding.ivToggle5.setOnClickListener {
@@ -59,7 +84,29 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
         handlerEvent()
     }
-
+    private val requestMultipleCameraPermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.all { it.value }
+        if (allGranted) {
+            changeToggle(binding.ivToggle4)
+        } else {
+            showGotoSettingDialog()
+        }
+    }
+    private fun showGotoSettingDialog() {
+        if (goToSettingDialog == null) {
+            goToSettingDialog = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                gotoSetting()
+            }
+        }
+        if (!goToSettingDialog!!.isShowing) {
+            goToSettingDialog!!.show()
+        }
+    }
     private fun turnOn(){
         if (!SharedPreferenceUtils.isTurnOnSms){
             val permissions = arrayOf(
@@ -342,17 +389,73 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         }
     }
+    private fun changeOffToggle(view: ImageView){
+        view.setImageDrawable(
+            AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.ic_togle_off
+            )
+        )
+    }
+    private fun checkPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.READ_SMS,
+            Manifest.permission.SEND_SMS,
+            Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA
+        )
+        for (permission in permissions) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
+                    SharedPreferenceUtils.isTurnOnSms = false
+                    binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
+                    binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+                }
 
-    private fun showDialogTurnOn(){
-        val turnOnDialog = TurnOnDialog(requireContext()){
-            disableView(true)
-            changeAllToggle(true)
+                if (permission == Manifest.permission.READ_CONTACTS){
+                    SharedPreferenceUtils.isUnknownNumberSms = false
+                    SharedPreferenceUtils.isReadNameSms = false
+                    changeOffToggle(binding.ivToggle5)
+                    changeOffToggle(binding.ivToggle6)
+                }
+                if (permission == Manifest.permission.RECORD_AUDIO){
+                    SharedPreferenceUtils.isTurnOnSmsNormal = false
+                    SharedPreferenceUtils.isTurnOnSmsVibrate = false
+                    SharedPreferenceUtils.isTurnOnSmsSilent = false
+
+                    changeOffToggle(binding.ivToggle1)
+                    changeOffToggle(binding.ivToggle2)
+                    changeOffToggle(binding.ivToggle3)
+
+                }
+                if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
+                {
+                    SharedPreferenceUtils.isTurnOnFlashSms = false
+                    changeOffToggle(binding.ivToggle4)
+                }
+            }
         }
-        turnOnDialog.show()
+    }
+    private fun showDialogTurnOn(){
+        val turnOnFlashDialog = TurnOnFlashDialog(requireContext()){
+            StoragePermissionUtils.requestCameraPermission(requestMultipleCameraPermissionsLauncher)
+        }
+        turnOnFlashDialog.show()
     }
     override fun handlerBackPressed() {
         super.handlerBackPressed()
         closeFragment(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPermission()
     }
 
     override fun getBinding(

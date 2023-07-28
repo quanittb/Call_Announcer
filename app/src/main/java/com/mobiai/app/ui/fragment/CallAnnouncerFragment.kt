@@ -5,16 +5,20 @@ import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
+import com.ads.control.admob.AppOpenManager
 import com.mobiai.R
-import com.mobiai.app.ui.dialog.TurnOnDialog
+import com.mobiai.app.ui.dialog.GotosettingDialog
+import com.mobiai.app.ui.dialog.TurnOnFlashDialog
 import com.mobiai.app.ultils.IsTurnOnCall
 import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
+import com.mobiai.base_storage.permission.StoragePermissionUtils
 import com.mobiai.databinding.FragmentCallAnnouncerBinding
 
 class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
@@ -25,11 +29,14 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
     }
     private var isFlashAvailable = false
+    private var goToSettingDialog: GotosettingDialog? = null
 
     override fun initView() {
         checkStatus()
         isFlashAvailable =
             requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
+
+        checkPermission()
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -49,13 +56,21 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             changeToggle(binding.ivToggle3)
         }
         binding.ivToggle4.setOnClickListener {
-           /* if (isFlashAvailable){
+            if (isFlashAvailable){
                 changeToggle(binding.ivToggle4)
             }
             else{
-
-            }*/
-            changeToggle(binding.ivToggle4)
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.CAMERA
+                    ) != PackageManager.PERMISSION_GRANTED
+                ){
+                    showDialogTurnOn()
+                }
+                else{
+                    changeToggle(binding.ivToggle4)
+                }
+            }
         }
 
         binding.ivToggle5.setOnClickListener {
@@ -67,7 +82,80 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
         handlerEvent()
     }
+    private fun checkPermission() {
+        val permissions = arrayOf(
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA
+        )
+        for (permission in permissions) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (permission == Manifest.permission.READ_PHONE_STATE){
+                    SharedPreferenceUtils.isTurnOnCall = false
+                    binding.btnTurn.background =
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
+                    binding.btnTurn.setTextColor(resources.getColor(R.color.white))
+                }
+                if (permission == Manifest.permission.READ_CONTACTS){
+                    SharedPreferenceUtils.isUnknownNumber = false
+                    SharedPreferenceUtils.isReadName = false
+                    changeOffToggle(binding.ivToggle5)
+                    changeOffToggle(binding.ivToggle6)
+                }
+                if (permission == Manifest.permission.RECORD_AUDIO){
+                    SharedPreferenceUtils.isTurnOnModeNormal = false
+                    SharedPreferenceUtils.isTurnOnModeVibrate = false
+                    SharedPreferenceUtils.isTurnOnModeSilent = false
+                    changeOffToggle(binding.ivToggle1)
+                    changeOffToggle(binding.ivToggle2)
+                    changeOffToggle(binding.ivToggle3)
 
+                }
+                if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
+                {
+                    SharedPreferenceUtils.isTurnOnFlash = false
+                    changeOffToggle(binding.ivToggle4)
+                }
+            }
+        }
+    }
+
+    private fun changeOffToggle(view: ImageView){
+        view.setImageDrawable(
+            AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.ic_togle_off
+            )
+        )
+    }
+    private val requestMultipleCameraPermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.all { it.value }
+        if (allGranted) {
+            changeToggle(binding.ivToggle4)
+        } else {
+            showGotoSettingDialog()
+        }
+    }
+    private fun showGotoSettingDialog() {
+        if (goToSettingDialog == null) {
+            goToSettingDialog = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                gotoSetting()
+            }
+        }
+        if (!goToSettingDialog!!.isShowing) {
+            goToSettingDialog!!.show()
+        }
+    }
     private fun handlerEvent() {
         addDispose(listenEvent({
             when (it) {
@@ -91,6 +179,11 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkPermission()
     }
 
     private fun turnOn() {
@@ -406,11 +499,10 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
     }
     private fun showDialogTurnOn(){
-       val turnOnDialog = TurnOnDialog(requireContext()){
-           disableView(true)
-           changeAllToggle(true)
+       val turnOnFlashDialog = TurnOnFlashDialog(requireContext()){
+           StoragePermissionUtils.requestCameraPermission(requestMultipleCameraPermissionsLauncher)
        }
-        turnOnDialog.show()
+        turnOnFlashDialog.show()
     }
 
     override fun handlerBackPressed() {

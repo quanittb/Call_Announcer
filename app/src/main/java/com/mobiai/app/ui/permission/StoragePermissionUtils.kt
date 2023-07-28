@@ -22,7 +22,12 @@ object StoragePermissionUtils {
             resultLauncher
         )
     }
-
+    fun requestCameraPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.CAMERA),
+            resultLauncher
+        )
+    }
     fun requestSmsPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
         PermissionUtils.requestMultiplePermission(
             arrayOf(  Manifest.permission.READ_SMS,

@@ -4,7 +4,7 @@ import android.content.Context
 import com.mobiai.base.basecode.ui.dialog.BaseDialog
 import com.mobiai.databinding.DialogChangeTurnOnBinding
 
-class TurnOnDialog(context : Context, callback :  () -> Unit) :BaseDialog(context) {
+class TurnOnFlashDialog(context : Context, callback :  () -> Unit) :BaseDialog(context) {
     val binding = DialogChangeTurnOnBinding.inflate(layoutInflater)
 
     init {
