@@ -14,10 +14,10 @@ import com.mobiai.base.basecode.ui.activity.BaseActivity
 import com.mobiai.databinding.ActivityMainBinding
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
-    companion object{
-        fun startMain(context: Context, clearTask : Boolean ){
+    companion object {
+        fun startMain(context: Context, clearTask: Boolean) {
             val intent = Intent(context, MainActivity::class.java).apply {
-                if(clearTask){
+                if (clearTask) {
                     addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
@@ -26,6 +26,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
 
     }
+
     override fun getLayoutResourceId(): Int {
         return R.layout.activity_main
     }
@@ -38,12 +39,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             AppOpenManager.getInstance().disableAppResume()
         }
         attachFragment()
-        this.testModelDB.insertModelTest(ModelTestDB(null, "TEST_INSERT", System.currentTimeMillis()))
+        this.testModelDB.insertModelTest(
+            ModelTestDB(
+                null, "TEST_INSERT", System.currentTimeMillis()
+            )
+        )
     }
 
-    private fun attachFragment(){
+    private fun attachFragment() {
         addFragment(HomeFragment.instance())
     }
+
     override fun onResume() {
         super.onResume()
         AppUpdateManager.getInstance(this).checkNewAppVersionState(this)
@@ -57,7 +63,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (resultCode == Activity.RESULT_OK) {
                 AppOpenManager.getInstance().disableAppResume()
             } else {
-                if (AppUpdateManager.getInstance(this).getStyleUpdate() == AppUpdateManager.STYLE_FORCE_UPDATE) {
+                if (AppUpdateManager.getInstance(this)
+                        .getStyleUpdate() == AppUpdateManager.STYLE_FORCE_UPDATE
+                ) {
                     AppOpenManager.getInstance().disableAppResume()
                 } else {
                     AppOpenManager.getInstance().enableAppResume()
