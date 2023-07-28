@@ -2,10 +2,12 @@ package com.mobiai.app.ui.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +19,7 @@ import com.jaygoo.widget.RangeSeekBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mobiai.app.adapter.MyRingtoneAdapter
+import com.mobiai.app.ui.activity.LanguageActivity
 import com.mobiai.app.ui.dialog.RequestWriteSettingDialog
 import com.mobiai.app.ui.model.ItemDeviceRingtone
 import com.mobiai.app.ultils.AudioControllerRingtone
@@ -25,6 +28,7 @@ import com.mobiai.app.ultils.MyRingtoneManager
 import com.mobiai.app.ultils.MyRingtoneManager.setDefaultRingtone
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
+import com.mobiai.base.basecode.language.Language
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.databinding.FragmentSettingRingtoneBinding
@@ -62,6 +66,11 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
                 mediaPlayer?.release()
                 mediaPlayer = null
             }
+            else if (mediaPlayer!=null){
+                mediaPlayer?.stop()
+                mediaPlayer?.release()
+                mediaPlayer = null
+            }
             handlerBackPressed()
         }
         audioManager =
@@ -83,7 +92,8 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
                 SharedPreferenceUtils.volumeRing = round(leftValue).roundToInt()
                 var ratioRing =
                     (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-                var volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
+                var volumeRing =
+                    (SharedPreferenceUtils.volumeRing.toFloat() / ratioRing).roundToInt()
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_MUSIC, volumeRing, 0
                 )
@@ -97,7 +107,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
             }
 
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
-
 
             }
         })
@@ -127,13 +136,28 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     }
     private fun getDefaultRingtoneFromDevice() {
         listRingtones = arrayListOf()
+        var ringtoneSystem: ItemDeviceRingtone? = null
+        val position = 0
         showLoading()
         runBackground({
             MyRingtoneManager.getDeviceRingtone(requireContext())
         },{
             listRingtones.addAll(it)
+
+            for (ringtone in listRingtones) {
+                if (ringtone.isChoose){
+                    ringtoneSystem = ringtone
+                    break
+                }
+            }
+            if (ringtoneSystem != null) {
+                listRingtones.remove(ringtoneSystem)
+                listRingtones.add(0, ringtoneSystem!!)
+            }
+            listRingtones[position].isChoose = true
             initAdapter()
             hideLoading()
+
         },{
             t: Throwable ->
             Log.d("TAG", "getDefaultRingtoneFromDevice: ${t.message}")
@@ -147,6 +171,7 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     private fun initAdapter(){
         myRingtoneAdapter =  MyRingtoneAdapter(requireContext(), object : MyRingtoneAdapter.OnRingtoneClickListener{
             override fun onClickItemListener(item: ItemDeviceRingtone) {
+
                 playRingtone(item)
                 setDeviceRingtone(item)
             }
@@ -154,6 +179,12 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
         binding.rcvRingtone.layoutManager = LinearLayoutManager(requireContext())
         myRingtoneAdapter.setItems(listRingtones)
         binding.rcvRingtone.adapter = myRingtoneAdapter
+    }
+
+    private fun getDataRingtone() {
+        getDefaultRingtoneFromDevice()
+
+        initAdapter()
     }
 
     private fun setDeviceRingtone(ringtone: ItemDeviceRingtone) {
