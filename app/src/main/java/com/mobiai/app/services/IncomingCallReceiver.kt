@@ -1,24 +1,19 @@
-package com.mobiai.app.ultils
+package com.mobiai.app.services
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.AudioFocusRequest
 import android.media.AudioManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract
-import android.provider.ContactsContract.PhoneLookup.DISPLAY_NAME
 import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
-import android.util.Log
-import android.widget.Toast
+import com.mobiai.app.ultils.Announcer
+import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
-import java.text.DecimalFormat
 import kotlin.properties.Delegates
 
 class IncomingCallReceiver : BroadcastReceiver() {
@@ -61,7 +56,6 @@ class IncomingCallReceiver : BroadcastReceiver() {
             SharedPreferenceUtils.speedSpeak.toFloat() / 20.toFloat()
         announcer.tts?.setSpeechRate(formattedSpeechNumber)
         if (intent?.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
-
             val extras = intent.extras
             if (extras != null) {
                 val state = extras.getString(TelephonyManager.EXTRA_STATE)
@@ -88,7 +82,6 @@ class IncomingCallReceiver : BroadcastReceiver() {
                         announcer.tts?.shutdown()
 
                     }
-
                     TelephonyManager.EXTRA_STATE_OFFHOOK -> {
                         setVolume()
                         flashlightHelper?.stopBlink()

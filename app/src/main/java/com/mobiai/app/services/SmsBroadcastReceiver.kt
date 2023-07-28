@@ -92,13 +92,13 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         } else {
                             null
                         }
-                        Log.d("TAG", "onReceivename: $name")
+                        Log.d("SMSBroadcast", "onReceivename: $name")
                         cursor?.close()
                     }
-                    Log.d("TAG", "onReceive: $smsMessagebody ")
+                    Log.d("SMSBroadcast", "onReceiveContent: $smsMessagebody ")
 
-                    if (SharedPreferenceUtils.isTurnOnCall) {
-                        if (SharedPreferenceUtils.isTurnOnFlash) {
+                    if (SharedPreferenceUtils.isTurnOnSms) {
+                        if (SharedPreferenceUtils.isTurnOnFlashSms) {
                             flashlightHelper?.blinkFlash(
                                 150
                             )
@@ -108,9 +108,9 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                             }, 500)
                         }
                         if (announcer.getBatteryPercentage(context!!) >= SharedPreferenceUtils.batteryMin) {
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) readText()
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) readText()
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) readText()
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) readText()
                         }
 
                     }
@@ -131,29 +131,30 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         handler.postDelayed(
             {
-                if (!SharedPreferenceUtils.isReadNameSms && !SharedPreferenceUtils.isUnknownNumberSms) announcer.tts?.speak(
-                    "Có tin nhắn với nội dung $smsMessagebody",
-                    TextToSpeech.QUEUE_FLUSH,
-                    params,
-                    "read"
-                )
-                else if (SharedPreferenceUtils.isReadNameSms && name != null) announcer.tts?.speak(
-                    "Có tin nhắn từ  $name với nội dung $smsMessagebody",
-                    TextToSpeech.QUEUE_FLUSH,
-                    params,
-                    "read"
-                )
+                if (!SharedPreferenceUtils.isReadNameSms && !SharedPreferenceUtils.isUnknownNumberSms)
+                    announcer.tts?.speak(
+                        "Có tin nhắn với nội dung $smsMessagebody",
+                        TextToSpeech.QUEUE_FLUSH,
+                        params,
+                        "read"
+                    )
+                else if (SharedPreferenceUtils.isReadNameSms && name != null)
+                    announcer.tts?.speak(
+                        "Có tin nhắn từ  $name với nội dung $smsMessagebody",
+                        TextToSpeech.QUEUE_FLUSH,
+                        params,
+                        "read"
+                    )
                 else {
                     var formattedNumber = formatPhoneNumber(senderName.toString())
                     announcer.tts?.speak(
-
                         "Có tin nhắn từ số điện thoại $formattedNumber với nội dung $smsMessagebody",
                         TextToSpeech.QUEUE_FLUSH,
                         params,
                         "read"
                     )
                 }
-
+                Log.e("SMSBroadcast", "đã xong")
                 handler.postDelayed({
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         if (beforeMode != AudioManager.RINGER_MODE_SILENT && beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
@@ -169,8 +170,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
             }, 200
         )
         announcer.tts?.setOnUtteranceCompletedListener {
-                setVolume()
-            }
+            setVolume()
+        }
 
     }
 
