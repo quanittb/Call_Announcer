@@ -14,6 +14,7 @@ import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
 import android.text.PrecomputedText.Params
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
 import com.google.android.gms.common.util.SharedPreferencesUtils
@@ -23,10 +24,11 @@ import java.util.Locale
 class Announcer(context: Context) : TextToSpeech.OnInitListener {
     var tts: TextToSpeech? = null
     var context = context
-    private var selectedLanguage: Locale = Locale.getDefault()
+    private var countryLanguage = Locale(SharedPreferenceUtils.languageCode).country.toUpperCase()
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            val result = tts!!.setLanguage(selectedLanguage)
+            val result = tts!!.setLanguage(Locale.getDefault())
+            Log.d("onInit", "onInit: $countryLanguage")
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 openTextToSpeechSettings(this.context)
             }
