@@ -88,4 +88,7 @@
     <string name="permission">Permission</string>
     <string name="you_need_camera_permission_to_use_this_feature">You need camera permission to use this feature</string>
 
+    <string name="phone_number">Phone number </string>
+    <string name="incoming_call">Incoming call</string>
+    <string name="you_have_an_incoming_call">You have an incoming call</string>
 </resources>

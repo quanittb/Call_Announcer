@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
+import android.util.Log
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -40,7 +41,6 @@ class IncomingCallReceiver : BroadcastReceiver() {
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
         var speechVolume =
             Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
-
         var ratioRing =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
         volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
@@ -52,10 +52,9 @@ class IncomingCallReceiver : BroadcastReceiver() {
                 AudioManager.STREAM_RING, volumeRing, 0
             )
         }
-        val formattedSpeechNumber =
-            SharedPreferenceUtils.speedSpeak.toFloat() / 20.toFloat()
-        announcer.tts?.setSpeechRate(formattedSpeechNumber)
+        announcer.tts?.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
         if (intent?.action == TelephonyManager.ACTION_PHONE_STATE_CHANGED) {
+            val incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
             val extras = intent.extras
             if (extras != null) {
                 val state = extras.getString(TelephonyManager.EXTRA_STATE)
@@ -70,7 +69,6 @@ class IncomingCallReceiver : BroadcastReceiver() {
                                 else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) readText()
                                 else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) readText()
                             }
-
                         }
                     }
 

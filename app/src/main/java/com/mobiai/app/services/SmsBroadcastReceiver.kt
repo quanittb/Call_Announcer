@@ -15,6 +15,8 @@ import android.speech.tts.TextToSpeech
 import android.telephony.SmsMessage
 import android.util.Log
 import android.widget.Toast
+import com.mobiai.app.ui.activity.MainActivity
+import com.mobiai.app.ui.fragment.HomeFragment
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -22,7 +24,7 @@ import kotlin.properties.Delegates
 
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
-    private var smsMessagebody: String? = null
+    private var smsMessagebody: String? = ""
     private var senderName: String? = null
     private var name: String? = null
     private lateinit var audioManager: AudioManager
@@ -35,7 +37,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     @SuppressLint("Range")
     override fun onReceive(context: Context?, intent: Intent) {
         announcer = context?.let { Announcer(it) }!!
-        announcer?.initTTS(context)
+//        announcer?.initTTS(context)
         audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         beforeMode = audioManager.ringerMode
@@ -73,7 +75,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                                 pdus[i] as ByteArray
                             )
                         //get message
-                        smsMessagebody = smsMessage.messageBody
+                        smsMessagebody += smsMessage.messageBody
 
                         senderName = smsMessage.originatingAddress
                         val uri = Uri.withAppendedPath(
@@ -116,7 +118,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                     }
                 }
             } catch (e: Exception) {
-                Log.d("Exception caught", e.message!!)
+                Log.d("Exception caught","${e.message}")
             }
         }
     }
