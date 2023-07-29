@@ -14,13 +14,9 @@ import android.provider.ContactsContract
 import android.speech.tts.TextToSpeech
 import android.telephony.SmsMessage
 import android.util.Log
-import android.widget.Toast
-import com.mobiai.app.ui.activity.MainActivity
-import com.mobiai.app.ui.fragment.HomeFragment
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
-import kotlin.properties.Delegates
 
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
@@ -30,37 +26,18 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private lateinit var audioManager: AudioManager
     private lateinit var announcer: Announcer
     private val handler = Handler(Looper.getMainLooper())
-    private var volumeRing: Int = 0
 
-    private var beforeMode by Delegates.notNull<Int>()
 
     @SuppressLint("Range")
     override fun onReceive(context: Context?, intent: Intent) {
-        announcer = context?.let { Announcer(it) }!!
-//        announcer?.initTTS(context)
         audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        beforeMode = audioManager.ringerMode
+        SharedPreferenceUtils.currentMusic =
+            audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        val flashlightHelper = context?.let { FlashlightHelper.getInstance(it) }
-        SharedPreferenceUtils.currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        SharedPreferenceUtils.currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
-        var ratioMusic =
-            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-        var speechVolume = Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
-
-        var ratioRing = (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
-        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC, speechVolume, 0
-        )
-        if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL) {
-            audioManager.setStreamVolume(
-                AudioManager.STREAM_RING, volumeRing, 0
-            )
-        }
-        val formattedSpeechNumber = SharedPreferenceUtils.speedSpeak.toFloat() / 20.toFloat()
-        announcer.tts?.setSpeechRate(formattedSpeechNumber)
+        announcer = context?.let { Announcer(it) }!!
+        val flashlightHelper = context?.let { FlashlightHelper(it) }
+        val serviceIntent = Intent(context, TextToSpeechSmsService::class.java)
 
         if (intent.action.equals("android.provider.Telephony.SMS_RECEIVED")) {
             val bundle = intent.extras
@@ -98,7 +75,12 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         cursor?.close()
                     }
                     Log.d("SMSBroadcast", "onReceiveContent: $smsMessagebody ")
-
+                    serviceIntent.putExtra(
+                        "senderName",
+                        "${senderName?.let { formatPhoneNumber(it) }}"
+                    )
+                    serviceIntent.putExtra("name", "$name")
+                    serviceIntent.putExtra("smsMessagebody", "$smsMessagebody")
                     if (SharedPreferenceUtils.isTurnOnSms) {
                         if (SharedPreferenceUtils.isTurnOnFlashSms) {
                             flashlightHelper?.blinkFlash(
@@ -109,16 +91,22 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                                 flashlightHelper?.stopFlash()
                             }, 500)
                         }
-                        if (announcer.getBatteryPercentage(context!!) >= SharedPreferenceUtils.batteryMin) {
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) readText()
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) readText()
+                        if (announcer.getBatteryPercentage(context) >= SharedPreferenceUtils.batteryMin) {
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) context.startService(
+                                serviceIntent
+                            )
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) context.startService(
+                                serviceIntent
+                            )
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) context.startService(
+                                serviceIntent
+                            )
                         }
 
                     }
                 }
             } catch (e: Exception) {
-                Log.d("Exception caught","${e.message}")
+                Log.d("Exception caught", "${e.message}")
             }
         }
     }
@@ -127,66 +115,5 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         return phoneNumber.replace("", "  ")
     }
 
-    fun readText() {
 
-        val params = Bundle()
-        params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
-        handler.postDelayed(
-            {
-                if (!SharedPreferenceUtils.isReadNameSms && !SharedPreferenceUtils.isUnknownNumberSms)
-                    announcer.tts?.speak(
-                        "Có tin nhắn với nội dung $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
-                else if (SharedPreferenceUtils.isReadNameSms && name != null)
-                    announcer.tts?.speak(
-                        "Có tin nhắn từ  $name với nội dung $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
-                else {
-                    var formattedNumber = formatPhoneNumber(senderName.toString())
-                    announcer.tts?.speak(
-                        "Có tin nhắn từ số điện thoại $formattedNumber với nội dung $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
-                }
-                Log.e("SMSBroadcast", "đã xong")
-                handler.postDelayed({
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        if (beforeMode != AudioManager.RINGER_MODE_SILENT && beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
-                            audioManager.setStreamVolume(
-                                AudioManager.STREAM_RING,
-                                audioManager.getStreamMinVolume(AudioManager.STREAM_RING),
-                                0
-                            )
-                        }
-                    }
-                }, 1000)
-
-            }, 200
-        )
-        announcer.tts?.setOnUtteranceCompletedListener {
-            setVolume()
-        }
-
-    }
-
-    fun setVolume() {
-        handler.postDelayed({
-            audioManager.ringerMode = beforeMode
-            if (beforeMode != AudioManager.RINGER_MODE_VIBRATE && beforeMode != AudioManager.RINGER_MODE_SILENT) audioManager.setStreamVolume(
-                AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
-            )
-            audioManager.setStreamVolume(
-                AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
-            )
-        }, 1000)
-
-    }
 }

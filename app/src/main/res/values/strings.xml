@@ -91,4 +91,8 @@
     <string name="phone_number">Phone number </string>
     <string name="incoming_call">Incoming call</string>
     <string name="you_have_an_incoming_call">You have an incoming call</string>
+    <string name= "there_is_a_message_with_content" > There is a message with content</string>
+    <string name= "message_from" > Message from</string>
+    <string name= "with_content" > with content</string>
+
 </resources>
