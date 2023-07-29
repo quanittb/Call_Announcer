@@ -9,7 +9,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 open class BaseEvent
 class IsTurnOnCall(): BaseEvent()
 class IsTurnOnSms(): BaseEvent()
-
+class NetworkConnected(val isOn: Boolean) : BaseEvent()
 fun listenEvent(
     onSuccess: (e: BaseEvent) -> Unit,
     onError: (th: Throwable) -> Unit = {}

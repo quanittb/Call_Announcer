@@ -8,6 +8,8 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,7 +20,12 @@ import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ads.control.ads.AperoAd
+import com.ads.control.billing.AppPurchase
+import com.ads.control.funtion.AdCallback
+import com.mobiai.BuildConfig
 import com.mobiai.app.adapter.MyRingtoneAdapter
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.activity.LanguageActivity
 import com.mobiai.app.ui.dialog.RequestWriteSettingDialog
 import com.mobiai.app.ui.model.ItemDeviceRingtone
@@ -26,6 +33,9 @@ import com.mobiai.app.ultils.AudioControllerRingtone
 import com.mobiai.app.ultils.Constant
 import com.mobiai.app.ultils.MyRingtoneManager
 import com.mobiai.app.ultils.MyRingtoneManager.setDefaultRingtone
+import com.mobiai.app.ultils.NetWorkChecker
+import com.mobiai.app.ultils.NetworkConnected
+import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.language.Language
@@ -52,7 +62,54 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     private lateinit var audioManager: AudioManager
     private var mediaPlayer: MediaPlayer? = null
 
+    private var isBannerShowed: Boolean = false
+    private fun initAdsBanner() {
+        if (!AppPurchase.getInstance().isPurchased && AdsRemote.showBanner) {
+            AperoAd.getInstance().loadBannerFragment(
+                requireActivity(),
+                BuildConfig.banner,
+                binding.frAds,
+                object : AdCallback() {
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        isBannerShowed = true
+                    }
+
+                })
+        } else {
+            binding.frAds.gone()
+            binding.lineSpaceAds.gone()
+        }
+    }
+
+    private fun handlerEvent() {
+        addDispose(listenEvent({
+            when (it) {
+                is NetworkConnected -> {
+                    if (it.isOn) {
+                        binding.frAds.visible()
+                        binding.lineSpaceAds.visible()
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            if (isAdded && !isBannerShowed) {
+                                initAdsBanner()
+                            }
+                        }, 500)
+                    } else if (!isBannerShowed) {
+                        binding.frAds.gone()
+                        binding.lineSpaceAds.gone()
+                    }
+                }
+
+            }
+        }))
+    }
     override fun initView() {
+        if (NetWorkChecker.instance.isNetworkConnected(requireContext()) && !isBannerShowed) {
+            binding.frAds.visible()
+            binding.lineSpaceAds.visible()
+            initAdsBanner()
+        }
+        handlerEvent()
         getDefaultRingtoneFromDevice()
         audioController = AudioControllerRingtone(requireContext())
         binding.sbRingtoneVolume.setProgress(0f, 100f)

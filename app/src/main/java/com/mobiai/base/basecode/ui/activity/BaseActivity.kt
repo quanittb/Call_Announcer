@@ -21,7 +21,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.base.basecode.language.LanguageUtil
+import com.mobiai.base.basecode.ultility.RxBus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -150,10 +152,14 @@ abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
 
     protected open fun onNetworkAvailable() {
         Log.d(TAG, "-> onNetworkAvailable ")
+        RxBus.publish(NetworkConnected(true))
+
     }
 
     protected open fun onNetworkLost() {
         Log.d(TAG, "-> onNetworkLost ")
+        RxBus.publish(NetworkConnected(false))
+
     }
 
     override fun onResume() {

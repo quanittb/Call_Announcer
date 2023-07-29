@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "871197750668",
+    "project_id": "caller-name-announcer-mobileai",
+    "storage_bucket": "caller-name-announcer-mobileai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871197750668:android:afbc9a598344caf00ed2a9",
+        "android_client_info": {
+          "package_name": "com.callername.smsannouncer.calleridannounce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "871197750668-akihvab3fmncva9b7pmcdfq4fpd5jod6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQbNpeIhVDbvOfjD8kWQ6JcYxYzYYM9eQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "871197750668-akihvab3fmncva9b7pmcdfq4fpd5jod6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

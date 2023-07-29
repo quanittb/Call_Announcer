@@ -165,4 +165,17 @@
 
     </androidx.cardview.widget.CardView>
 
+    <FrameLayout
+        android:id="@+id/fl_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginHorizontal="@dimen/_10ssp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <include
+            android:id="@+id/include_ads_native"
+            layout="@layout/layout_loading_native_home" />
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

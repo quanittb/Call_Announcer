@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BaseProject</string>
+    <string name="app_name">Caller Name Announcer</string>
     <string name="this_action_can_contain_ad">This action can contain ad</string>
-    <string name="facebook_app_id">1234</string>
+    <string name="facebook_app_id">273871568578072</string>
     <string name="language_english" translatable="false">English</string>
     <string name="language_spain" translatable="false">Spanish</string>
     <string name="language_portugal" translatable="false">Portuguese</string>
@@ -17,6 +17,7 @@
     <string name="language_vietnamese" translatable="false">Vietnamese</string>
     <string name="language_china" translatable="false">中国人</string>
     <string name="select_languages">Select Language</string>
+    <string name="languages_first_open" translatable="false">Language</string>
     <string name="caller_announcer">Caller Announcer</string>
     <string name="sms_announcer">SMS Announcer</string>
     <string name="setting">Setting</string>
@@ -46,12 +47,13 @@
     <string name="_onboarding_3_description">bring you a great experience with interesting features</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
-    <string name="_get_started">Get started</string>
-    <string name="ringstone">Ringstone</string>
+    <string name="_get_started">Get Started</string>
+    <string name="ringstone">Ringtone</string>
     <string name="ringtone_volume">Ringtone volume</string>
     <string name="sound_in_the_device">Sound in the device</string>
     <string name="search">Search</string>
-    <string name="privacy_policy_and_terms_of_service">Privacy policy and Terms of service</string>
+    <string name="_terms_of_service">Terms of service</string>
+    <string name="_privacy_policy">Privacy policy</string>
     <string name="share">Share</string>
     <string name="selection_of_ringstones_in_your_library">Selection of ringstones in your library</string>
     <string name="language">Language</string>

@@ -17,7 +17,7 @@ class SplashActivity2(
     override val isShowAdsSplash: Boolean = AdsRemote.showAdsSplash,
     override val idAdsNormal: String = BuildConfig.inter_splash,
     override val typeShowAdsSplash: String = TypeLoadAds.SAMETIME,
-    override val idAdsHighFloor: String = BuildConfig.inter_splash_priority
+    override val idAdsHighFloor: String = ""
 ) : BaseSplashActivity2<ActivitySplashBinding>() {
     override fun openNextScreen() {
         if (SharedPreferenceUtils.languageCode == null) {

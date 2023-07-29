@@ -2,19 +2,35 @@ package com.mobiai.app.ui.fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.ads.control.admob.AppOpenManager
+import com.ads.control.ads.AperoAd
+import com.ads.control.ads.AperoAdCallback
+import com.ads.control.ads.wrapper.ApAdError
+import com.ads.control.ads.wrapper.ApNativeAd
+import com.ads.control.billing.AppPurchase
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.App
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
 import com.mobiai.app.ultils.IsTurnOnCall
+import com.mobiai.app.ultils.NetWorkChecker
+import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
+import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
@@ -31,7 +47,97 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     private var isFlashAvailable = false
     private var goToSettingDialog: GotosettingDialog? = null
 
+    private var isNativeAdsInit: Boolean = false
+    private fun initAdsNativeCall() {
+        if (!AppPurchase.getInstance().isPurchased
+            && AdsRemote.showNativeCall
+            && App.getStorageCommon()?.nativeAdCall?.value == null
+        ) {
+            AperoAd.getInstance().loadNativeAdResultCallback(
+                requireActivity(),
+                BuildConfig.native_call,
+                R.layout.layout_native_ads_call,
+                object : AperoAdCallback() {
+                    override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
+                        super.onNativeAdLoaded(nativeAd)
+                        App.getStorageCommon()?.nativeAdCall?.postValue(nativeAd)
+                        isNativeAdsInit = true
+                    }
+
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        isNativeAdsInit = true
+                    }
+
+                    override fun onAdFailedToLoad(adError: ApAdError?) {
+                        super.onAdFailedToLoad(adError)
+                        App.getStorageCommon()?.nativeAdCall?.postValue(null)
+                    }
+                }
+            )
+        } else {
+            App.getStorageCommon()?.nativeAdCall?.postValue(App.getStorageCommon()?.nativeAdCall?.value)
+            isNativeAdsInit = true
+
+        }
+    }
+
+    private fun showAdsCall() {
+        if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeCall) {
+            binding.flAds.gone()
+        } else {
+            App.getStorageCommon()?.nativeAdCall?.observe(this) {
+                if (it != null) {
+                    AperoAd.getInstance().populateNativeAdView(
+                        requireActivity(),
+                        it,
+                        binding.flAds,
+                        binding.includeAdsNative.shimmerContainerNative as ShimmerFrameLayout
+                    )
+                } else {
+                    binding.flAds.gone()
+                }
+            }
+        }
+    }
+
+
+    private fun handlerEvent() {
+        addDispose(listenEvent({
+            when (it) {
+                is IsTurnOnCall -> {
+                    disableView(true)
+                    changeAllToggle(true)
+                }
+                is NetworkConnected -> {
+                    if (it.isOn) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
+                                binding.flAds.visible()
+                            }
+                            if (isAdded){
+                                if (!isNativeAdsInit) {
+                                    initAdsNativeCall()
+                                }
+                            }
+                        }, 700)
+
+                    }else{
+                        if (!isNativeAdsInit){
+                            binding.flAds.gone()
+                        }
+                    }
+                }
+            }
+        }))
+    }
     override fun initView() {
+        if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
+            binding.flAds.gone()
+        }else{
+            initAdsNativeCall()
+        }
+        showAdsCall()
         checkStatus()
         isFlashAvailable =
             requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
@@ -156,16 +262,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             goToSettingDialog!!.show()
         }
     }
-    private fun handlerEvent() {
-        addDispose(listenEvent({
-            when (it) {
-                is IsTurnOnCall -> {
-                    disableView(true)
-                    changeAllToggle(true)
-                }
-            }
-        }))
-    }
+
     private fun checkStatus(){
         if (SharedPreferenceUtils.isTurnOnCall){
             disableView(true)
