@@ -101,7 +101,6 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
     }
 
-
     private fun handlerEvent() {
         addDispose(listenEvent({
             when (it) {
@@ -142,7 +141,9 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         isFlashAvailable =
             requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
 
-        checkPermission()
+        if (SharedPreferenceUtils.isTurnOnCall){
+            checkPermission()
+        }
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -190,8 +191,8 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
     private fun checkPermission() {
         val permissions = arrayOf(
-            Manifest.permission.READ_CONTACTS,
             Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
         )
@@ -204,29 +205,34 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                 if (permission == Manifest.permission.READ_PHONE_STATE){
                     SharedPreferenceUtils.isTurnOnCall = false
                     binding.btnTurn.background =
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
-                    binding.btnTurn.setTextColor(resources.getColor(R.color.white))
+                        AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
+                    binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+                    checkStatusResumeOff()
+                    return
                 }
-                if (permission == Manifest.permission.READ_CONTACTS){
-                    SharedPreferenceUtils.isUnknownNumber = false
-                    SharedPreferenceUtils.isReadName = false
-                    changeOffToggle(binding.ivToggle5)
-                    changeOffToggle(binding.ivToggle6)
-                }
-                if (permission == Manifest.permission.RECORD_AUDIO){
-                    SharedPreferenceUtils.isTurnOnModeNormal = false
-                    SharedPreferenceUtils.isTurnOnModeVibrate = false
-                    SharedPreferenceUtils.isTurnOnModeSilent = false
-                    changeOffToggle(binding.ivToggle1)
-                    changeOffToggle(binding.ivToggle2)
-                    changeOffToggle(binding.ivToggle3)
+                else{
+                    if (permission == Manifest.permission.READ_CONTACTS){
+                        SharedPreferenceUtils.isUnknownNumber = false
+                        SharedPreferenceUtils.isReadName = false
+                        changeOffToggle(binding.ivToggle5)
+                        changeOffToggle(binding.ivToggle6)
+                    }
+                    if (permission == Manifest.permission.RECORD_AUDIO){
+                        SharedPreferenceUtils.isTurnOnModeNormal = false
+                        SharedPreferenceUtils.isTurnOnModeVibrate = false
+                        SharedPreferenceUtils.isTurnOnModeSilent = false
+                        changeOffToggle(binding.ivToggle1)
+                        changeOffToggle(binding.ivToggle2)
+                        changeOffToggle(binding.ivToggle3)
 
+                    }
+                    if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
+                    {
+                        SharedPreferenceUtils.isTurnOnFlash = false
+                        changeOffToggle(binding.ivToggle4)
+                    }
                 }
-                if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
-                {
-                    SharedPreferenceUtils.isTurnOnFlash = false
-                    changeOffToggle(binding.ivToggle4)
-                }
+
             }
         }
     }
@@ -278,9 +284,20 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
     }
 
+    private fun checkStatusResumeOff(){
+        disableView(false)
+        binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+    }
     override fun onResume() {
         super.onResume()
-        checkPermission()
+        if (SharedPreferenceUtils.isTurnOnCall){
+            checkPermission()
+        }
     }
 
     private fun turnOn() {

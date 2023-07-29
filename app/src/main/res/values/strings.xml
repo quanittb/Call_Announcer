@@ -39,12 +39,12 @@
     <string name="allow">Allow</string>
     <string name="cancel">Cancel</string>
     <string name="device_ringtone">Device ringtone</string>
-    <string name="_onboarding_1_title">The best assistant for you</string>
+    <string name="_onboarding_1_title">Announce Caller name and SMS on your phone</string>
     <string name="_onboarding_2_title">Simple and modern interface</string>
-    <string name="_onboarding_3_title">The  best assistant for you</string>
-    <string name="_onboarding_1_description">Bringing you a pleasant experience with the best features</string>
+    <string name="_onboarding_3_title">The best assistant for you</string>
+    <string name="_onboarding_1_description">Call identify and SMS identify in any mode if you are physically busy</string>
     <string name="_onboarding_2_description">The interface is simple, modern and helps users to experience calling easily.</string>
-    <string name="_onboarding_3_description">bring you a great experience with interesting features</string>
+    <string name="_onboarding_3_description">Bring you a great experience with interesting features</string>
     <string name="next">Next</string>
     <string name="skip">Skip</string>
     <string name="_get_started">Get Started</string>
@@ -77,7 +77,7 @@
     <string name="audio_recorder">Audio recorder</string>
     <string name="required_for_call">Required for call</string>
     <string name="we_need_some_permissions">We need some permissions</string>
-    <string name="to_work_properly_we_need_some_permissions_please_go_to_settings_and_give_us_permission">to work properly we need some permissions, please go to settings and give us permission</string>
+    <string name="to_work_properly_we_need_some_permissions_please_go_to_settings_and_give_us_permission">To work properly we need some permissions, please go to settings and give us permission</string>
     <string name="go_to_settings">Go to settings</string>
     <string name="read_messages_when_someone_sends_them">Read messages when someone sends them</string>
     <string name="sms">SMS</string>
@@ -97,4 +97,5 @@
     <string name= "message_from" > Message from</string>
     <string name= "with_content" > with content</string>
 
+    <string name="to_make_a_type_specimen_book_it_has_survived_not_only_five_centuries_but_also_the_leap_into_electronic_typesetting_remaining_essentially_unchanged_it_was_popularised_in_the_1960s_with_the_release_of_letraset_sheets_containing_lorem_ipsum_passages_and_more_recently_with_desktop_publishing_software_like_aldus_pagemaker_including">to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including</string>
 </resources>

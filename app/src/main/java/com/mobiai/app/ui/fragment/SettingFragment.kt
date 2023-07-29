@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.ads.control.admob.AppOpenManager
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.mobiai.R
@@ -43,6 +44,7 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
 
         binding.lnRingtone.setOnSafeClickListener(500) {
             if (!Settings.System.canWrite(requireContext())) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
                 requestWriteSettingPermission(DEFAULT_WRITE_SETTING_CODE)
             }
             else{
