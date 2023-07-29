@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.mobiai",
+  "applicationId": "com.callername.smsannouncer.calleridannounce",
   "variantName": "appTestRelease",
   "elements": [
     {
@@ -13,7 +13,7 @@
       "attributes": [],
       "versionCode": 1,
       "versionName": "1.0",
-      "outputFile": "app-appTest-release.apk"
+      "outputFile": "CallerNameAnnouncer_v1- 1.0- Jul.29.2023-appTest-release.apk"
     }
   ],
   "elementType": "File"
