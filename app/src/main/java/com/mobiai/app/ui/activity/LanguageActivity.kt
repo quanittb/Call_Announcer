@@ -8,11 +8,10 @@ import android.util.Log
 import android.view.View
 import com.ads.control.ads.AperoAd
 import com.ads.control.billing.AppPurchase
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.adapter.LanguageAdapter
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.base.basecode.language.Language
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -45,11 +44,16 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     override fun getViewBinding(): ActivityLanguageBinding  = ActivityLanguageBinding.inflate(layoutInflater)
 
     override fun createView() {
+        showFullscreen(true)
         getDataLanguage()
         if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
-            initAds()
+            showAdsNativeLanguage()
             binding.imgBack.visibility = View.INVISIBLE
+            binding.tvTitle.text = resources.getString(R.string.languages_first_open)
+
+
         } else {
+            binding.tvTitle.text = resources.getString(R.string.language)
             binding.frAds.visibility = View.GONE
             binding.imgBack.visibility = View.VISIBLE
         }
@@ -63,8 +67,8 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
 
     }
 
-    private fun initAds() {
-        if (AppPurchase.getInstance().isPurchased) {
+    private fun showAdsNativeLanguage() {
+        if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeLanguage) {
             binding.frAds.visibility = View.GONE
         } else {
             App.getStorageCommon()?.nativeAdLanguage?.observe(this) {

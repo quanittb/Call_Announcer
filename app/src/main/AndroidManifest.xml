@@ -36,7 +36,7 @@
         tools:ignore="DataExtractionRules"
         tools:targetApi="31">
         <activity
-            android:name=".app.ui.activity.SplashActivity3"
+            android:name=".app.ui.activity.SplashActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
@@ -92,6 +92,11 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="26537e06c858cb9505de6350e2917c63" />
+
 
         <receiver
             android:name=".app.services.MyBroadcastReceiver"

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -10,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="top"
-        android:background="#D9D9D9"
+        android:background="@color/white"
         android:orientation="vertical"
         >
         <com.mobiai.base.basecode.ui.activity.onboarding.CustomViewPager
@@ -26,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
             android:background="@color/white"
             android:paddingRight="@dimen/_6sdp"
             android:paddingBottom="@dimen/_5sdp"
@@ -57,9 +58,8 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:paddingHorizontal="@dimen/_17sdp"
                 android:text="@string/next"
-                android:textColor="@color/color_button"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_3sdp"
+                android:gravity="center"
+                android:textColor="@color/bg_state_onboarding_text"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="@id/worm_dots_indicator"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,13 +93,13 @@
             android:id="@+id/fl_ads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <include
                 android:id="@+id/include_ads_native"
-                layout="@layout/ads_native_shimmer_language" />
+                layout="@layout/layout_loading_native_ads_onboarding" />
         </FrameLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

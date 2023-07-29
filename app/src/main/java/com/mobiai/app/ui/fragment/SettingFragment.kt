@@ -20,6 +20,8 @@ import kotlin.math.roundToInt
 
 class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
     companion object {
+        const val LINK_POLICY ="https://sites.google.com/view/caller-name-announcer-policy/home"
+        const val LINK_TERM ="https://sites.google.com/view/caller-name-announcer-tos/home"
         fun instance(): SettingFragment {
             return newInstance(SettingFragment::class.java)
         }
@@ -66,8 +68,18 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
                 startActivity(chooserIntent)
             }
         }
-        binding.lnTermAndPolicy.setOnSafeClickListener(500) {
-            addFragment(SecurityPolicyFragment.instance())
+        binding.lnTerm.setOnSafeClickListener(500) {
+//            addFragment(SecurityPolicyFragment.instance())
+            WrapAdsResume.instance.disableAdsResumeByClickAction()
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(LINK_TERM))
+            startActivity(browserIntent)
+
+        }
+        binding.lnPolicy.setOnSafeClickListener(200L) {
+            // todo policy
+            WrapAdsResume.instance.disableAdsResumeByClickAction()
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(LINK_POLICY))
+            startActivity(browserIntent)
         }
 
         binding.icArrowLeft.setOnSafeClickListener(500){

@@ -2,6 +2,9 @@ package com.mobiai.app.ui.fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -9,10 +12,21 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import com.ads.control.admob.AppOpenManager
+import com.ads.control.ads.AperoAd
+import com.ads.control.ads.AperoAdCallback
+import com.ads.control.ads.wrapper.ApAdError
+import com.ads.control.ads.wrapper.ApNativeAd
+import com.ads.control.billing.AppPurchase
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.App
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
 import com.mobiai.app.ultils.IsTurnOnSms
+import com.mobiai.app.ultils.NetWorkChecker
+import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
@@ -30,8 +44,106 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
     private var isFlashAvailable = false
     private var goToSettingDialog: GotosettingDialog? = null
+    private val TAG = SmsAnnouncerFragment::javaClass.name
+    private var isNativeAdsInit: Boolean = false
+    private fun initAdsNativeSms() {
+        if (!AppPurchase.getInstance().isPurchased
+            && AdsRemote.showNativeSms
+            && App.getStorageCommon()?.nativeAdSms?.value == null
+        ) {
+            Log.i(TAG, "initAdsNativeSms: nativeSms")
+            AperoAd.getInstance().loadNativeAdResultCallback(
+                requireActivity(),
+                BuildConfig.native_sms,
+                R.layout.layout_native_ads_call,
+                object : AperoAdCallback() {
+                    override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
+                        super.onNativeAdLoaded(nativeAd)
+                        App.getStorageCommon()?.nativeAdSms?.postValue(nativeAd)
+                        isNativeAdsInit = true
+                    }
+
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        isNativeAdsInit = true
+                    }
+
+                    override fun onAdFailedToLoad(adError: ApAdError?) {
+                        super.onAdFailedToLoad(adError)
+                        App.getStorageCommon()?.nativeAdSms?.postValue(null)
+                    }
+                }
+            )
+        } else {
+            Log.i(TAG, "initAdsNativeSms: nativeSms___")
+            App.getStorageCommon()?.nativeAdSms?.postValue(App.getStorageCommon()?.nativeAdSms?.value)
+            isNativeAdsInit = true
+
+        }
+    }
+
+    private fun showAdsSms() {
+        if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeSms) {
+            Log.i(TAG, "showAdsSms: nativeSms")
+            binding.flAds.gone()
+        } else {
+            App.getStorageCommon()?.nativeAdSms?.observe(this) {
+                if (it != null) {
+                    Log.i(TAG, "showAdsSms: nativeSms__")
+                    AperoAd.getInstance().populateNativeAdView(
+                        requireActivity(),
+                        it,
+                        binding.flAds,
+                        binding.includeAdsNative.shimmerContainerNative as ShimmerFrameLayout
+                    )
+                } else {
+                    Log.i(TAG, "showAdsSms: ____nativeSms")
+                    binding.flAds.gone()
+                }
+            }
+        }
+    }
+
+    private fun handlerEvent() {
+        addDispose(listenEvent({
+            when (it) {
+                is IsTurnOnSms -> {
+                    disableView(true)
+                    changeAllToggle(true)
+                }
+
+                is NetworkConnected -> {
+                    if (it.isOn) {
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeSms){
+                                binding.flAds.visible()
+                            }
+                            if (isAdded){
+                                if (!isNativeAdsInit) {
+                                    Log.i(TAG, "handlerEvent: nativeSms")
+                                    initAdsNativeSms()
+                                }
+                            }
+                        }, 500)
+
+                    }else{
+                        if (!isNativeAdsInit){
+                            binding.flAds.gone()
+                        }
+                    }
+                }
+            }
+        }))
+    }
 
     override fun initView() {
+        showAdsSms()
+        if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
+            binding.flAds.gone()
+        }else{
+            initAdsNativeSms()
+        }
+
         checkStatus()
 
         isFlashAvailable =
@@ -139,16 +251,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
     }
 
-    private fun handlerEvent() {
-        addDispose(listenEvent({
-            when (it) {
-                is IsTurnOnSms -> {
-                    disableView(true)
-                    changeAllToggle(true)
-                }
-            }
-        }))
-    }
+
 
     private fun changeAllToggle(boolean: Boolean){
         if (boolean){
