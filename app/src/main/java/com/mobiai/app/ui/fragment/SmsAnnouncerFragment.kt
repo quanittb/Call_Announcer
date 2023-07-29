@@ -148,8 +148,9 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
         isFlashAvailable =
             requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)
-
-        checkPermission()
+        if (SharedPreferenceUtils.isTurnOnSms){
+            checkPermission()
+        }
 
         binding.icBack.setOnClickListener {
             handlerBackPressed()
@@ -492,6 +493,15 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         }
     }
+    private fun checkStatusResumeOff(){
+        disableView(false)
+        binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+    }
     private fun changeOffToggle(view: ImageView){
         view.setImageDrawable(
             AppCompatResources.getDrawable(
@@ -502,10 +512,10 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
     private fun checkPermission() {
         val permissions = arrayOf(
-            Manifest.permission.READ_CONTACTS,
             Manifest.permission.READ_SMS,
             Manifest.permission.SEND_SMS,
             Manifest.permission.RECEIVE_SMS,
+            Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
         )
@@ -519,28 +529,31 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                     SharedPreferenceUtils.isTurnOnSms = false
                     binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
                     binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+                    checkStatusResumeOff()
+                    return
                 }
+                else{
+                    if (permission == Manifest.permission.READ_CONTACTS){
+                        SharedPreferenceUtils.isUnknownNumberSms = false
+                        SharedPreferenceUtils.isReadNameSms = false
+                        changeOffToggle(binding.ivToggle5)
+                        changeOffToggle(binding.ivToggle6)
+                    }
+                    if (permission == Manifest.permission.RECORD_AUDIO){
+                        SharedPreferenceUtils.isTurnOnSmsNormal = false
+                        SharedPreferenceUtils.isTurnOnSmsVibrate = false
+                        SharedPreferenceUtils.isTurnOnSmsSilent = false
 
-                if (permission == Manifest.permission.READ_CONTACTS){
-                    SharedPreferenceUtils.isUnknownNumberSms = false
-                    SharedPreferenceUtils.isReadNameSms = false
-                    changeOffToggle(binding.ivToggle5)
-                    changeOffToggle(binding.ivToggle6)
-                }
-                if (permission == Manifest.permission.RECORD_AUDIO){
-                    SharedPreferenceUtils.isTurnOnSmsNormal = false
-                    SharedPreferenceUtils.isTurnOnSmsVibrate = false
-                    SharedPreferenceUtils.isTurnOnSmsSilent = false
+                        changeOffToggle(binding.ivToggle1)
+                        changeOffToggle(binding.ivToggle2)
+                        changeOffToggle(binding.ivToggle3)
 
-                    changeOffToggle(binding.ivToggle1)
-                    changeOffToggle(binding.ivToggle2)
-                    changeOffToggle(binding.ivToggle3)
-
-                }
-                if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
-                {
-                    SharedPreferenceUtils.isTurnOnFlashSms = false
-                    changeOffToggle(binding.ivToggle4)
+                    }
+                    if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
+                    {
+                        SharedPreferenceUtils.isTurnOnFlashSms = false
+                        changeOffToggle(binding.ivToggle4)
+                    }
                 }
             }
         }
@@ -558,7 +571,9 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     override fun onResume() {
         super.onResume()
-        checkPermission()
+        if (SharedPreferenceUtils.isTurnOnSms){
+            checkPermission()
+        }
     }
 
     override fun getBinding(

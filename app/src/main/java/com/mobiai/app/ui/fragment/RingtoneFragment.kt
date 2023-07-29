@@ -167,21 +167,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
 
             }
         })
-        binding.edSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Được gọi trước khi văn bản bị thay đổi
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Được gọi khi văn bản đang thay đổi
-                val newText = s.toString()
-                // Xử lý văn bản mới tại đây (nếu cần)
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                // Được gọi sau khi văn bản đã thay đổi
-            }
-        })
     }
 
     private fun showLoading() {
