@@ -47,8 +47,6 @@
                 android:id="@+id/imgConfirm"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_alignTop="@+id/tvSetting"
-                android:layout_alignBottom="@+id/tvSetting"
                 android:layout_alignParentEnd="true"
                 android:padding="@dimen/_4sdp"
                 android:src="@drawable/ic_confirm"
