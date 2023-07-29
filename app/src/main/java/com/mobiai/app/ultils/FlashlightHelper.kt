@@ -58,7 +58,7 @@ class FlashlightHelper(context: Context) {
 
     fun blinkFlash(period: Long) {
         blinkTask?.cancel()
-        blinkTask = cameraManager?.let { BlinkTask(it, cameraId!!, period) }
+        blinkTask = cameraManager?.let { cameraId?.let { it1 -> BlinkTask(it, it1, period) } }
         blinkTask?.start()
     }
 
