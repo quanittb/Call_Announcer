@@ -55,6 +55,10 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         val senderName = intent?.getStringExtra("senderName")
         val name = intent?.getStringExtra("name")
         val smsMessagebody = intent?.getStringExtra("smsMessagebody")
+        Log.d(
+            "TestABCD",
+            "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody"
+        )
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
@@ -67,7 +71,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
                         params,
                         "read"
                     )
-                else if (SharedPreferenceUtils.isReadNameSms && name != null)
+                else if (SharedPreferenceUtils.isReadNameSms && name != "null")
                     textToSpeech.speak(
                         " ${getString(R.string.message_from)}  $name ${getString(R.string.with_content)} $smsMessagebody",
                         TextToSpeech.QUEUE_FLUSH,
@@ -83,8 +87,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
                     )
                 }
 
-            }, 400
-        )
+            }, 700)
         textToSpeech.setOnUtteranceCompletedListener {
             setVolume()
         }
@@ -115,14 +118,14 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
 
     fun setVolume() {
         handler.postDelayed({
-            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT)
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
-                )
-            audioManager.setStreamVolume(
-                AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
-            )
+            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT) {
+                    audioManager.setStreamVolume(
+                        AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
+                    )
+                    audioManager.setStreamVolume(
+                        AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
+                    )
+            }
         }, 1000)
-
     }
 }

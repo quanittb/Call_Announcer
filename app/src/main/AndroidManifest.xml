@@ -99,6 +99,7 @@
             android:value="26537e06c858cb9505de6350e2917c63" />
 
 
+
         <receiver
             android:name=".app.services.MyBroadcastReceiver"
             android:enabled="true"

@@ -16,46 +16,46 @@ import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.util.*
 
 class MyBroadcastReceiver : BroadcastReceiver() {
-    private lateinit var audioManager: AudioManager
+    //private lateinit var audioManager: AudioManager
     private lateinit var announcer: Announcer
     private val handler = Handler(Looper.getMainLooper())
-
+    private lateinit var serviceIntent : Intent
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onReceive(context: Context?, intent: Intent?) {
-        audioManager =
+        val flashlightHelper = context?.let { FlashlightHelper.getInstance(it) }
+        val audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
-        announcer = context?.let { Announcer(it) }!!
-        val flashlightHelper = context?.let { FlashlightHelper(it) }
-        val serviceIntent = Intent(context, TextToSpeechCallerService::class.java)
-
+        val currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
+        SharedPreferenceUtils.beforeMode = audioManager.ringerMode
+        SharedPreferenceUtils.currentMusic = currentMusic
+        SharedPreferenceUtils.currentRing = currentRing
+        Log.d("ABCDE","Mode: ${SharedPreferenceUtils.beforeMode} +   ${SharedPreferenceUtils.currentMusic} +   ${SharedPreferenceUtils.volumeAnnouncer} +   ${SharedPreferenceUtils.volumeRing}")
         if (intent?.action == "android.intent.action.PHONE_STATE") {
             val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
 
             // Kiểm tra trạng thái cuộc gọi
             when (state) {
                 TelephonyManager.EXTRA_STATE_RINGING -> {
-                    SharedPreferenceUtils.beforeMode = audioManager.ringerMode
-                    SharedPreferenceUtils.currentMusic =
-                        audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-                    SharedPreferenceUtils.currentRing =
-                        audioManager.getStreamVolume(AudioManager.STREAM_RING)
+                    serviceIntent = Intent(context, TextToSpeechCallerService::class.java)
                     val phoneNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
                     serviceIntent.putExtra("textToRead", "$phoneNumber")
+
                     // Lấy số điện thoại từ intent
                     if (SharedPreferenceUtils.isTurnOnCall) {
                         if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper?.blinkFlash(
                             150
                         )
+                        announcer = context.let { Announcer(it) }
                         if (context?.let { announcer.getBatteryPercentage(it) }!! >= SharedPreferenceUtils.batteryMin && (SharedPreferenceUtils.isUnknownNumber || SharedPreferenceUtils.isReadName)) {
 
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal) context?.startService(
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal) context.startService(
                                 serviceIntent
                             )
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) context?.startService(
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) context.startService(
                                 serviceIntent
                             )
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) context?.startService(
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) context.startService(
                                 serviceIntent
                             )
                         }
@@ -64,28 +64,28 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                 }
 
                 TelephonyManager.EXTRA_STATE_IDLE -> {
-                    context?.stopService(serviceIntent)
-                    setVolume()
-                    Log.d(
-                        "TestABC",
-                        "Set volume: Audio Ring = ${SharedPreferenceUtils.currentRing}"
-                    )
                     flashlightHelper?.stopBlink()
                     flashlightHelper?.stopFlash()
+                    //context?.stopService(serviceIntent)
+                    setVolume(context)
+
                 }
 
                 TelephonyManager.EXTRA_STATE_OFFHOOK -> {
-                    context?.stopService(serviceIntent)
-                    setVolume()
+                    //context?.stopService(serviceIntent)
                     flashlightHelper?.stopBlink()
                     flashlightHelper?.stopFlash()
+                    setVolume(context)
+
                 }
             }
 
         }
     }
 
-    fun setVolume() {
+    fun setVolume(context: Context?) {
+        val audioManager =
+            context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         handler.postDelayed({
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT)
                 audioManager.setStreamVolume(
