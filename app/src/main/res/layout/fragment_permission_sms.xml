@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/caller_announcer"
+        android:text="@string/sms_announcer"
         android:textSize="@dimen/_18ssp"
         android:fontFamily="@font/poppins_semibold"
         app:layout_constraintBottom_toBottomOf="@+id/ic_close"

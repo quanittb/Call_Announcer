@@ -223,6 +223,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
         super.onBackPressed()
         if (currentPosition != 0) {
             currentPosition--
+            binding.tvNext.text = getString(R.string.next)
             binding.viewPager.currentItem = currentPosition
         } else {
             finish()

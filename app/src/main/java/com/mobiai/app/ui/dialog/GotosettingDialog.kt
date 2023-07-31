@@ -10,6 +10,7 @@ class GotosettingDialog(context : Context, callback :  () -> Unit) : BaseDialog(
     init {
         setContentView(binding.root)
         setCanceledOnTouchOutside(false)
+        setCancelable(false)
 
         binding.tvCancel.setOnClickListener {
             dismiss()

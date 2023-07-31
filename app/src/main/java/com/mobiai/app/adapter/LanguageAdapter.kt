@@ -20,10 +20,8 @@ class LanguageAdapter(val context : Context, val listener : OnLanguageClickListe
         binding.imgIconLanguage.setImageDrawable(AppCompatResources.getDrawable(context, item.flag))
         if(item.isChoose){
             binding.imgChooseLanguage.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_select_language))
-            binding.txtNameLanguage.setTextColor(context.resources.getColor(R.color.black))
         }else{
             binding.imgChooseLanguage.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_un_select_lang))
-            binding.txtNameLanguage.setTextColor(context.resources.getColor(R.color.color_text_language))
         }
         binding.root.setOnClickListener {
             listener.onClickItemListener(item)

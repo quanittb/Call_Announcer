@@ -401,18 +401,6 @@
                     android:background="#EEEEEE" />
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/fr_disable"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="@id/ln_item_6"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

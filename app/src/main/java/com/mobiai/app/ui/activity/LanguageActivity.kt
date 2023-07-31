@@ -12,6 +12,9 @@ import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.adapter.LanguageAdapter
 import com.mobiai.app.storage.AdsRemote
+import com.mobiai.app.ultils.LanguageProvider
+import com.mobiai.base.basecode.extensions.gone
+import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.language.Language
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -38,14 +41,18 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     var listLanguages: ArrayList<Language> = arrayListOf()
     var languageCode = "en"
     lateinit var languageAdapter: LanguageAdapter
+    private lateinit var languageProvider: LanguageProvider
 
     override fun getLayoutResourceId(): Int = R.layout.activity_language
 
     override fun getViewBinding(): ActivityLanguageBinding  = ActivityLanguageBinding.inflate(layoutInflater)
 
     override fun createView() {
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, this) }
+        Log.d("TAG", "createView: $languageCode")
+        languageProvider = LanguageProvider(this)
         showFullscreen(true)
-        getDataLanguage()
+        getDataLanguage2()
         if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
             showAdsNativeLanguage()
             binding.imgBack.visibility = View.INVISIBLE
@@ -54,12 +61,11 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
 
         } else {
             binding.tvTitle.text = resources.getString(R.string.language)
-            binding.frAds.visibility = View.GONE
-            binding.imgBack.visibility = View.VISIBLE
+            binding.frAds.gone()
+            binding.imgBack.visible()
         }
         binding.imgConfirm.setOnClickListener {
             changeLanguage()
-            Log.d("TAGGG", "---------->  getLangueCode: $languageCode")
         }
         binding.imgBack.setOnClickListener {
             finish()
@@ -87,7 +93,6 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     }
 
 
-
     private fun initAdapter(){
         languageAdapter =  LanguageAdapter(this, object : LanguageAdapter.OnLanguageClickListener{
             override fun onClickItemListener(language: Language?) {
@@ -97,7 +102,78 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         languageAdapter.setItems(listLanguages)
         binding.recyclerViewLanguage.adapter = languageAdapter
     }
+    private fun initAdapter2(listLanguage: MutableList<Language>) {
+        languageCode = listLanguage[0].locale
+        languageAdapter = LanguageAdapter(this, object : LanguageAdapter.OnLanguageClickListener {
+            override fun onClickItemListener(language: Language?) {
+                languageCode = language!!.locale
+            }
+        })
+        languageAdapter.setItems(listLanguage)
+        binding.recyclerViewLanguage.adapter = languageAdapter
+    }
+    private fun getDataLanguage2() {
+        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Resources.getSystem().configuration.locales.get(0)
+        } else {
+            Resources.getSystem().configuration.locale
+        }
+        val deviceLanguage = locale.language
+        var selectedLanguage: Language? = null
 
+        fun isLanguageInListFirstOpen(): Language? {
+            for (language in languageProvider.listFirstOpenLanguage) {
+                if (language.locale == deviceLanguage) {
+                    Log.d("TAG", "isLanguageInListFirstOpen: $language")
+                    return language
+                }
+            }
+            return null
+        }
+
+        fun isLanguageInListSetting(): Language? {
+            for (language in languageProvider.listSettingLanguage) {
+                if (language.locale == deviceLanguage) {
+                    return language
+                }
+            }
+            return null
+        }
+
+        if (intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
+            for (language in languageProvider.listSettingLanguage){
+                if (SharedPreferenceUtils.languageCode == language.locale) {
+                    selectedLanguage = language
+                    languageCode = selectedLanguage.locale
+                    break
+                }
+            }
+            if (selectedLanguage != null) {
+                languageProvider.listSettingLanguage.remove(selectedLanguage)
+                languageProvider.listSettingLanguage.add(0, selectedLanguage)
+
+            }
+            languageProvider.listSettingLanguage[0].isChoose = true
+            initAdapter2(languageProvider.listSettingLanguage)
+        }
+
+        else {
+            selectedLanguage = isLanguageInListFirstOpen()
+            if (selectedLanguage != null){
+                languageCode = selectedLanguage.locale
+                languageProvider.listFirstOpenLanguage.remove(selectedLanguage)
+                languageProvider.listFirstOpenLanguage.add(0, selectedLanguage)
+
+            }else{
+                selectedLanguage = isLanguageInListSetting()
+                if (selectedLanguage != null){
+                    languageProvider.listFirstOpenLanguage.add(0, selectedLanguage)
+                }
+            }
+            languageProvider.listFirstOpenLanguage[0].isChoose = true
+            initAdapter2(languageProvider.listFirstOpenLanguage)
+        }
+    }
     private fun getDataLanguage() {
         initData()
         val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -142,21 +218,29 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     fun initData() {
         listLanguages = ArrayList()
         listLanguages.add(Language(R.drawable.flag_en, getString(R.string.language_english), "en"))
-        listLanguages.add(Language(R.drawable.flag_vn_vietnam, getString(R.string.language_vietnamese), "vi"))
-        listLanguages.add(Language(R.drawable.flag_fr_france,
-            getString(R.string.language_france),
-            "fr"))
-        listLanguages.add(Language(R.drawable.flag_de_germany,
-            getString(R.string.language_germany),
-            "de"))
         listLanguages.add(Language(R.drawable.flag_es_spain,
             getString(R.string.language_spain),
             "es"))
-        listLanguages.add(Language(R.drawable.flag_ko_korean,
-            getString(R.string.language_korean),
-            "ko"))
+
+        listLanguages.add(Language(R.drawable.flag_pt_portugal,
+            getString(R.string.language_portugal),
+            "pt"))
+
+        listLanguages.add(Language(R.drawable.flag_de_germany,
+            getString(R.string.language_germany),
+            "de"))
+
+        listLanguages.add(Language(R.drawable.flag_fr_france,
+            getString(R.string.language_france),
+            "fr"))
+
+        listLanguages.add(Language(R.drawable.flag_vn_vietnam, getString(R.string.language_vietnamese), "vi"))
 
         if(intent.getBooleanExtra(OPEN_FROM_MAIN, false)){
+
+            listLanguages.add(Language(R.drawable.flag_ko_korean,
+                getString(R.string.language_korean),
+                "ko"))
 
             listLanguages.add(Language(R.drawable.flag_hi_hindi,
                 getString(R.string.language_hindi),

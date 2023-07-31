@@ -2,6 +2,7 @@ package com.mobiai.app.ui.fragment
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,13 +25,19 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
             return newInstance(SmsPermisionFragment::class.java)
         }
     }
-    private var goToSettingDialog: GotosettingDialog? = null
+    private var goToSettingDialogSms: GotosettingDialog? = null
+    private var goToSettingDialogContact: GotosettingDialog? = null
+    private var goToSettingDialogAudio: GotosettingDialog? = null
+
+    private var isGotoSettingSms = false
+    private var isGotoSettingContact = false
+    private var isGotoSettingAudio = false
     override fun initView() {
         checkPermission()
         binding.icClose.setOnSafeClickListener(500){
             handlerBackPressed()
         }
-        binding.cvAllow.setOnSafeClickListener(300){
+        binding.cvAllow.setOnSafeClickListener(1000){
             StoragePermissionUtils.requestSmsPermission(requestMultipleSmsPermissionsLauncher)
         }
     }
@@ -62,48 +69,106 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
             }
         }
     }
-    private fun checkPermissionOnResume() {
-        val permissions = arrayOf(
-            Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS,
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_CONTACTS,
-            Manifest.permission.RECORD_AUDIO
-        )
-
-        for (permission in permissions) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    permission
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
-                    binding.icSelectSms.visible()
+    private fun checkPermissionOnResume(permission:String) {
+        if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
+            isGotoSettingSms = false
+            if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
+                binding.icSelectSms.visible()
+                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                    Handler().postDelayed({
+                        handlerBackPressed()
+                    },100)
                 }
-                if (permission == Manifest.permission.READ_CONTACTS){
-                    binding.icSelectContact.visible()
-                }
-                if (permission == Manifest.permission.RECORD_AUDIO){
-                    binding.icSelectAudio.visible()
+                else{
+                    StoragePermissionUtils.requestContactPermission(requestMultipleContactPermissionsLauncher)
                 }
             }
             else{
-                showGotoSettingDialog()
-                return
+                checkPermission()
+                showGotoSettingSmsDialog()
+            }
+        }
+
+        else if (permission == Manifest.permission.READ_CONTACTS){
+            isGotoSettingContact = false
+            if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED) {
+                binding.icSelectContact.visible()
+                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                    Handler().postDelayed({
+                        handlerBackPressed()
+                    },100)
+                }
+                else{
+                    StoragePermissionUtils.requestContactPermission(requestMultipleAudioPermissionsLauncher)
+                }
+            }
+            else{
+                checkPermission()
+                showGotoSettingContactDialog()
+            }
+        }
+
+
+        else if (permission == Manifest.permission.RECORD_AUDIO){
+            isGotoSettingAudio = false
+            if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
+                binding.icSelectAudio.visible()
+                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+                    Handler().postDelayed({
+                        handlerBackPressed()
+                    },100)
+                }
+            }
+            else{
+                checkPermission()
+                showGotoSettingAudioDialog()
             }
         }
     }
-    private fun showGotoSettingDialog() {
-        if (goToSettingDialog == null) {
-            goToSettingDialog = GotosettingDialog(
+    private fun showGotoSettingSmsDialog() {
+        if (goToSettingDialogSms == null) {
+            goToSettingDialogSms = GotosettingDialog(
                 requireContext(),
             ) {
                 AppOpenManager.getInstance().disableAdResumeByClickAction()
+                isGotoSettingSms = true
                 gotoSetting()
             }
         }
-        if (!goToSettingDialog!!.isShowing) {
-            goToSettingDialog!!.show()
+        if (!goToSettingDialogSms!!.isShowing) {
+            goToSettingDialogSms!!.show()
+        }
+    }
+    private fun showGotoSettingContactDialog() {
+        if (goToSettingDialogContact==null){
+            goToSettingDialogContact = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                isGotoSettingContact = true
+                gotoSetting()
+            }
+        }
+
+        if (!goToSettingDialogContact!!.isShowing) {
+            goToSettingDialogContact!!.show()
+        }
+    }
+    private fun showGotoSettingAudioDialog() {
+        if (goToSettingDialogAudio==null){
+            goToSettingDialogAudio = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                isGotoSettingAudio = true
+                gotoSetting()
+            }
+        }
+        if (!goToSettingDialogAudio!!.isShowing) {
+            goToSettingDialogAudio!!.show()
         }
     }
 
@@ -113,10 +178,11 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
         val allGranted = permissions.all { it.value }
         if (allGranted) {
             //todo sms
+            isGotoSettingSms = false
             binding.icSelectSms.visible()
             StoragePermissionUtils.requestContactPermission(requestMultipleContactPermissionsLauncher)
         } else {
-            showGotoSettingDialog()
+            showGotoSettingSmsDialog()
         }
     }
 
@@ -126,12 +192,13 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
         val allGranted = permissions.all { it.value }
         if (allGranted) {
             //todo contact
+            isGotoSettingContact = false
             binding.icSelectContact.visible()
             SharedPreferenceUtils.isUnknownNumberSms = true
             SharedPreferenceUtils.isReadNameSms = true
             StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
         } else {
-            showGotoSettingDialog()
+            showGotoSettingContactDialog()
         }
     }
 
@@ -141,20 +208,29 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
         val allGranted = permissions.all { it.value }
         if (allGranted) {
             //todo audio
+            isGotoSettingAudio = false
             binding.icSelectAudio.visible()
             SharedPreferenceUtils.isTurnOnSmsNormal = true
             RxBus.publish(IsTurnOnSms())
             handlerBackPressed()
         } else {
-            showGotoSettingDialog()
+            showGotoSettingAudioDialog()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        if (isGoToSetting){
-            isGoToSetting = false
-            checkPermissionOnResume()
+        if (isGotoSettingSms){
+            checkPermissionOnResume(Manifest.permission.READ_SMS)
+        }
+        else if (isGotoSettingContact){
+            checkPermissionOnResume(Manifest.permission.READ_CONTACTS)
+        }
+        else if (isGotoSettingAudio){
+            checkPermissionOnResume(Manifest.permission.RECORD_AUDIO)
+        }
+        else{
+            checkPermission()
         }
     }
 
