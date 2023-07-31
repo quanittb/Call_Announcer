@@ -49,12 +49,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             AperoAd.getInstance().loadNativeAdResultCallback(
                 requireActivity(),
                 BuildConfig.native_home,
-                R.layout.layout_native_ads_onboarding,
+                R.layout.layout_native_ads_home,
                 object : AperoAdCallback() {
                     override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
                         super.onNativeAdLoaded(nativeAd)
                         App.getStorageCommon()?.nativeAdHome?.postValue(nativeAd)
-//                        isNativeAdsShowed = true
+                        isNativeAdsShowed = true
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
@@ -64,14 +64,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                     override fun onAdImpression() {
                         super.onAdImpression()
-//                        isNativeAdsShowed = true
+                        isNativeAdsShowed = true
                     }
 
                 }
             )
         } else {
             App.getStorageCommon()?.nativeAdHome?.postValue(App.getStorageCommon()?.nativeAdHome?.value)
-//            isNativeAdsShowed = true
+               isNativeAdsShowed = true
         }
     }
 
@@ -158,16 +158,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it) {
                 is NetworkConnected -> {
                     if (it.isOn) {
-                        if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeHome) {
-                            binding.flAds.visible()
-                        }
                         Handler(Looper.getMainLooper()).postDelayed({
-                            if (isAdded) {
-                                initAdsInterHome()
-                                initAdsNativeHome()
-
+                            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
+                                binding.flAds.visible()
+                            }
+                            if (isAdded){
+                                if (!isNativeAdsShowed) {
+                                    initAdsInterHome()
+                                    initAdsNativeHome()
+                                }
                             }
                         }, 700)
+
+                    }else{
+                        if (!isNativeAdsShowed){
+                            binding.flAds.gone()
+                        }
                     }
                 }
             }
@@ -178,7 +184,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             binding.flAds.gone()
         }
         initAdsInterHome()
-        handlerEvent()
         showNativeAdsHome()
         binding.cvItemHomeCall.setOnSafeClickListener(500) {
             showInterHome {
@@ -195,9 +200,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         binding.cvItemHomeSetting.setOnSafeClickListener(500) {
             replaceFragment(SettingFragment.instance())
         }
-
-        //permissionSms()
-      //  permissionDefault()
+        handlerEvent()
     }
     override fun onStop() {
         super.onStop()
@@ -221,29 +224,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         resumeAds()
+            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
+                binding.flAds.visible()
+            }
+            if (isAdded){
+                if (!isNativeAdsShowed) {
+                    initAdsInterHome()
+                    initAdsNativeHome()
+                }
+            }
     }
-    private fun permissionSms(){
-        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(),
-                arrayOf(android.Manifest.permission.READ_SMS,android.Manifest.permission.SEND_SMS,android.Manifest.permission.RECEIVE_SMS), 111)
-        }
 
-
-    }
-    private fun permissionDefault(){
-      /*  // Kiểm tra xem quyền truy cập thông báo đã được cấp hay chưa
-        val notificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (!notificationManager.isNotificationPolicyAccessGranted) {
-            // Nếu chưa được cấp, yêu cầu quyền truy cập thông báo
-            val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
-            startActivity(intent)
-        }*/
-
-        // quyền truy cập vào không làm phiền
-        if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.RECEIVE_BOOT_COMPLETED) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.RECEIVE_BOOT_COMPLETED), 1)
-        }
-
+    override fun handlerBackPressed() {
+        super.handlerBackPressed()
+        requireActivity().finish()
     }
     override fun getBinding(inflater: LayoutInflater, container: ViewGroup?): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater, container,false)

@@ -36,7 +36,7 @@
         android:background="@drawable/bg_turn_on"
         android:fontFamily="@font/poppins_semibold"
         android:gravity="center"
-        android:text="@string/turn_on"
+        android:text="@string/turn_off"
         android:textColor="@color/color_text_turn"
         android:textSize="@dimen/_16ssp"
         app:layout_constraintTop_toBottomOf="@id/ic_back" />
@@ -406,19 +406,6 @@
         </LinearLayout>
 
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/fr_disable"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@id/scroll_view"
-        app:layout_constraintTop_toBottomOf="@id/btn_turn"
-
-        />
-
 
     <FrameLayout
         android:id="@+id/fl_ads"

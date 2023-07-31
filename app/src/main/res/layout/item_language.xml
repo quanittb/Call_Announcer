@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:textColor="@color/color_text_language"
+            android:textColor="#171725"
             android:paddingVertical="@dimen/_6sdp"
             android:textSize="@dimen/_14ssp"
             android:text="langugaeeeeeeeeeeeee"

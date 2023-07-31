@@ -8,7 +8,7 @@
     <string name="language_italian" translatable="false">Italian</string>
     <string name="language_hindi" translatable="false">भारतीय भाषा</string>
     <string name="language_liberia" translatable="false">Liberia</string>
-    <string name="language_germany" translatable="false">german</string>
+    <string name="language_germany" translatable="false">German</string>
     <string name="language_brazil" translatable="false">Lingua Brasilia</string>
     <string name="language_japan" translatable="false">日本</string>
     <string name="language_greece" translatable="false">Greek</string>
@@ -34,6 +34,7 @@
     <string name="name">Name</string>
     <string name="display_and_read_the_username">Display and read the username</string>
     <string name="turn_on">Turn on</string>
+    <string name="turn_off">Turn off</string>
     <string name="change_default_dialer">Change default dialer</string>
     <string name="you_are_required_to_set_call_announcer_as_default_dialer_to_announce_caller_name_and_manage_calls_to_work_properly">You are required to set Call Announcer as default dialer to announce caller name and manage calls to work properly</string>
     <string name="allow">Allow</string>

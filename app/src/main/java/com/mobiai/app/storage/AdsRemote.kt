@@ -19,61 +19,61 @@ object AdsRemote {
 
     var showAdsSplash : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //   if (BuildConfig.DEBUG) false else
             App.instanceSharePreference.getValueBool(REMOTE_ADS_SPLASH, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_SPLASH, value)
 
     var showAdsResume : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //  if (BuildConfig.DEBUG) false else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_RESUME, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_RESUME, value)
 
     var showNativeLanguage : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //   if (BuildConfig.DEBUG) false else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_NATIVE_LANGUAGE, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_NATIVE_LANGUAGE, value)
 
 
     var showNativeOnboard : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+           // if (BuildConfig.DEBUG) false else
             App.instanceSharePreference.getValueBool(REMOTE_ADS_NATIVE_ONBOARD, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_NATIVE_ONBOARD, value)
 
 
     var showNativeHome : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //  if (BuildConfig.DEBUG) false else
             App.instanceSharePreference.getValueBool(REMOTE_ADS_NATIVE_HOME, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_NATIVE_HOME, value)
 
 
     var showNativeCall : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //  if (BuildConfig.DEBUG) false else
             App.instanceSharePreference.getValueBool(REMOTE_ADS_NATIVE_CALL, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_NATIVE_CALL, value)
 
 
     var showNativeSms : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //  if (BuildConfig.DEBUG) false else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_NATIVE_SMS, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_NATIVE_SMS, value)
 
 
     var showInterHome : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            //  if (BuildConfig.DEBUG) false else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_INTER_HOME, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_INTER_HOME, value)
 
 
     var showBanner : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            // if (BuildConfig.DEBUG) false else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_BANNER, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_BANNER, value)
 

@@ -43,7 +43,9 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
     }
     private var isFlashAvailable = false
+
     private var goToSettingDialog: GotosettingDialog? = null
+
     private val TAG = SmsAnnouncerFragment::javaClass.name
     private var isNativeAdsInit: Boolean = false
     private fun initAdsNativeSms() {
@@ -252,26 +254,47 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
     }
 
-
-
     private fun changeAllToggle(boolean: Boolean){
         if (boolean){
-            binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-            binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-            binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-            binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
-            binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-            binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
-            changeSharePreference(true)
+            if (SharedPreferenceUtils.isTurnOnModeNormal){
+                binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            if (SharedPreferenceUtils.isTurnOnModeSilent)
+            {
+                binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            if (SharedPreferenceUtils.isTurnOnModeVibrate){
+                binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            if (SharedPreferenceUtils.isTurnOnFlash){
+                binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            if (SharedPreferenceUtils.isUnknownNumber){
+                binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+
+            if (SharedPreferenceUtils.isReadName){
+                binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            else{
+                binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                changeSharePreference(true)
+            }
         }
         else{
+
             binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
-            changeSharePreference(false)
+            //changeSharePreference(false)
         }
     }
     private fun changeSharePreference(boolean: Boolean){
@@ -364,16 +387,28 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     private fun disableView(boolean: Boolean){
         if (!boolean){
-            binding.frDisable.visible()
             binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
             binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+            binding.btnTurn.text = (resources.getString(R.string.turn_on))
             SharedPreferenceUtils.isTurnOnSms = false
+            binding.ivToggle1.isEnabled = false
+            binding.ivToggle2.isEnabled = false
+            binding.ivToggle3.isEnabled = false
+            binding.ivToggle4.isEnabled = false
+            binding.ivToggle5.isEnabled = false
+            binding.ivToggle6.isEnabled = false
         }
         else{
-            binding.frDisable.gone()
             binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on_click)
             binding.btnTurn.setTextColor(resources.getColor(R.color.white))
+            binding.btnTurn.text = (resources.getString(R.string.turn_off))
             SharedPreferenceUtils.isTurnOnSms = true
+            binding.ivToggle1.isEnabled = true
+            binding.ivToggle2.isEnabled = true
+            binding.ivToggle3.isEnabled = true
+            binding.ivToggle4.isEnabled = true
+            binding.ivToggle5.isEnabled = true
+            binding.ivToggle6.isEnabled = true
         }
 
     }
@@ -485,6 +520,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             checkToggle()
         }
         else{
+            disableView(false)
             binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
@@ -529,6 +565,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                     SharedPreferenceUtils.isTurnOnSms = false
                     binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
                     binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+                    binding.btnTurn.text = (resources.getString(R.string.turn_on))
                     checkStatusResumeOff()
                     return
                 }

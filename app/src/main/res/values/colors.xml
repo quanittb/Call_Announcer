@@ -428,7 +428,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="color_button">#7288FA</color>
-    <color name="color_text_language">#78828A</color>
     <color name="color_text_turn">#7288FA</color>
     <color name="color_button_ads">#7288FA</color>
     <color name="color_background_native_ads">#F2F2F2</color>

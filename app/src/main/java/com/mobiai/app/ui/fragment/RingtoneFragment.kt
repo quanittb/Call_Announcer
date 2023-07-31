@@ -184,6 +184,7 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
         runBackground({
             MyRingtoneManager.getDeviceRingtone(requireContext())
         },{
+
             listRingtones.addAll(it)
 
             for (ringtone in listRingtones) {
@@ -197,7 +198,9 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
                 listRingtones.add(0, ringtoneSystem!!)
             }
             listRingtones[position].isChoose = true
-            initAdapter()
+            if (isAdded){
+                initAdapter()
+            }
             hideLoading()
 
         },{
@@ -213,7 +216,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     private fun initAdapter(){
         myRingtoneAdapter =  MyRingtoneAdapter(requireContext(), object : MyRingtoneAdapter.OnRingtoneClickListener{
             override fun onClickItemListener(item: ItemDeviceRingtone) {
-
                 playRingtone(item)
                 setDeviceRingtone(item)
             }
@@ -223,10 +225,18 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
         binding.rcvRingtone.adapter = myRingtoneAdapter
     }
 
-    private fun getDataRingtone() {
-        getDefaultRingtoneFromDevice()
-
-        initAdapter()
+    override fun onStop() {
+        super.onStop()
+        if (currentPlayingRingtone != null) {
+            stopRingtone(currentPlayingRingtone!!)
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
+        else if (mediaPlayer!=null){
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+        }
     }
 
     private fun setDeviceRingtone(ringtone: ItemDeviceRingtone) {

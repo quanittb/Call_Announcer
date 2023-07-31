@@ -57,22 +57,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         AppUpdateManager.getInstance(this).checkNewAppVersionState(this)
 
     }
-     override fun handleBackpress() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStackImmediate();
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent);
-        }
-
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            finish()
-        }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        handleBackpress()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
