@@ -71,9 +71,10 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         } else {
                             null
                         }
-                        Log.d("SMSBroadcast", "onReceivename: $name")
+                        Log.d("SMSBroadcast", "senderName : ${senderName} va onReceivename: $name")
                         cursor?.close()
                     }
+
                     Log.d("SMSBroadcast", "onReceiveContent: $smsMessagebody ")
                     serviceIntent.putExtra(
                         "senderName",
@@ -91,6 +92,7 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                                 flashlightHelper?.stopFlash()
                             }, 500)
                         }
+                        Log.d("TestABC","Pin hiên tại : ${announcer.getBatteryPercentage(context)} va pin toi thieu : ${SharedPreferenceUtils.batteryMin} ")
                         if (announcer.getBatteryPercentage(context) >= SharedPreferenceUtils.batteryMin) {
                             if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) context.startService(
                                 serviceIntent

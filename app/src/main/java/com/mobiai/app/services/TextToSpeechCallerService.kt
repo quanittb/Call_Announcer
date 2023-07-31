@@ -36,9 +36,11 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         var ratioRing =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
         volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
+
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, speechVolume, 0
         )
+        Log.d("ABCDE","volume ring : ${SharedPreferenceUtils.volumeAnnouncer} va $ratioMusic va audio hien tai : ${audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)}")
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
@@ -62,7 +64,8 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        val textToRead = intent?.getStringExtra("textToRead")
+        var textToRead = intent?.getStringExtra("textToRead")
+        if(textToRead=="null") textToRead = null
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         handler.postDelayed({
@@ -94,7 +97,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
                     "read"
                 )
             }
-        }, 100)
+        }, 500)
         Log.d(
             "TestABC",
             "Chưa chạy hàm đọc xong Before mode: ${SharedPreferenceUtils.beforeMode} va ${AudioManager.RINGER_MODE_NORMAL}"
