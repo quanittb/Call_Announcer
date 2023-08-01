@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">BaseProject</string>
+    <string name="app_name" translatable="false">Caller Name Announcer</string>
     <string name="this_action_can_contain_ad">This action can contain ad</string>
-    <string name="facebook_app_id">1234</string>
+    <string name="facebook_app_id" translatable="false">1234</string>
     <string name="language_english" translatable="false">English</string>
     <string name="language_spain" translatable="false">Spanish</string>
     <string name="language_portugal" translatable="false">Portuguese</string>
@@ -79,6 +79,7 @@
     <string name="we_need_some_permissions">We need some permissions</string>
     <string name="to_work_properly_we_need_some_permissions_please_go_to_settings_and_give_us_permission">to work properly we need some permissions, please go to settings and give us permission</string>
     <string name="go_to_settings">Go to settings</string>
+
     <string name="read_messages_when_someone_sends_them">Read messages when someone sends them</string>
     <string name="sms">SMS</string>
     <string name="volume_settings">Volume settings</string>
