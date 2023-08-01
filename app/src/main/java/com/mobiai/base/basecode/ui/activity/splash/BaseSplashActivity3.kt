@@ -7,6 +7,7 @@ import com.ads.control.ads.AperoAdCallback
 import com.ads.control.ads.wrapper.ApAdError
 import com.mobiai.base.basecode.ads.TypeLoadAds
 
+/*
 abstract class BaseSplashActivity3<V : ViewBinding> : BaseSplashActivity<V>() {
 
     companion object {
@@ -172,4 +173,4 @@ abstract class BaseSplashActivity3<V : ViewBinding> : BaseSplashActivity<V>() {
         }
     }
 
-}
+}*/

@@ -9,6 +9,7 @@ import com.mobiai.BuildConfig
 import com.mobiai.app.ui.activity.SplashActivity
 import com.mobiai.base.basecode.ads.TypeLoadAds
 
+/*
 abstract class BaseSplashActivity2<V : ViewBinding> : BaseSplashActivity<V>() {
 
     companion object {
@@ -132,4 +133,4 @@ abstract class BaseSplashActivity2<V : ViewBinding> : BaseSplashActivity<V>() {
 
 
 
-}
+}*/
