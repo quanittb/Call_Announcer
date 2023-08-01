@@ -30,14 +30,14 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         textToSpeech = TextToSpeech(this, this)
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        var ratioMusic =
+        val ratioMusic =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-        var speechVolume =
+        val speechVolume =
             Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, speechVolume, 0
         )
-        var ratioRing =
+        val ratioRing =
             (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
         volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -55,10 +55,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         val senderName = intent?.getStringExtra("senderName")
         val name = intent?.getStringExtra("name")
         val smsMessagebody = intent?.getStringExtra("smsMessagebody")
-        Log.d(
-            "TestABCD",
-            "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody"
-        )
+
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())

@@ -95,28 +95,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun initAdsInterHome() {
-        Log.i(
-            TAG,
-            "initAdsInterAddZodiac: isReady = ${App.getStorageCommon()?.mInterHome?.isReady}"
-        )
-        if (!AppPurchase.getInstance().isPurchased
-            && AdsRemote.showInterHome
-            && App.getStorageCommon()?.mInterHome == null
-        ) {
-            Log.i(TAG, "initAdsInterAddZodiac: compatibility fragment")
-            AperoAd.getInstance().getInterstitialAds(
-                requireContext(),
-                BuildConfig.inter_home,
-                object : AperoAdCallback() {
-                    override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
-                        super.onInterstitialLoad(interstitialAd)
-                        App.getStorageCommon()?.mInterHome = interstitialAd
-                    }
-                }
-            )
-        }
-    }
 
     private fun showInterHome(callback: () -> Unit) {
         var isNextActionEnable = true
@@ -145,6 +123,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         super.onAdFailedToLoad(adError)
                         Admob.getInstance().setOpenActivityAfterShowInterAds(false)
                     }
+                    override fun onAdClosed() {
+                        super.onAdClosed()
+                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+
+                    }
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                    }
 
                 }, true
             )
@@ -158,13 +145,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it) {
                 is NetworkConnected -> {
                     if (it.isOn) {
-                        Handler(Looper.getMainLooper()).postDelayed({
                             if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
                                 binding.flAds.visible()
                             }
-                            if (isAdded){
+                        Handler(Looper.getMainLooper()).postDelayed({
+                        if (isAdded){
                                 if (!isNativeAdsShowed) {
-                                    initAdsInterHome()
                                     initAdsNativeHome()
                                 }
                             }
@@ -183,8 +169,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
             binding.flAds.gone()
         }
-        initAdsInterHome()
         showNativeAdsHome()
+
         binding.cvItemHomeCall.setOnSafeClickListener(500) {
             showInterHome {
                 replaceFragment(CallAnnouncerFragment.instance())
@@ -229,7 +215,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
             if (isAdded){
                 if (!isNativeAdsShowed) {
-                    initAdsInterHome()
                     initAdsNativeHome()
                 }
             }
