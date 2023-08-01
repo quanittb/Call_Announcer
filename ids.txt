@@ -1,0 +1,17 @@
+appRelease {
+manifestPlaceholders = [admob_app_id: "ca-app-pub-6530974883137971~8303976052"]
+            buildConfigField "boolean", "build_debug", "false"
+
+            buildConfigField "String", "inter_splash", "\"ca-app-pub-6530974883137971/8690988868\""
+            buildConfigField "String", "inter_home", "\"ca-app-pub-6530974883137971/8499417176\""
+
+            buildConfigField "String", "native_language", "\"ca-app-pub-6530974883137971/7243273309\""
+            buildConfigField "String", "native_onboard", "\"ca-app-pub-6530974883137971/7405827354\""
+            buildConfigField "String", "native_home", "\"ca-app-pub-6530974883137971/3135409856\""
+            buildConfigField "String", "native_call", "\"ca-app-pub-6530974883137971/7018814548\""
+            buildConfigField "String", "native_sms", "\"ca-app-pub-6530974883137971/8379997679\""
+
+            buildConfigField "String", "ad_resume", "\"ca-app-pub-6530974883137971/1814589325\""
+
+            buildConfigField "String","banner","\"ca-app-pub-6530974883137971/3451421855\""
+    }
