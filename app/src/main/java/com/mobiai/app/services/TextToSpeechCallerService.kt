@@ -40,7 +40,6 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, speechVolume, 0
         )
-        Log.d("ABCDE","volume ring : ${SharedPreferenceUtils.volumeAnnouncer} va $ratioMusic va audio hien tai : ${audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)}")
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
@@ -72,7 +71,6 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
             if (!textToRead.isNullOrEmpty()) {
                 if (SharedPreferenceUtils.isReadName || SharedPreferenceUtils.isUnknownNumber) {
                     var name = ContactInfomation.getContactInfo(this, textToRead)
-                    Log.d("TestABC", "name: $name va texttoread: $textToRead")
                     if (name == textToRead) name = formatNumber(name)
                     textToSpeech.speak(
                         " $name ${getString(R.string.incoming_call)} ",
@@ -98,15 +96,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
                 )
             }
         }, 500)
-        Log.d(
-            "TestABC",
-            "Chưa chạy hàm đọc xong Before mode: ${SharedPreferenceUtils.beforeMode} va ${AudioManager.RINGER_MODE_NORMAL}"
-        )
         textToSpeech.setOnUtteranceCompletedListener {
-            Log.d(
-                "TestABC",
-                "Đã đọc xong Before mode: ${SharedPreferenceUtils.beforeMode} va ${AudioManager.RINGER_MODE_NORMAL}"
-            )
             if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
                 Log.d("TestABC", "Volume Ring của app lúc tts : $volumeRing")
                 handler.postDelayed({
@@ -119,10 +109,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
                             )
                         }
                     }
-                    Log.d(
-                        "TestABC",
-                        "Volume Ring của máy lúc tts : ${audioManager.getStreamVolume(AudioManager.STREAM_RING)}"
-                    )
+
                     audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
                 }, 800)
             }

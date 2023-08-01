@@ -3,12 +3,20 @@ package com.mobiai.app.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.ads.control.admob.AppOpenManager
+import com.ads.control.ads.AperoAd
+import com.ads.control.ads.AperoAdCallback
+import com.ads.control.ads.wrapper.ApInterstitialAd
+import com.ads.control.billing.AppPurchase
 import com.apero.inappupdate.AppUpdate
 import com.apero.inappupdate.AppUpdateManager
+import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.App
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.fragment.HomeFragment
 import com.mobiai.base.basecode.service.db.ModelTestDB
 import com.mobiai.base.basecode.service.db.testModelDB
@@ -40,6 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         AppUpdateManager.getInstance(this).checkUpdateApp(this) {
             AppOpenManager.getInstance().disableAppResume()
         }
+        //initAdsInterHome()
         attachFragment()
         this.testModelDB.insertModelTest(
             ModelTestDB(
@@ -56,6 +65,38 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         super.onResume()
         AppUpdateManager.getInstance(this).checkNewAppVersionState(this)
 
+    }
+    private fun initAdsInterHome() {
+        Log.i(
+            "TAG",
+            "initAdsInterAddZodiac: isReady = ${App.getStorageCommon()?.mInterHome?.isReady}"
+        )
+        if (!AppPurchase.getInstance().isPurchased
+            && AdsRemote.showInterHome
+            && App.getStorageCommon()?.mInterHome == null
+        ) {
+            Log.i("TAG", "initAdsInterAddZodiac: compatibility fragment")
+            AperoAd.getInstance().getInterstitialAds(
+                this,
+                BuildConfig.inter_home,
+                object : AperoAdCallback() {
+                    override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
+                        super.onInterstitialLoad(interstitialAd)
+                        App.getStorageCommon()?.mInterHome = interstitialAd
+                    }
+                }
+            )
+        }
+    }
+
+    override fun onNetworkAvailable() {
+        runOnUiThread{
+            if (App.getStorageCommon()?.mInterHome != null){
+                App.getStorageCommon()?.mInterHome = null
+            }
+            initAdsInterHome()
+        }
+        super.onNetworkAvailable()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

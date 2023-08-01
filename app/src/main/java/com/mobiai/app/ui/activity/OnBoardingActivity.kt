@@ -66,6 +66,13 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
         }
     }
 
+    override fun onNetworkAvailable() {
+        runOnUiThread {
+            initAdsNative()
+        }
+        super.onNetworkAvailable()
+    }
+
     private fun addControl() {
         val adapter = OnBoardingViewPagerAdapter(
             supportFragmentManager,
@@ -136,6 +143,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
             showAdsNative(nativeAd)
             binding.tvNext.text = getString(R.string.next)
         } else {
+
             binding.tvNext.isEnabled = true
             binding.viewPager.setPagingEnabled(true)
             if (currentPosition != 2) {
