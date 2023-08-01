@@ -36,6 +36,9 @@ object SharedPreferenceUtils {
 
     private const val BATTERY_MIN = "BATTERY_MIN"
     private const val BEFORE_MODE = "BEFORE_MODE"
+
+    private const val SEEKBAR_RING = "SEEKBAR_RING"
+    private const val SEEKBAR_MUSIC = "SEEKBAR_MUSIC"
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
         set(value) = App.instanceSharePreference.setValueBool(FIRST_OPEN_APP, value)
@@ -92,7 +95,7 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(IS_TURN_ON_FLASH_ANNOUNCER, false)
         set(value) = App.instanceSharePreference.setValueBool(IS_TURN_ON_FLASH_ANNOUNCER, value)
     var volumeAnnouncer: Int
-        get() = App.instanceSharePreference.getIntValue(VOLUME_ANNOUNCER, 30)
+        get() = App.instanceSharePreference.getIntValue(VOLUME_ANNOUNCER, 15)
         set(value) = App.instanceSharePreference.setIntValue(VOLUME_ANNOUNCER, value)
     var speedSpeak: Int
         get() = App.instanceSharePreference.getIntValue(SPEED_SPEAK, 30)
@@ -104,7 +107,7 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(READ_NAME, false)
         set(value) = App.instanceSharePreference.setValueBool(READ_NAME, value)
     var volumeRing: Int
-        get() = App.instanceSharePreference.getIntValue(VOLUME_RING, 30)
+        get() = App.instanceSharePreference.getIntValue(VOLUME_RING, 15)
         set(value) = App.instanceSharePreference.setIntValue(VOLUME_RING, value)
 
     var currentMusic : Int
@@ -126,5 +129,10 @@ object SharedPreferenceUtils {
     var beforeMode : Int
         get() = App.instanceSharePreference.getIntValue(BEFORE_MODE,2)
         set(value) = App.instanceSharePreference.setIntValue(BEFORE_MODE,value)
-
+    var seekBarRing: Int
+        get() = App.instanceSharePreference.getIntValue(SEEKBAR_RING, 30)
+        set(value) = App.instanceSharePreference.setIntValue(SEEKBAR_RING, value)
+    var seekBarMusic: Int
+        get() = App.instanceSharePreference.getIntValue(SEEKBAR_MUSIC, 30)
+        set(value) = App.instanceSharePreference.setIntValue(SEEKBAR_MUSIC, value)
 }

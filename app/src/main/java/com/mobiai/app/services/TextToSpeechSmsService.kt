@@ -30,16 +30,16 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         textToSpeech = TextToSpeech(this, this)
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val ratioMusic =
-            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-        val speechVolume =
-            Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC, speechVolume, 0
-        )
-        val ratioRing =
-            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
-        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
+//        var ratioMusic =
+//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
+//        var speechVolume =
+//            Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
+//        audioManager.setStreamVolume(
+//            AudioManager.STREAM_MUSIC, speechVolume, 0
+//        )
+//        var ratioRing =
+//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
+//        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
                 audioManager.setStreamVolume(
@@ -55,9 +55,14 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         val senderName = intent?.getStringExtra("senderName")
         val name = intent?.getStringExtra("name")
         val smsMessagebody = intent?.getStringExtra("smsMessagebody")
-
+        Log.d(
+            "TestABCD",
+            "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody"
+        )
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
+        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.volumeRing,0)
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,SharedPreferenceUtils.volumeAnnouncer,0)
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
         handler.postDelayed(
             {
@@ -84,7 +89,8 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
                     )
                 }
 
-            }, 700)
+            }, 700
+        )
         textToSpeech.setOnUtteranceCompletedListener {
             setVolume()
         }
@@ -116,12 +122,12 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
     fun setVolume() {
         handler.postDelayed({
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT) {
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
-                    )
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
-                    )
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
+                )
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
+                )
             }
         }, 1000)
     }

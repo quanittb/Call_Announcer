@@ -1,8 +1,11 @@
 package com.mobiai.app.ui.fragment
 
+import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ads.control.admob.AppOpenManager
@@ -40,7 +43,7 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
         binding.sbVolume.setIndicatorTextDecimalFormat("0")
         binding.sbVolume.setIndicatorTextStringFormat("%s%%")
         binding.sbVolume.setProgress(0f, 100.0f)
-        binding.sbVolume.setProgress(SharedPreferenceUtils.volumeAnnouncer.toFloat())
+        binding.sbVolume.setProgress(SharedPreferenceUtils.seekBarMusic.toFloat())
 
         binding.lnRingtone.setOnSafeClickListener(500) {
             if (!Settings.System.canWrite(requireContext())) {
@@ -87,6 +90,9 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
         binding.icArrowLeft.setOnSafeClickListener(500){
             handlerBackPressed()
         }
+        val audioManager = context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        SharedPreferenceUtils.currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        SharedPreferenceUtils.currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
 
         binding.sbVolume.setOnRangeChangedListener(object : OnRangeChangedListener {
             override fun onRangeChanged(
@@ -95,7 +101,12 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
                 rightValue: Float,
                 isFromUser: Boolean
             ) {
-                SharedPreferenceUtils.volumeAnnouncer = round(leftValue).roundToInt()
+                SharedPreferenceUtils.seekBarMusic = round(leftValue).roundToInt()
+                var ratioMusic = (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
+                SharedPreferenceUtils.volumeAnnouncer = (round(leftValue) / ratioMusic).roundToInt()
+                Log.d("ABCDE","ring: ${audioManager.getStreamVolume(AudioManager.STREAM_RING)} va media : ${audioManager.getStreamVolume(
+                    AudioManager.STREAM_MUSIC)} va sharedring : ${SharedPreferenceUtils.volumeRing} va sharedmusic : ${SharedPreferenceUtils.volumeAnnouncer}")
+
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {

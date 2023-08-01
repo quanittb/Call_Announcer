@@ -115,7 +115,7 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
         binding.sbRingtoneVolume.setProgress(0f, 100f)
         binding.sbRingtoneVolume.setIndicatorTextDecimalFormat("0")
         binding.sbRingtoneVolume.setIndicatorTextStringFormat("%s%%")
-        binding.sbRingtoneVolume.setProgress(SharedPreferenceUtils.volumeRing.toFloat())
+        binding.sbRingtoneVolume.setProgress(SharedPreferenceUtils.seekBarRing.toFloat())
 
         binding.icArrowLeft.setOnClickListener {
             if (currentPlayingRingtone != null) {
@@ -130,12 +130,13 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
             }
             handlerBackPressed()
         }
-        audioManager =
-            context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        audioManager = context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        SharedPreferenceUtils.currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        SharedPreferenceUtils.currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
 
         mediaPlayer?.setOnCompletionListener {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0)
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0)
             mediaPlayer?.release()
             mediaPlayer = null
         }
@@ -146,14 +147,18 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
                 rightValue: Float,
                 isFromUser: Boolean
             ) {
-                SharedPreferenceUtils.volumeRing = round(leftValue).roundToInt()
+                SharedPreferenceUtils.seekBarRing = round(leftValue).roundToInt()
                 var ratioRing =
-                    (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-                var volumeRing =
-                    (SharedPreferenceUtils.volumeRing.toFloat() / ratioRing).roundToInt()
+                    (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
+                var volumeRing = (round(leftValue) / ratioRing).roundToInt()
+                SharedPreferenceUtils.volumeRing = volumeRing
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_MUSIC, volumeRing, 0
                 )
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_RING, volumeRing, 0
+                )
+                Log.d("ABCDE","ring: ${audioManager.getStreamVolume(AudioManager.STREAM_RING)} va media : ${audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)} va sharedring : ${SharedPreferenceUtils.volumeRing} va sharedmusic : ${SharedPreferenceUtils.volumeAnnouncer}")
             }
 
             override fun onStartTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
@@ -164,6 +169,7 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
             }
 
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+
 
             }
         })
@@ -227,6 +233,8 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
 
     override fun onStop() {
         super.onStop()
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC , SharedPreferenceUtils.currentMusic , 0)
+        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.currentRing , 0)
         if (currentPlayingRingtone != null) {
             stopRingtone(currentPlayingRingtone!!)
             mediaPlayer?.release()
@@ -376,6 +384,8 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
 
     override fun handlerBackPressed() {
         super.handlerBackPressed()
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC , SharedPreferenceUtils.currentMusic , 0)
+        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.currentRing , 0)
         closeFragment(this)
     }
 
