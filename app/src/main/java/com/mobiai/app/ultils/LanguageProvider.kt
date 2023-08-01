@@ -25,8 +25,31 @@ class LanguageProvider(val context: Context) {
             context.getString(R.string.language_france),
             "fr"
         ),
+        Language(
+            R.drawable.flag_de_germany,
+            context.getString(R.string.language_germany),
+            "de"
+        ),
+        Language(R.drawable.flag_vn_vietnam, context.getString(R.string.language_vietnamese), "vi"),
 
-         Language(R.drawable.flag_vn_vietnam, context.getString(R.string.language_vietnamese), "vi"),
+       /* Language(R.drawable.flag_en, context.getString(R.string.language_english), "en"),
+        Language(
+            R.drawable.flag_es_spain,
+            context.getString(R.string.language_spain),
+            "es"
+        ),
+
+        Language(
+            R.drawable.flag_pt_portugal,
+            context.getString(R.string.language_portugal),
+            "pt"
+        ),
+
+        Language(
+            R.drawable.flag_fr_france,
+            context.getString(R.string.language_france),
+            "fr"
+        ),
 
         Language(R.drawable.flag_ko_korean,
           context.getString(R.string.language_korean),
@@ -51,7 +74,7 @@ class LanguageProvider(val context: Context) {
         Language(R.drawable.flag_gr_greece,
           context.getString(R.string.language_greece),
             "gr"),
-
+*/
     )
     val listFirstOpenLanguage = mutableListOf(
         Language(R.drawable.flag_en, context.getString(R.string.language_english), "en"),
