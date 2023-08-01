@@ -8,9 +8,9 @@ import com.mobiai.app.storage.AdsRemote
 import com.mobiai.base.basecode.ads.TypeLoadAds
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
-import com.mobiai.base.basecode.ui.activity.splash.BaseSplashActivity3
 import com.mobiai.databinding.ActivitySplashBinding
 
+/*
 class SplashActivity3(
     override val isShowAdsSplash: Boolean = AdsRemote.showAdsSplash,
     override val idAdsNormal: String = BuildConfig.inter_splash,
@@ -68,4 +68,4 @@ class SplashActivity3(
     override fun createView() {
     }
 
-}
+}*/

@@ -10,8 +10,8 @@ import com.mobiai.base.basecode.ads.TypeLoadAds.Companion.ALTERNATE
 import com.mobiai.base.basecode.ads.TypeLoadAds.Companion.SAMETIME
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
-import com.mobiai.base.basecode.ui.activity.splash.BaseSplashActivity2
 import com.mobiai.databinding.ActivitySplashBinding
+/*
 
 class SplashActivity2(
     override val isShowAdsSplash: Boolean = AdsRemote.showAdsSplash,
@@ -69,4 +69,4 @@ class SplashActivity2(
 
     override fun createView() {
     }
-}
+}*/
