@@ -39,6 +39,7 @@ object SharedPreferenceUtils {
 
     private const val SEEKBAR_RING = "SEEKBAR_RING"
     private const val SEEKBAR_MUSIC = "SEEKBAR_MUSIC"
+    private const val CHECK_BEFORE = "CHECK_BEFORE"
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
         set(value) = App.instanceSharePreference.setValueBool(FIRST_OPEN_APP, value)
@@ -135,4 +136,7 @@ object SharedPreferenceUtils {
     var seekBarMusic: Int
         get() = App.instanceSharePreference.getIntValue(SEEKBAR_MUSIC, 30)
         set(value) = App.instanceSharePreference.setIntValue(SEEKBAR_MUSIC, value)
+    var checkMode: Boolean
+        get() = App.instanceSharePreference.getValueBool(CHECK_BEFORE, true)
+        set(value) = App.instanceSharePreference.setValueBool(CHECK_BEFORE, value)
 }

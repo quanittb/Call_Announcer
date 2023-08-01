@@ -103,13 +103,16 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
             }
         }, 500)
         textToSpeech.setOnUtteranceCompletedListener {
-            if(SharedPreferenceUtils.seekBarRing == 0)
+            if(SharedPreferenceUtils.seekBarRing == 0){
+//                audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_RING,
                     0,
                     0
                 )
-            audioManager.ringerMode = SharedPreferenceUtils.beforeMode
+            }
+
+//            audioManager.ringerMode = SharedPreferenceUtils.beforeMode
             if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
                 handler.postDelayed({
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -125,7 +128,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
 
 
 
-                }, 1000)
+                }, 500)
             }
 
         }
