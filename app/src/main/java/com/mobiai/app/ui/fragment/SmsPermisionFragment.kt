@@ -45,7 +45,6 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
     private fun checkPermission() {
         val permissions = arrayOf(
             Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS,
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO
@@ -57,7 +56,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
                     permission
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
+                if (permission == Manifest.permission.READ_SMS  || permission == Manifest.permission.RECEIVE_SMS){
                     binding.icSelectSms.visible()
                 }
                 if (permission == Manifest.permission.READ_CONTACTS){
@@ -70,7 +69,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
         }
     }
     private fun checkPermissionOnResume(permission:String) {
-        if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
+        if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.RECEIVE_SMS){
             isGotoSettingSms = false
             if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
                 binding.icSelectSms.visible()

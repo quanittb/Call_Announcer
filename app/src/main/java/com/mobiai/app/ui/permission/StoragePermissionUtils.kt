@@ -30,8 +30,7 @@ object StoragePermissionUtils {
     }
     fun requestSmsPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
         PermissionUtils.requestMultiplePermission(
-            arrayOf(  Manifest.permission.READ_SMS,
-                Manifest.permission.SEND_SMS,
+            arrayOf(Manifest.permission.READ_SMS,
                 Manifest.permission.RECEIVE_SMS),
             resultLauncher
         )
