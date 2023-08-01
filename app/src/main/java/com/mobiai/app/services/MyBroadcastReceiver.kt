@@ -20,7 +20,6 @@ class MyBroadcastReceiver : BroadcastReceiver() {
     private lateinit var announcer: Announcer
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var serviceIntent : Intent
-    private var check = 1
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onReceive(context: Context?, intent: Intent?) {
         val flashlightHelper = context?.let { FlashlightHelper.getInstance(it) }
@@ -30,9 +29,9 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         val currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
         val currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
 
-        if(check==1) SharedPreferenceUtils.beforeMode = audioManager.ringerMode
-        check ++
-        Log.d("ABCDE","Check : $check")
+        if(SharedPreferenceUtils.checkMode) SharedPreferenceUtils.beforeMode = audioManager.ringerMode
+        SharedPreferenceUtils.checkMode = ! SharedPreferenceUtils.checkMode
+        Log.d("ABCDE","Check : ${SharedPreferenceUtils.checkMode}")
         Log.d("ABCDE","before mode : ${SharedPreferenceUtils.beforeMode}")
         SharedPreferenceUtils.currentMusic = currentMusic
         SharedPreferenceUtils.currentRing = currentRing
@@ -53,13 +52,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                             if(SharedPreferenceUtils.seekBarRing == 0) audioManager.setStreamVolume(AudioManager.STREAM_RING,0,0)
                             if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal)
                             {
-
-                                //if(SharedPreferenceUtils.seekBarRing == 0) audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
                                 context.startService(serviceIntent)
-
-
                             }
-
                             else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate) context.startService(serviceIntent)
                             else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent) context.startService(serviceIntent)
                         }
@@ -68,10 +62,12 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                 }
 
                 TelephonyManager.EXTRA_STATE_IDLE -> {
+                    audioManager.ringerMode = SharedPreferenceUtils.beforeMode
+                    Log.d("ABCDE","Mode cuối : ${SharedPreferenceUtils.beforeMode}")
                     flashlightHelper?.stopBlink()
                     flashlightHelper?.stopFlash()
                     //context?.stopService(serviceIntent)
-                    setVolume(context)
+                    if(SharedPreferenceUtils.seekBarRing != 0 ) setVolume(context)
 
                 }
 
@@ -90,7 +86,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
     fun setVolume(context: Context?) {
         val audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        audioManager.ringerMode = SharedPreferenceUtils.beforeMode
+        //audioManager.ringerMode = SharedPreferenceUtils.beforeMode
+        Log.d("ABCDE","Mode cuối : ${SharedPreferenceUtils.beforeMode}")
         handler.postDelayed({
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT)
                 audioManager.setStreamVolume(
