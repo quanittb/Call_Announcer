@@ -21,48 +21,53 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
     private lateinit var textToSpeech: TextToSpeech
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var audioManager: AudioManager
-    private var volumeRing: Int = 0
+    //private var volumeRing: Int = 0
 
 
     override fun onCreate() {
         super.onCreate()
-        textToSpeech = TextToSpeech(this, this)
+
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        var ratioMusic =
-            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-        var speechVolume =
-            Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
-        var ratioRing =
-            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
-        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
+//        var ratioMusic =
+//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
+//        var speechVolume =
+//            Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
+//        var ratioRing =
+//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
+//        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
 
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC, speechVolume, 0
-        )
-        textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_RING,
-                    1,
-                    0
-                )
-            }
-        }
+
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
+
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_RING,
-                    audioManager.getStreamMinVolume(AudioManager.STREAM_RING),
+                    0,
                     0
                 )
             }
         }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+//            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
+//                audioManager.setStreamVolume(
+//                    AudioManager.STREAM_RING,
+//                    1,
+//                    0
+//                )
+//            }
+//        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+        textToSpeech = TextToSpeech(this, this)
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
+        )
+        textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40)
         var textToRead = intent?.getStringExtra("textToRead")
         if(textToRead=="null") textToRead = null
         val params = Bundle()
@@ -71,6 +76,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
             if (!textToRead.isNullOrEmpty()) {
                 if (SharedPreferenceUtils.isReadName || SharedPreferenceUtils.isUnknownNumber) {
                     var name = ContactInfomation.getContactInfo(this, textToRead)
+                    Log.d("TestABC", "name: $name va texttoread: $textToRead")
                     if (name == textToRead) name = formatNumber(name)
                     textToSpeech.speak(
                         " $name ${getString(R.string.incoming_call)} ",
@@ -97,21 +103,29 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
             }
         }, 500)
         textToSpeech.setOnUtteranceCompletedListener {
+            if(SharedPreferenceUtils.seekBarRing == 0)
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_RING,
+                    0,
+                    0
+                )
+            audioManager.ringerMode = SharedPreferenceUtils.beforeMode
             if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
-                Log.d("TestABC", "Volume Ring của app lúc tts : $volumeRing")
                 handler.postDelayed({
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
+                        if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.seekBarRing != 0) {
                             audioManager.setStreamVolume(
                                 AudioManager.STREAM_RING,
-                                volumeRing,
+                                SharedPreferenceUtils.volumeRing,
                                 0
                             )
                         }
                     }
+                    Log.d("ABCDE","volume ring : ${SharedPreferenceUtils.volumeRing}  va volume hien tai : ${audioManager.getStreamVolume(AudioManager.STREAM_RING)}")
 
-                    audioManager.ringerMode = AudioManager.RINGER_MODE_NORMAL
-                }, 800)
+
+
+                }, 1000)
             }
 
         }
