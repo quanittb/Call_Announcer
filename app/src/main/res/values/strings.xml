@@ -97,4 +97,8 @@
     <string name= "there_is_a_message_with_content" > There is a message with content</string>
     <string name= "message_from" > Message from</string>
     <string name= "with_content" > with content</string>
+    <string name="message_notification_in_ring_mode">Message notification in ring mode</string>
+    <string name="incoming_message_notification_in_silent_mode">Incoming message notification in silent mode</string>
+    <string name="incoming_message_notification_in_vibrate_mode">Incoming message notification in vibrate mode</string>
+    <string name="message_notification">Message notification</string>
 </resources>
