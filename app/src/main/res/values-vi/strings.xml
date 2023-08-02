@@ -79,4 +79,8 @@
     <string name= "there_is_a_message_with_content"> Có một tin nhắn có nội dung</string>
     <string name= "message_from"> Tin nhắn từ</string>
     <string name= "with_content"> Có nội dung</string>
+    <string name="message_notification_in_ring_mode">Thông báo tin nhắn ở chế độ đổ chuông</string>
+    <string name="incoming_message_notification_in_silent_mode">Thông báo tin nhắn đến ở chế độ im lặng</string>
+    <string name="incoming_message_notification_in_vibrate_mode">Thông báo tin nhắn đến ở chế độ rung</string>
+    <string name="message_notification">Thông báo tin nhắn</string>
 </resources>

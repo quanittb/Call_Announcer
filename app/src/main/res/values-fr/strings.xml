@@ -78,4 +78,8 @@
     <string name= "there_is_a_message_with_content" > Il y a un message avec du contenu</string>
     <string name= "message_from" > Message de</string>
     <string name= "with_content" > avec contenu</string>
+    <string name="message_notification_in_ring_mode">Notification de message en mode sonnerie</string>
+    <string name="incoming_message_notification_in_silent_mode">Notification de message entrant en mode silencieux</string>
+    <string name="incoming_message_notification_in_vibrate_mode">Notification de message entrant en mode vibreur</string>
+    <string name="message_notification">Notification de message</string>
 </resources>

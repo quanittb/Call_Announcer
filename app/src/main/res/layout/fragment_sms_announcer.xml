@@ -94,7 +94,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/call_notification_on_ringer_mode" />
+                            android:text="@string/message_notification_in_ring_mode" />
 
                     </LinearLayout>
 
@@ -152,7 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/call_notification_in_silent_mode" />
+                            android:text="@string/incoming_message_notification_in_silent_mode" />
 
                     </LinearLayout>
 
@@ -210,7 +210,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/call_notification_in_vibrate_mode" />
+                            android:text="@string/incoming_message_notification_in_vibrate_mode" />
 
                     </LinearLayout>
 
@@ -268,7 +268,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/call_notification" />
+                            android:text="@string/message_notification" />
 
                     </LinearLayout>
 
