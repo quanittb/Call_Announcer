@@ -28,5 +28,5 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "BaseProject"
+rootProject.name = "Call Announcer"
 include ':app'
