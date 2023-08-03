@@ -82,4 +82,7 @@
     <string name="incoming_message_notification_in_silent_mode">Notification de message entrant en mode silencieux</string>
     <string name="incoming_message_notification_in_vibrate_mode">Notification de message entrant en mode vibreur</string>
     <string name="message_notification">Notification de message</string>
+    <string name="read_call_log">Lire le journal des appels</string>
+    <string name="permission_to_read_call_log">Autorisation de lire le journal des appels</string>
+    <string name="write_settings">Paramètres d'écriture</string>
 </resources>

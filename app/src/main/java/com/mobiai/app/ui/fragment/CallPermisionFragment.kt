@@ -27,10 +27,12 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
         }
     }
     private var goToSettingDialogPhone: GotosettingDialog? = null
+    private var goToSettingDialogPhoneCallLog: GotosettingDialog? = null
     private var goToSettingDialogContact: GotosettingDialog? = null
     private var goToSettingDialogAudio: GotosettingDialog? = null
 
     private var isGotoSettingPhone = false
+    private var isGotoSettingPhoneCallLog = false
     private var isGotoSettingContact = false
     private var isGotoSettingAudio = false
     override fun initView() {
@@ -39,12 +41,13 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
             handlerBackPressed()
         }
         binding.cvAllow.setOnSafeClickListener(1000){
-            StoragePermissionUtils.requestPhonePermission(requestMultiplePhonePermissionsLauncher)
+            StoragePermissionUtils.requestPhoneCallLogPermission(requestMultiplePhoneCallLogPermissionsLauncher)
         }
     }
 
     private fun checkPermission() {
         val permissions = arrayOf(
+            Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
@@ -58,6 +61,9 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                     permission
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
+                if (permission == Manifest.permission.READ_CALL_LOG){
+                    binding.icSelectPhoneLog.visible()
+                }
                 if (permission == Manifest.permission.READ_PHONE_STATE){
                     binding.icSelectPhone.visible()
                 }
@@ -71,13 +77,34 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
         }
     }
     private fun checkPermissionOnResume(permission:String) {
-
+        if (permission == Manifest.permission.READ_CALL_LOG){
+            isGotoSettingPhoneCallLog = false
+            if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
+                binding.icSelectPhoneLog.visible()
+                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+                    RxBus.publish(IsTurnOnCall())
+                    Handler().postDelayed({
+                        handlerBackPressed()
+                    },100)
+                }
+                else{
+                    StoragePermissionUtils.requestPhonePermission(requestMultiplePhonePermissionsLauncher)
+                }
+            }
+            else{
+                checkPermission()
+                showGotoSettingPhoneCalllogDialog()
+            }
+        }
         if (permission == Manifest.permission.READ_PHONE_STATE){
             isGotoSettingPhone = false
             if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
                 binding.icSelectPhone.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
                     RxBus.publish(IsTurnOnCall())
                     Handler().postDelayed({
                         handlerBackPressed()
@@ -97,15 +124,16 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
             isGotoSettingContact = false
             if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED) {
                 binding.icSelectContact.visible()
-                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
                     RxBus.publish(IsTurnOnCall())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)
                 }
                 else{
-                    StoragePermissionUtils.requestContactPermission(requestMultipleAudioPermissionsLauncher)
+                    StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
                 }
             }
             else{
@@ -120,7 +148,8 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
             if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED){
                 binding.icSelectAudio.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
                     RxBus.publish(IsTurnOnCall())
                     Handler().postDelayed({
                         handlerBackPressed()
@@ -131,6 +160,21 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                 checkPermission()
                 showGotoSettingAudioDialog()
             }
+        }
+    }
+
+    private fun showGotoSettingPhoneCalllogDialog() {
+        if (goToSettingDialogPhoneCallLog==null){
+            goToSettingDialogPhoneCallLog = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                isGotoSettingPhoneCallLog = true
+                gotoSetting()
+            }
+        }
+        if (!goToSettingDialogPhoneCallLog!!.isShowing) {
+            goToSettingDialogPhoneCallLog!!.show()
         }
     }
     private fun showGotoSettingPhoneDialog() {
@@ -175,6 +219,20 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
         }
         if (!goToSettingDialogAudio!!.isShowing) {
             goToSettingDialogAudio!!.show()
+        }
+    }
+
+    private val requestMultiplePhoneCallLogPermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.all { it.value }
+        if (allGranted) {
+            //todo phone call log
+            isGotoSettingPhoneCallLog = false
+            binding.icSelectPhoneLog.visible()
+            StoragePermissionUtils.requestPhonePermission(requestMultiplePhonePermissionsLauncher)
+        } else {
+            showGotoSettingPhoneCalllogDialog()
         }
     }
 
@@ -226,7 +284,10 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
 
     override fun onResume() {
         super.onResume()
-        if (isGotoSettingPhone){
+        if (isGotoSettingPhoneCallLog){
+            checkPermissionOnResume(Manifest.permission.READ_CALL_LOG)
+        }
+        else if (isGotoSettingPhone){
             checkPermissionOnResume(Manifest.permission.READ_PHONE_STATE)
         }
         else if (isGotoSettingContact){

@@ -75,6 +75,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
                 binding.icSelectSms.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                    RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)
@@ -95,12 +96,13 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
                 binding.icSelectContact.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+                    RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)
                 }
                 else{
-                    StoragePermissionUtils.requestContactPermission(requestMultipleAudioPermissionsLauncher)
+                    StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
                 }
             }
             else{
@@ -116,6 +118,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
                 binding.icSelectAudio.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+                    RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)

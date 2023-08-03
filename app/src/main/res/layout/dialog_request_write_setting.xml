@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Write Settings"
+                android:text="@string/write_settings"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:gravity="center"
                 android:layout_marginHorizontal="@dimen/_10sdp"

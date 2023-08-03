@@ -191,6 +191,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
     private fun checkPermission() {
         val permissions = arrayOf(
+            Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
@@ -202,7 +203,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (permission == Manifest.permission.READ_PHONE_STATE){
+                if (permission == Manifest.permission.READ_CALL_LOG || permission == Manifest.permission.READ_PHONE_STATE){
                     SharedPreferenceUtils.isTurnOnCall = false
                     binding.btnTurn.background =
                         AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
@@ -306,10 +307,10 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         if (!SharedPreferenceUtils.isTurnOnCall) {
             val permissions = arrayOf(
                 Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.READ_CALL_LOG,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
             )
-
             for (permission in permissions) {
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),
@@ -364,20 +365,34 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             if (SharedPreferenceUtils.isTurnOnModeNormal){
                 binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
+            else{
+                binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
             if (SharedPreferenceUtils.isTurnOnModeSilent)
             {
                 binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
+            else{
+                binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
             if (SharedPreferenceUtils.isTurnOnModeVibrate){
                 binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+            }
+            else{
+                binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
             }
             if (SharedPreferenceUtils.isTurnOnFlash){
                 binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
+            else{
+                binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
             if (SharedPreferenceUtils.isUnknownNumber){
                 binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-
+            else{
+                binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
             if (SharedPreferenceUtils.isReadName){
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }

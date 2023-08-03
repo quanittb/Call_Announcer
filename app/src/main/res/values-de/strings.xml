@@ -82,4 +82,8 @@
     <string name="incoming_message_notification_in_silent_mode">Benachrichtigung über eingehende Nachrichten im stillen Modus</string>
     <string name="incoming_message_notification_in_vibrate_mode">Benachrichtigung über eingehende Nachrichten im Vibrationsmodus</string>
     <string name="message_notification">Nachrichtenbenachrichtigung</string>
+
+    <string name="read_call_log">Anrufprotokoll lesen</string>
+    <string name="permission_to_read_call_log">Berechtigung zum Lesen des Anrufprotokolls</string>
+    <string name="write_settings">Schreibeinstellungen</string>
 </resources>

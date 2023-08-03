@@ -101,4 +101,8 @@
     <string name="incoming_message_notification_in_silent_mode">Incoming message notification in silent mode</string>
     <string name="incoming_message_notification_in_vibrate_mode">Incoming message notification in vibrate mode</string>
     <string name="message_notification">Message notification</string>
+
+    <string name="read_call_log">Read call log</string>
+    <string name="permission_to_read_call_log">Permission to read call log</string>
+    <string name="write_settings">Write Settings</string>
 </resources>
