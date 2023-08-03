@@ -99,7 +99,7 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getIntValue(VOLUME_ANNOUNCER, 15)
         set(value) = App.instanceSharePreference.setIntValue(VOLUME_ANNOUNCER, value)
     var speedSpeak: Int
-        get() = App.instanceSharePreference.getIntValue(SPEED_SPEAK, 30)
+        get() = App.instanceSharePreference.getIntValue(SPEED_SPEAK, 50)
         set(value) = App.instanceSharePreference.setIntValue(SPEED_SPEAK, value)
     var isUnknownNumber: Boolean
         get() = App.instanceSharePreference.getValueBool(UNKNOWN_NUMBER, false)
@@ -125,16 +125,16 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValue(SAVED_RINGTONE_PATH, null)
         set(value) = App.instanceSharePreference.setValue(SAVED_RINGTONE_PATH, value)
     var batteryMin : Int
-        get() = App.instanceSharePreference.getIntValue(BATTERY_MIN,5)
+        get() = App.instanceSharePreference.getIntValue(BATTERY_MIN,20)
         set(value) = App.instanceSharePreference.setIntValue(BATTERY_MIN,value)
     var beforeMode : Int
         get() = App.instanceSharePreference.getIntValue(BEFORE_MODE,2)
         set(value) = App.instanceSharePreference.setIntValue(BEFORE_MODE,value)
     var seekBarRing: Int
-        get() = App.instanceSharePreference.getIntValue(SEEKBAR_RING, 30)
+        get() = App.instanceSharePreference.getIntValue(SEEKBAR_RING, 50)
         set(value) = App.instanceSharePreference.setIntValue(SEEKBAR_RING, value)
     var seekBarMusic: Int
-        get() = App.instanceSharePreference.getIntValue(SEEKBAR_MUSIC, 30)
+        get() = App.instanceSharePreference.getIntValue(SEEKBAR_MUSIC, 50)
         set(value) = App.instanceSharePreference.setIntValue(SEEKBAR_MUSIC, value)
     var checkMode: Boolean
         get() = App.instanceSharePreference.getValueBool(CHECK_BEFORE, true)

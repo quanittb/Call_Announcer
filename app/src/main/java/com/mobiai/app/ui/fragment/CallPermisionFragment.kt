@@ -47,7 +47,9 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
         val permissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.ANSWER_PHONE_CALLS
         )
 
         for (permission in permissions) {

@@ -30,16 +30,6 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         textToSpeech = TextToSpeech(this, this)
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-//        var ratioMusic =
-//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
-//        var speechVolume =
-//            Math.round(SharedPreferenceUtils.volumeAnnouncer.toFloat() / ratioMusic)
-//        audioManager.setStreamVolume(
-//            AudioManager.STREAM_MUSIC, speechVolume, 0
-//        )
-//        var ratioRing =
-//            (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)).toFloat()
-//        volumeRing = Math.round(SharedPreferenceUtils.volumeRing.toFloat() / ratioRing)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
                 audioManager.setStreamVolume(

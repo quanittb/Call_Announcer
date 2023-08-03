@@ -114,7 +114,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
         audioController = AudioControllerRingtone(requireContext())
         binding.sbRingtoneVolume.setProgress(0f, 100f)
         binding.sbRingtoneVolume.setIndicatorTextDecimalFormat("0")
-        binding.sbRingtoneVolume.setIndicatorTextStringFormat("%s%%")
         binding.sbRingtoneVolume.setProgress(SharedPreferenceUtils.seekBarRing.toFloat())
 
         binding.icArrowLeft.setOnClickListener {

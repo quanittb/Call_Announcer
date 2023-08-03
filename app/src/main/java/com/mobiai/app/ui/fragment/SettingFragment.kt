@@ -81,7 +81,6 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
 
         }
         binding.lnPolicy.setOnSafeClickListener(200L) {
-            // todo policy
             WrapAdsResume.instance.disableAdsResumeByClickAction()
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(LINK_POLICY))
             startActivity(browserIntent)
@@ -104,8 +103,6 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
                 SharedPreferenceUtils.seekBarMusic = round(leftValue).roundToInt()
                 var ratioMusic = (100 / audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)).toFloat()
                 SharedPreferenceUtils.volumeAnnouncer = (round(leftValue) / ratioMusic).roundToInt()
-                Log.d("ABCDE","ring: ${audioManager.getStreamVolume(AudioManager.STREAM_RING)} va media : ${audioManager.getStreamVolume(
-                    AudioManager.STREAM_MUSIC)} va sharedring : ${SharedPreferenceUtils.volumeRing} va sharedmusic : ${SharedPreferenceUtils.volumeAnnouncer}")
 
             }
 
