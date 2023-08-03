@@ -92,11 +92,11 @@
     <string name="you_need_camera_permission_to_use_this_feature">You need camera permission to use this feature</string>
 
     <string name="phone_number">Phone number </string>
-    <string name="incoming_call">Incoming call</string>
+    <string name="incoming_call">is calling</string>  
     <string name="you_have_an_incoming_call">You have an incoming call</string>
-    <string name= "there_is_a_message_with_content" > There is a message with content</string>
+    <string name= "there_is_a_message_with_content" > You have new message from </string>
     <string name= "message_from" > Message from</string>
-    <string name= "with_content" > with content</string>
+    <string name= "with_content" > And message is </string>
     <string name="message_notification_in_ring_mode">Message notification in ring mode</string>
     <string name="incoming_message_notification_in_silent_mode">Incoming message notification in silent mode</string>
     <string name="incoming_message_notification_in_vibrate_mode">Incoming message notification in vibrate mode</string>

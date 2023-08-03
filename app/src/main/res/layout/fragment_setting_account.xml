@@ -153,18 +153,20 @@
                     android:id="@+id/textView22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
                     android:fontFamily="@font/poppins_medium"
                     android:text="@string/battery_announcer"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
                 <com.jaygoo.widget.RangeSeekBar
                     android:id="@+id/sb_battery_min"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:rsb_gravity="bottom"
-                    app:rsb_max="35"
-                    app:rsb_min="5"
+                    app:rsb_max="50"
+                    app:rsb_min="10"
                     app:rsb_mode="single"
                     app:rsb_progress_color="#FF7287F9"
                     app:rsb_progress_default_color="#247288FA"
@@ -174,7 +176,7 @@
                     app:rsb_step_height="3dp"
                     app:rsb_step_radius="3dp"
                     app:rsb_step_width="3dp"
-                    app:rsb_steps="6"
+                    app:rsb_steps="4"
                     app:rsb_thumb_drawable="@drawable/end_point"
                     app:rsb_thumb_height="18dp"
                     app:rsb_thumb_width="18dp"
