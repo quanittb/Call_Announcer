@@ -35,8 +35,8 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         SharedPreferenceUtils.currentMusic =
             audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
-        announcer = context?.let { Announcer(it) }!!
-        val flashlightHelper = context?.let { FlashlightHelper(it) }
+        announcer = context.let { Announcer(it) }!!
+        val flashlightHelper = context.let { FlashlightHelper(it) }
         val serviceIntent = Intent(context, TextToSpeechSmsService::class.java)
 
         if (intent.action.equals("android.provider.Telephony.SMS_RECEIVED")) {
@@ -83,28 +83,21 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                     serviceIntent.putExtra("name", "$name")
                     serviceIntent.putExtra("smsMessagebody", "$smsMessagebody")
                     if (SharedPreferenceUtils.isTurnOnSms) {
+                        Log.d("TestABC","flash : ${SharedPreferenceUtils.isTurnOnFlashSms}")
                         if (SharedPreferenceUtils.isTurnOnFlashSms) {
-                            flashlightHelper?.blinkFlash(
-                                150
-                            )
+                            flashlightHelper.blinkFlash(150)
                             handler.postDelayed({
-                                flashlightHelper?.stopBlink()
-                                flashlightHelper?.stopFlash()
-                            }, 500)
+                                flashlightHelper.stopBlink()
+                                flashlightHelper.stopFlash()
+                            }, 1000)
                         }
-                        Log.d("TestABC","Pin hiên tại : ${announcer.getBatteryPercentage(context)} va pin toi thieu : ${SharedPreferenceUtils.batteryMin} ")
-                        if (announcer.getBatteryPercentage(context) >= SharedPreferenceUtils.batteryMin) {
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) context.startService(
-                                serviceIntent
-                            )
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) context.startService(
-                                serviceIntent
-                            )
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) context.startService(
-                                serviceIntent
-                            )
+                        var battery = announcer.getBatteryPercentage(context)
+                        Log.d("SMSBroadcast", "battery: $battery ")
+                        if ( battery >= SharedPreferenceUtils.batteryMin) {
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) context.startService(serviceIntent)
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) context.startService(serviceIntent)
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) context.startService(serviceIntent)
                         }
-
                     }
                 }
             } catch (e: Exception) {

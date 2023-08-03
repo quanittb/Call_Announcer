@@ -80,10 +80,8 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read2")
         textToSpeech.setOnUtteranceCompletedListener {utteranceId ->
             if (utteranceId == "read") {
-                Log.d("ABCDE","Đã chạy vào chỉnh chuông ?")
                 if (SharedPreferenceUtils.isUnknownNumber) {
                     var name = ContactInfomation.getContactInfo(this, textToRead)
-                    Log.d("ABCDE","Lần 2: Name : $name va text : $textToRead")
                     if (name == textToRead)
                         textToSpeech.speak(" ${textToRead?.let { formatNumber(it) }} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
                     else
@@ -91,14 +89,12 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
                 }
                 else {
                     var name = ContactInfomation.getContactInfo(this, textToRead)
-                    Log.d("ABCDE","Name : $name va text : $textToRead")
                     if (name != textToRead){
                         textToSpeech.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, param2, "read")
                     }
                 }
                 textToSpeech.setOnUtteranceCompletedListener {utteranceId ->
                     if (utteranceId == "read") {
-                        Log.d("ABCDE","đã chạy vào đâyyyyy")
                         if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
                             if (SharedPreferenceUtils.seekBarRing != 0) {
                                 audioManager.setStreamVolume(

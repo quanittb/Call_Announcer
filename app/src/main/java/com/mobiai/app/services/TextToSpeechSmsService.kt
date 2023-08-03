@@ -22,69 +22,51 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
     private lateinit var textToSpeech: TextToSpeech
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var audioManager: AudioManager
-    private var volumeRing: Int = 0
 
 
     override fun onCreate() {
         super.onCreate()
         textToSpeech = TextToSpeech(this, this)
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE) {
+            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL ) {
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_RING,
-                    volumeRing,
+                    SharedPreferenceUtils.volumeRing,
                     0
                 )
             }
         }
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val senderName = intent?.getStringExtra("senderName")
-        val name = intent?.getStringExtra("name")
-        val smsMessagebody = intent?.getStringExtra("smsMessagebody")
-        Log.d(
-            "TestABCD",
-            "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody"
-        )
+        var senderName = intent?.getStringExtra("senderName")
+        var name = intent?.getStringExtra("name")
+        var smsMessagebody = intent?.getStringExtra("smsMessagebody")
+        Log.d("TestABCD", "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody")
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
-        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.volumeRing,0)
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,SharedPreferenceUtils.volumeAnnouncer,0)
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
         handler.postDelayed(
             {
-                if (!SharedPreferenceUtils.isReadNameSms && !SharedPreferenceUtils.isUnknownNumberSms)
-                    textToSpeech.speak(
-                        "${getString(R.string.there_is_a_message_with_content)} $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
-                else if (SharedPreferenceUtils.isReadNameSms && name != "null")
-                    textToSpeech.speak(
-                        " ${getString(R.string.message_from)}  $name ${getString(R.string.with_content)} $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
+                if (SharedPreferenceUtils.isUnknownNumberSms) {
+                    if(name=="null") name = senderName
+                    textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $name ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                }
                 else {
-                    textToSpeech.speak(
-                        "${getString(R.string.message_from)} $senderName ${getString(R.string.with_content)} $smsMessagebody",
-                        TextToSpeech.QUEUE_FLUSH,
-                        params,
-                        "read"
-                    )
+                    if (name != "null"){
+                        textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $name ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                    }
                 }
 
-            }, 700
+            }, 500
         )
         textToSpeech.setOnUtteranceCompletedListener {
             setVolume()
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_STICKY
     }
 
     override fun onInit(status: Int) {
@@ -94,6 +76,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
                 Locale(SharedPreferenceUtils.languageCode).country.toUpperCase()
             )
         } else {
+            textToSpeech.language = Locale.getDefault()
         }
     }
 
@@ -111,7 +94,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
 
     fun setVolume() {
         handler.postDelayed({
-            if (SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.beforeMode != AudioManager.RINGER_MODE_SILENT) {
+            if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
                 )
