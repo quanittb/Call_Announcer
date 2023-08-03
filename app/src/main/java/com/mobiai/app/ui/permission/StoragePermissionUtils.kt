@@ -16,6 +16,12 @@ object StoragePermissionUtils {
     /**
      *  check read_permission to access media files that other apps create
      */
+    fun requestPhoneCallLogPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.READ_CALL_LOG),
+            resultLauncher
+        )
+    }
     fun requestPhonePermission(resultLauncher: ActivityResultLauncher<Array<String>>){
         PermissionUtils.requestMultiplePermission(
             arrayOf(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CALL_PHONE,Manifest.permission.ANSWER_PHONE_CALLS),

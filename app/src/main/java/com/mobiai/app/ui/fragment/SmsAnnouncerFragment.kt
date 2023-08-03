@@ -226,7 +226,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         if (!SharedPreferenceUtils.isTurnOnSms){
             val permissions = arrayOf(
                 Manifest.permission.READ_SMS,
-                Manifest.permission.SEND_SMS,
                 Manifest.permission.RECEIVE_SMS,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
@@ -256,24 +255,38 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     private fun changeAllToggle(boolean: Boolean){
         if (boolean){
-            if (SharedPreferenceUtils.isTurnOnModeNormal){
+            if (SharedPreferenceUtils.isTurnOnSmsNormal){
                 binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-            if (SharedPreferenceUtils.isTurnOnModeSilent)
+            else{
+                binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
+            if (SharedPreferenceUtils.isTurnOnSmsSilent)
             {
                 binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-            if (SharedPreferenceUtils.isTurnOnModeVibrate){
+            else{
+                binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
+            if (SharedPreferenceUtils.isTurnOnSmsVibrate){
                 binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-            if (SharedPreferenceUtils.isTurnOnFlash){
+            else{
+                binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
+            if (SharedPreferenceUtils.isTurnOnFlashSms){
                 binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-            if (SharedPreferenceUtils.isUnknownNumber){
+            else{
+                binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
+            if (SharedPreferenceUtils.isUnknownNumberSms){
                 binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
-
-            if (SharedPreferenceUtils.isReadName){
+            else{
+                binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+            }
+            if (SharedPreferenceUtils.isReadNameSms){
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
             else{
@@ -287,7 +300,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             }
         }
         else{
-
             binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
@@ -549,7 +561,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     private fun checkPermission() {
         val permissions = arrayOf(
             Manifest.permission.READ_SMS,
-            Manifest.permission.SEND_SMS,
             Manifest.permission.RECEIVE_SMS,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
@@ -561,7 +572,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.SEND_SMS || permission == Manifest.permission.RECEIVE_SMS){
+                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.RECEIVE_SMS){
                     SharedPreferenceUtils.isTurnOnSms = false
                     binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
                     binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))

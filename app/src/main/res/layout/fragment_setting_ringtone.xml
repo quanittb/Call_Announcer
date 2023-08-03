@@ -143,27 +143,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             tools:listitem="@layout/item_ringtone" />
 
-        <FrameLayout
-            android:id="@+id/fr_progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#80FFFFFF"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone">
 
-            <ProgressBar
-                android:id="@+id/progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="#FF7287F9"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </FrameLayout>
 
         <TextView
             android:id="@+id/tv_not_found"
@@ -189,7 +169,6 @@
         android:background="@color/color_background_native_ads"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/frAds" />
-
     <FrameLayout
         android:id="@+id/frAds"
         android:layout_width="match_parent"
@@ -200,6 +179,28 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <include layout="@layout/layout_banner_control" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fr_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="#FF7287F9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </FrameLayout>
 

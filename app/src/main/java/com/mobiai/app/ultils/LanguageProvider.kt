@@ -21,15 +21,17 @@ class LanguageProvider(val context: Context) {
         ),
 
         Language(
-            R.drawable.flag_fr_france,
-            context.getString(R.string.language_france),
-            "fr"
-        ),
-        Language(
             R.drawable.flag_de_germany,
             context.getString(R.string.language_germany),
             "de"
         ),
+
+        Language(
+            R.drawable.flag_fr_france,
+            context.getString(R.string.language_france),
+            "fr"
+        ),
+
         Language(R.drawable.flag_vn_vietnam, context.getString(R.string.language_vietnamese), "vi"),
 
        /* Language(R.drawable.flag_en, context.getString(R.string.language_english), "en"),
