@@ -180,9 +180,11 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
             isLoadAdsNext = true
         }
     }
-
+    private var isAdNativeInitting = false
     fun initAdsNative() {
+        if (isAdNativeInitting) return
         if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeOnboard) {
+            isAdNativeInitting = true
             AperoAd.getInstance().loadNativeAdResultCallback(
                 this,
                 BuildConfig.native_onboard,
@@ -191,6 +193,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
                         //    App.getStorageCommon()?.nativeAdOnboard?.postValue(null)
+                        isAdNativeInitting = false
                         handleLoadAdsFail()
                         Log.e(TAG, "onAdFailedToLoad: onboard", )
                     }
@@ -201,6 +204,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
                         if(isLoadAdsNext){
                             valueAdsNext = nativeAd
                         }
+                        isAdNativeInitting = false
                         handleLoadAdsComplete(nativeAd)
                         Log.e(TAG, "onNativeAdLoaded: onboard", )
                     }
@@ -208,10 +212,17 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
                     override fun onAdImpression() {
                         super.onAdImpression()
                         handleAdsImpression()
+                        isAdNativeInitting = false
                         Log.e(TAG, "onAdImpression: onboard", )
+                    }
+
+                    override fun onNextAction() {
+                        super.onNextAction()
+                        isAdNativeInitting = false
                     }
                 })
         }else{
+            isAdNativeInitting = false
             App.getStorageCommon()?.nativeAdOnboard?.postValue(App.getStorageCommon()?.nativeAdOnboard?.value)
         }
     }
