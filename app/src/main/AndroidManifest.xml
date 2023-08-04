@@ -69,7 +69,14 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
-
+        <receiver
+            android:name=".app.services.MyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".app.services.SmsBroadcastReceiver"
             android:enabled="true"
@@ -107,13 +114,6 @@
 
 
 
-        <receiver
-            android:name=".app.services.MyBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
+
     </application>
 </manifest>

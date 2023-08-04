@@ -1,5 +1,8 @@
 package com.mobiai.app.services
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -11,6 +14,7 @@ import android.os.IBinder
 import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import com.mobiai.R
 import com.mobiai.app.ultils.ContactInfomation
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -26,10 +30,12 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
 
     override fun onCreate() {
         super.onCreate()
-        textToSpeech = TextToSpeech(this, this)
+        val notification = createNotification()
+        startForeground(NOTIFICATION_ID, notification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        textToSpeech = TextToSpeech(this, this)
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -44,11 +50,13 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         var senderName = intent?.getStringExtra("senderName")
         var name = intent?.getStringExtra("name")
         var smsMessagebody = intent?.getStringExtra("smsMessagebody")
-        Log.d("TestABCD", "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody")
+        Log.d("TestABC", "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody")
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,SharedPreferenceUtils.volumeAnnouncer,0)
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
+        Log.d("TestABC", "SMS :${SharedPreferenceUtils.isUnknownNumberSms} ")
+
         handler.postDelayed(
             {
                 if (SharedPreferenceUtils.isUnknownNumberSms) {
@@ -61,7 +69,7 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
                     }
                 }
 
-            }, 500
+            }, 200
         )
         textToSpeech.setOnUtteranceCompletedListener {
             setVolume()
@@ -93,15 +101,39 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
     }
 
     fun setVolume() {
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
+        )
         handler.postDelayed({
             if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
-                )
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
                 )
             }
         }, 1000)
+    }
+    private fun createNotification(): Notification {
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("SMS Service")
+            .setContentText("Running...")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        return notificationBuilder.build()
+    }
+
+    companion object {
+        const val NOTIFICATION_ID = 1
+        const val CHANNEL_ID = "SmsSpeechServiceChannel"
     }
 }
