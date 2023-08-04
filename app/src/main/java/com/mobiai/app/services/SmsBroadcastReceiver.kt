@@ -14,6 +14,8 @@ import android.provider.ContactsContract
 import android.speech.tts.TextToSpeech
 import android.telephony.SmsMessage
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.FlashlightHelper
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
@@ -28,13 +30,15 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private val handler = Handler(Looper.getMainLooper())
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("Range")
     override fun onReceive(context: Context?, intent: Intent) {
         audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         SharedPreferenceUtils.currentMusic =
             audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-
+        SharedPreferenceUtils.currentRing = audioManager.getStreamVolume(AudioManager.STREAM_RING)
+        SharedPreferenceUtils.beforeMode = audioManager.ringerMode
         announcer = context.let { Announcer(it) }!!
         val flashlightHelper = context.let { FlashlightHelper(it) }
         val serviceIntent = Intent(context, TextToSpeechSmsService::class.java)
@@ -94,9 +98,9 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         var battery = announcer.getBatteryPercentage(context)
                         Log.d("SMSBroadcast", "battery: $battery ")
                         if ( battery >= SharedPreferenceUtils.batteryMin) {
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) context.startService(serviceIntent)
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) context.startService(serviceIntent)
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) context.startService(serviceIntent)
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) ContextCompat.startForegroundService(context,serviceIntent)
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) ContextCompat.startForegroundService(context,serviceIntent)
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) ContextCompat.startForegroundService(context,serviceIntent)
                         }
                     }
                 }
