@@ -4,9 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,11 +28,11 @@ import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
-import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
-import com.mobiai.base_storage.permission.StoragePermissionUtils
+import com.mobiai.app.ui.permission.StoragePermissionUtils
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentCallAnnouncerBinding
 
 class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
@@ -131,6 +129,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }))
     }
     override fun initView() {
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
             binding.flAds.gone()
         }else{
@@ -298,6 +297,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
     override fun onResume() {
         super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         if (SharedPreferenceUtils.isTurnOnCall){
             checkPermission()
         }

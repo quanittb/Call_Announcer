@@ -1,18 +1,16 @@
 package com.mobiai.app.ui.fragment
 
-import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import com.ads.control.admob.Admob
+import com.ads.control.admob.AppOpenManager
 import com.ads.control.ads.AperoAd
 import com.ads.control.ads.AperoAdCallback
 import com.ads.control.ads.wrapper.ApAdError
-import com.ads.control.ads.wrapper.ApInterstitialAd
 import com.ads.control.ads.wrapper.ApNativeAd
 import com.ads.control.billing.AppPurchase
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -20,6 +18,7 @@ import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
+import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
 import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.app.ultils.NetworkConnected
@@ -27,7 +26,10 @@ import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.extensions.visible
+import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
+import com.mobiai.app.ui.permission.StoragePermissionUtils
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentHomeBinding
 
 
@@ -41,6 +43,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private val TAG = HomeFragment::javaClass.name
     private var nativeAdHome: ApNativeAd? = null
     private var isNativeAdsShowed = false
+    private var isGotoSettingNotify = false
+    private var goToSettingDialogNotify: GotosettingDialog? = null
+
     private fun initAdsNativeHome() {
         if (!AppPurchase.getInstance().isPurchased
             && AdsRemote.showNativeHome
@@ -165,12 +170,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }))
     }
+    private fun showGotoSettingNotifyDialog() {
+        if (goToSettingDialogNotify==null){
+            goToSettingDialogNotify = GotosettingDialog(
+                requireContext(),
+            ) {
+                AppOpenManager.getInstance().disableAdResumeByClickAction()
+                isGotoSettingNotify = true
+                gotoSetting()
+            }
+        }
+        if (!goToSettingDialogNotify!!.isShowing) {
+            goToSettingDialogNotify!!.show()
+        }
+    }
+    private val requestMultipleNotifyPermissionsLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        val allGranted = permissions.all { it.value }
+        if (allGranted) {
+            //todo phone call log
+            isGotoSettingNotify = false
+        } else {
+            showGotoSettingNotifyDialog()
+        }
+        SharedPreferenceUtils.isPermission = true
+
+    }
     override fun initView() {
         if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
             binding.flAds.gone()
         }
         showNativeAdsHome()
 
+        if (!SharedPreferenceUtils.isPermission && StoragePermissionUtils.isAPI33OrHigher()){
+            StoragePermissionUtils.requestNotifyPermission(requestMultipleNotifyPermissionsLauncher)
+        }
         binding.cvItemHomeCall.setOnSafeClickListener(500) {
             showInterHome {
                 replaceFragment(CallAnnouncerFragment.instance())
@@ -209,6 +244,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         resumeAds()
             if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
                 binding.flAds.visible()

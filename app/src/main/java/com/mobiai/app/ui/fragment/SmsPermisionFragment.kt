@@ -15,7 +15,8 @@ import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.base.basecode.ultility.RxBus
-import com.mobiai.base_storage.permission.StoragePermissionUtils
+import com.mobiai.app.ui.permission.StoragePermissionUtils
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentPermissionSmsBinding
 
 class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
@@ -222,6 +223,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
 
     override fun onResume() {
         super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         if (isGotoSettingSms){
             checkPermissionOnResume(Manifest.permission.READ_SMS)
         }

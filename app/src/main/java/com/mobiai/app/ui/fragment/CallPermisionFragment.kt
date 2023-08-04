@@ -3,7 +3,6 @@ package com.mobiai.app.ui.fragment
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,7 +15,7 @@ import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.base.basecode.ultility.RxBus
-import com.mobiai.base_storage.permission.StoragePermissionUtils
+import com.mobiai.app.ui.permission.StoragePermissionUtils
 import com.mobiai.databinding.FragmentPermissionCallBinding
 
 class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()

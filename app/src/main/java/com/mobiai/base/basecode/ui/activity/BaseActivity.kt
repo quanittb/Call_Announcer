@@ -2,7 +2,11 @@ package com.mobiai.base.basecode.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.net.*
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
@@ -17,9 +21,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.base.basecode.language.LanguageUtil
@@ -29,6 +30,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
 

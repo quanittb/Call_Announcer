@@ -40,10 +40,15 @@ object SharedPreferenceUtils {
     private const val SEEKBAR_RING = "SEEKBAR_RING"
     private const val SEEKBAR_MUSIC = "SEEKBAR_MUSIC"
     private const val CHECK_BEFORE = "CHECK_BEFORE"
+
+    private const val IS_PERMISSION_NOTIFICATION = "IS_PERMISSION_NOTIFICATION"
     var firstOpenApp: Boolean
         get() = App.instanceSharePreference.getValueBool(FIRST_OPEN_APP, true)
         set(value) = App.instanceSharePreference.setValueBool(FIRST_OPEN_APP, value)
 
+    var isPermission: Boolean
+        get() = App.instanceSharePreference.getValueBool(IS_PERMISSION_NOTIFICATION, false)
+        set(value) = App.instanceSharePreference.setValueBool(IS_PERMISSION_NOTIFICATION, value)
     var languageCode: String?
         get() = App.instanceSharePreference.getValue(LANGUAGE, null)
         set(value) = App.instanceSharePreference.setValue(LANGUAGE, value)

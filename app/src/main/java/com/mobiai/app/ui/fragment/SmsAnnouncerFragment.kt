@@ -32,7 +32,8 @@ import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
-import com.mobiai.base_storage.permission.StoragePermissionUtils
+import com.mobiai.app.ui.permission.StoragePermissionUtils
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
 class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
@@ -619,6 +620,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     override fun onResume() {
         super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         if (SharedPreferenceUtils.isTurnOnSms){
             checkPermission()
         }
