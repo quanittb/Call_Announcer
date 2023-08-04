@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.ads.control.ads.AperoAd
@@ -17,12 +19,14 @@ import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
+import com.mobiai.app.ultils.NotificationPermission
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 
 abstract class BaseSplashActivity<V : ViewBinding> : BaseActivity<V>() {
     var isOnStop = false
     private var showNextScreenHandler = Handler(Looper.getMainLooper())
-
+    private lateinit var notificationPermission: NotificationPermission
+    private lateinit var notificationPermissionLauncher: ActivityResultLauncher<String>
     private var screenLock: PowerManager.WakeLock? = null
     abstract fun getIdAdsSplash(): String
 
@@ -89,12 +93,25 @@ abstract class BaseSplashActivity<V : ViewBinding> : BaseActivity<V>() {
         }
     }
 
-
+    private fun initPermissionLauncher() {
+        notificationPermissionLauncher  =registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) {
+            setupRemoteConfig()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         wakeUpScreen()
-        setupRemoteConfig()
+        notificationPermission = NotificationPermission(this)
+        initPermissionLauncher()
+        if (!notificationPermission.hasPostNotificationGranted()){
+            notificationPermission.requestRuntimeNotificationPermission(notificationPermissionLauncher)
+        }else{
+            setupRemoteConfig()
+        }
+
         Log.i(TAG, "onCreate: ")
     }
 
