@@ -44,6 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
 
     override fun createView() {
+        showFullscreen(true)
         AppUpdateManager.getInstance(this).isStartSessionFromOtherApp = false
         AppUpdateManager.getInstance(this).checkUpdateApp(this) {
             AppOpenManager.getInstance().disableAppResume()
