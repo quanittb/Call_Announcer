@@ -1,8 +1,9 @@
-package com.mobiai.base_storage.permission
+package com.mobiai.app.ui.permission
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import com.mobiai.app.ui.permission.CurrentAPI
@@ -16,6 +17,17 @@ object StoragePermissionUtils {
     /**
      *  check read_permission to access media files that other apps create
      */
+     fun isAPI33OrHigher(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+    }
+
+    fun requestNotifyPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
+        PermissionUtils.requestMultiplePermission(
+            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+            resultLauncher
+        )
+    }
+
     fun requestPhoneCallLogPermission(resultLauncher: ActivityResultLauncher<Array<String>>){
         PermissionUtils.requestMultiplePermission(
             arrayOf(Manifest.permission.READ_CALL_LOG),

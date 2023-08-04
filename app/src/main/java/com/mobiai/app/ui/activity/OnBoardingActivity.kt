@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.widget.ImageView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.viewpager.widget.ViewPager
 import com.ads.control.ads.AperoAd
 import com.ads.control.ads.AperoAdCallback
@@ -65,12 +67,17 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
             }
         }
     }
-
     override fun onNetworkAvailable() {
         runOnUiThread {
             initAdsNative()
         }
         super.onNetworkAvailable()
+    }
+
+    private fun selectedView(view1: ImageView, view2: ImageView, view3: ImageView){
+        view1.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_select_view_onboarding))
+        view2.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_un_select_view))
+        view3.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_un_select_view))
     }
 
     private fun addControl() {
@@ -80,7 +87,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
             this
         )
         binding.viewPager.adapter = adapter
-        binding.wormDotsIndicator.attachTo(binding.viewPager)
+        selectedView(binding.icSelect1,binding.icSelect2,binding.icSelect3)
 
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
@@ -91,7 +98,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
 
                 if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeOnboard) {
                     currentPosition = position
-                    binding.tvNext.isEnabled = true
+                     binding.tvNext.isEnabled = true
                     binding.viewPager.setPagingEnabled(true)
                     if (currentPosition != 2) {
                         binding.tvNext.text = getString(R.string.next)
@@ -108,6 +115,20 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
                         if (!isFirstLoadAdsNative) {
                             initAdsNative()
                         }
+                    }
+                }
+                when (position) {
+                    0 -> {
+                        selectedView(binding.icSelect1,binding.icSelect2,binding.icSelect3)
+                    }
+                    1 -> {
+                        selectedView(binding.icSelect2,binding.icSelect3,binding.icSelect1)
+                        binding.tvNext.text = getString(R.string.next)
+
+                    }
+                    else -> {
+                        selectedView(binding.icSelect3,binding.icSelect2,binding.icSelect1)
+                        binding.tvNext.text = getString(R.string._get_started)
                     }
                 }
             }
@@ -146,9 +167,24 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
 
             binding.tvNext.isEnabled = true
             binding.viewPager.setPagingEnabled(true)
+
             if (currentPosition != 2) {
                 binding.tvNext.text = getString(R.string.next)
             } else {
+                binding.tvNext.text = getString(R.string._get_started)
+            }
+        }
+        when (currentPosition) {
+            0 -> {
+                selectedView(binding.icSelect1,binding.icSelect2,binding.icSelect3)
+            }
+            1 -> {
+                selectedView(binding.icSelect2,binding.icSelect3,binding.icSelect1)
+                binding.tvNext.text = getString(R.string.next)
+
+            }
+            else -> {
+                selectedView(binding.icSelect3,binding.icSelect2,binding.icSelect1)
                 binding.tvNext.text = getString(R.string._get_started)
             }
         }
@@ -165,12 +201,20 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
         }
         binding.viewPager.setPagingEnabled(true)
         binding.tvNext.isEnabled = true
-        if (currentPosition != 2) {
-            binding.tvNext.text = getString(R.string.next)
-        } else {
-            binding.tvNext.text = getString(R.string._get_started)
-        }
+        when (currentPosition) {
+            0 -> {
+                selectedView(binding.icSelect1,binding.icSelect2,binding.icSelect3)
+            }
+            1 -> {
+                selectedView(binding.icSelect2,binding.icSelect3,binding.icSelect1)
+                binding.tvNext.text = getString(R.string.next)
 
+            }
+            else -> {
+                selectedView(binding.icSelect3,binding.icSelect2,binding.icSelect1)
+                binding.tvNext.text = getString(R.string._get_started)
+            }
+        }
     }
 
     private fun handleAdsImpression() {
@@ -242,6 +286,20 @@ class OnBoardingActivity : BaseActivity<ActivityOnboardingBinding>() {
         super.onBackPressed()
         if (currentPosition != 0) {
             currentPosition--
+            when (currentPosition) {
+                0 -> {
+                    selectedView(binding.icSelect1,binding.icSelect2,binding.icSelect3)
+                }
+                1 -> {
+                    selectedView(binding.icSelect2,binding.icSelect3,binding.icSelect1)
+                    binding.tvNext.text = getString(R.string.next)
+
+                }
+                else -> {
+                    selectedView(binding.icSelect3,binding.icSelect2,binding.icSelect1)
+                    binding.tvNext.text = getString(R.string._get_started)
+                }
+            }
             binding.tvNext.text = getString(R.string.next)
             binding.viewPager.currentItem = currentPosition
         } else {

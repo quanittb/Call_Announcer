@@ -18,8 +18,10 @@ import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.fragment.HomeFragment
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.service.db.ModelTestDB
 import com.mobiai.base.basecode.service.db.testModelDB
+import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.activity.BaseActivity
 import com.mobiai.databinding.ActivityMainBinding
 
@@ -64,6 +66,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onResume() {
         super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, this) }
+        setFullscreen()
         AppUpdateManager.getInstance(this).checkNewAppVersionState(this)
 
     }

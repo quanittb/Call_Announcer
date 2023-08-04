@@ -35,22 +35,39 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewPager">
 
-            <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
+            <LinearLayout
                 android:id="@+id/worm_dots_indicator"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:dotsColor="@color/color_button"
-                app:dotsCornerRadius="@dimen/_8sdp"
-                app:dotsSize="@dimen/_8sdp"
-                app:dotsSpacing="@dimen/_2sdp"
-                app:dotsStrokeColor="#D1D8DD"
-                app:dotsStrokeWidth="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/_15sdp"
                 app:layout_constraintBottom_toBottomOf="@id/tv_next"
                 app:layout_constraintEnd_toStartOf="@id/tv_next"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/viewPager" />
+                app:layout_constraintTop_toBottomOf="@id/viewPager"
+                >
+                <ImageView
+                    android:id="@+id/ic_select_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_select_view_onboarding"
+                    />
+                <ImageView
+                    android:id="@+id/ic_select_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_un_select_view"
+                    android:paddingHorizontal="@dimen/_4sdp"
+                    />
+                <ImageView
+                    android:id="@+id/ic_select_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_un_select_view"
+                    />
+
+            </LinearLayout>
             <TextView
                 android:id="@+id/tv_next"
                 android:layout_width="wrap_content"
@@ -64,28 +81,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/worm_dots_indicator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/worm_dots_indicator" />
-         <!--   <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/color_button"
-                app:cardCornerRadius="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                >
-                <TextView
-                    android:id="@+id/tv_next"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:paddingHorizontal="@dimen/_17sdp"
-                    android:text="@string/next"
-                    android:textColor="@color/white"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_3sdp"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintBottom_toBottomOf="@id/worm_dots_indicator"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/worm_dots_indicator" />
-            </androidx.cardview.widget.CardView>-->
 
         </LinearLayout>
 

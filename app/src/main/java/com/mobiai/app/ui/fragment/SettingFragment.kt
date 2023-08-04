@@ -16,6 +16,7 @@ import com.mobiai.app.ui.activity.LanguageActivity
 import com.mobiai.app.ui.dialog.RequestWriteSettingDialog
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
 import com.mobiai.base.basecode.ads.WrapAdsResume
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.databinding.FragmentSettingAccountBinding
@@ -172,6 +173,11 @@ class SettingFragment : BaseFragment<FragmentSettingAccountBinding>() {
                 addFragment(RingtoneFragment.instance())
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
     }
     override fun handlerBackPressed() {
         super.handlerBackPressed()
