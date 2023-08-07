@@ -75,11 +75,16 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
 
     }
 
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
     private var adCallback: AperoAdCallback = object : AperoAdCallback() {
         override fun onNextAction() {
             super.onNextAction()
             openNextScreen()
-           // Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
 
             Log.e(TAG, "onNextAction qqqqqq: SPLASH_ACT")
         }
@@ -87,7 +92,7 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
 
     override fun startNotPurchase() {
         if(AdsRemote.showAdsSplash){
-        //    Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
             AperoAd.getInstance().setInitCallback {
                 AperoAd.getInstance()
                     .loadSplashInterstitialAds(
@@ -110,7 +115,7 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
             super.onAdClosed()
             if (isDestroyed || isFinishing || isOnStop) return
             openNextScreen();
-          //  Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
 
             Log.i(TAG, "onAdClosed: SPLASH_ACT")
         }
@@ -119,7 +124,7 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
             super.onAdFailedToLoad(adError)
             if (isDestroyed || isFinishing || isOnStop) return
             openNextScreen();
-           // Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
             Log.i(TAG, "onAdFailedToLoad: SPLASH_ACT")
         }
 
@@ -127,7 +132,7 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
             super.onAdFailedToShow(adError)
             if (isDestroyed || isFinishing || isOnStop) return
             openNextScreen();
-          //  Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
             Log.i(TAG, "onAdFailedToShow: SPLASH_ACT")
 
         }
@@ -136,7 +141,7 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
             super.onNextAction()
             if (isDestroyed || isFinishing || isOnStop) return
             openNextScreen();
-       //     Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
             Log.i(TAG, "onNextAction: SPLASH_ACT")
         }
 
