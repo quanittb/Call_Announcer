@@ -50,7 +50,7 @@
                     android:gravity="center"
                     android:text="@string/ringstone"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_19sdp"
+                    android:textSize="@dimen/_16ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -74,7 +74,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/ringtone_volume"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <com.jaygoo.widget.RangeSeekBar
                     android:id="@+id/sb_ringtone_volume"
@@ -116,7 +116,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="@string/sound_in_the_device"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14ssp" />
 
                 <EditText
                     android:id="@+id/edSearch"
@@ -129,6 +129,7 @@
                     android:inputType="text"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:paddingVertical="@dimen/_4sdp"
+                    android:textSize="@dimen/_12ssp"
                     android:textColor="@color/color_description_text"
                     android:textColorHint="#9CA4AB" />
             </LinearLayout>
