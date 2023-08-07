@@ -91,16 +91,15 @@ class LanguageProvider(val context: Context) {
             context.getString(R.string.language_portugal),
             "pt"
         ),
-
-        Language(
-            R.drawable.flag_fr_france,
-            context.getString(R.string.language_france),
-            "fr"
-        ),
         Language(
             R.drawable.flag_de_germany,
             context.getString(R.string.language_germany),
             "de"
+        ),
+        Language(
+            R.drawable.flag_fr_france,
+            context.getString(R.string.language_france),
+            "fr"
         ),
 
     )

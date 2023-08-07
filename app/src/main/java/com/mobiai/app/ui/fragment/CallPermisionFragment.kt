@@ -3,6 +3,7 @@ package com.mobiai.app.ui.fragment
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
@@ -149,6 +150,7 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
+                    SharedPreferenceUtils.isTurnOnModeNormal = true
                     RxBus.publish(IsTurnOnCall())
                     Handler().postDelayed({
                         handlerBackPressed()

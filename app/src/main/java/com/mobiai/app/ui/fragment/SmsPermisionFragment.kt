@@ -119,6 +119,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
                 binding.icSelectAudio.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+                    SharedPreferenceUtils.isTurnOnSmsNormal = true
                     RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
