@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.ads.control.ads.AperoAd
@@ -264,4 +266,14 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
         }
     }
 
+    override fun onNetworkAvailable() {
+        super.onNetworkAvailable()
+        runOnUiThread {
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
+                        BaseSplashActivity.initAdsNativeLanguage(this)
+                }
+            }, 500)
+        }
+    }
 }
