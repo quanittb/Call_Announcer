@@ -1,9 +1,11 @@
 package com.mobiai.app.ui.fragment
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.ads.control.admob.AppOpenManager
 import com.ads.control.ads.AperoAd
 import com.ads.control.ads.AperoAdCallback
@@ -21,6 +24,7 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
+import com.mobiai.app.services.TextToSpeechCallerService
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
@@ -33,6 +37,8 @@ import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.app.ui.permission.StoragePermissionUtils
+import com.mobiai.app.ultils.Announcer
+import com.mobiai.app.ultils.tts
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentCallAnnouncerBinding
 
@@ -188,6 +194,13 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             changeToggle(binding.ivToggle6)
         }
         handlerEvent()
+        createService()
+    }
+    fun createService(){
+        var announcer = Announcer(requireContext())
+        announcer.initTTS(requireContext())
+        var serviceIntent = Intent(requireContext(), TextToSpeechCallerService::class.java)
+        ContextCompat.startForegroundService(requireContext(),serviceIntent)
     }
     private fun checkPermission() {
         val permissions = arrayOf(

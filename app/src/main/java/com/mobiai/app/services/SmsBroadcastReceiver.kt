@@ -30,7 +30,6 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private val handler = Handler(Looper.getMainLooper())
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("Range")
     override fun onReceive(context: Context?, intent: Intent) {
         audioManager =
@@ -98,9 +97,48 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                         var battery = announcer.getBatteryPercentage(context)
                         Log.d("SMSBroadcast", "battery: $battery ")
                         if ( battery >= SharedPreferenceUtils.batteryMin) {
-                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal) ContextCompat.startForegroundService(context,serviceIntent)
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate) ContextCompat.startForegroundService(context,serviceIntent)
-                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent) ContextCompat.startForegroundService(context,serviceIntent)
+                            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal)
+                            {
+                                if(!SharedPreferenceUtils.checkCount){
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        context.startForegroundService(serviceIntent)
+                                    }
+                                    else{
+                                        context.startService(serviceIntent)
+                                    }
+                                    SharedPreferenceUtils.checkCount = true
+                                }
+                                else
+                                    ContextCompat.startForegroundService(context,serviceIntent)
+                            }
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate)
+                            {
+                                if(!SharedPreferenceUtils.checkCount){
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        context.startForegroundService(serviceIntent)
+                                    }
+                                    else{
+                                        context.startService(serviceIntent)
+                                    }
+                                    SharedPreferenceUtils.checkCount = true
+                                }
+                                else
+                                    ContextCompat.startForegroundService(context,serviceIntent)
+                            }
+                            else if (audioManager.ringerMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent)
+                            {
+                                if(!SharedPreferenceUtils.checkCount){
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        context.startForegroundService(serviceIntent)
+                                    }
+                                    else{
+                                        context.startService(serviceIntent)
+                                    }
+                                    SharedPreferenceUtils.checkCount = true
+                                }
+                                else
+                                    ContextCompat.startForegroundService(context,serviceIntent)
+                            }
                         }
                     }
                 }

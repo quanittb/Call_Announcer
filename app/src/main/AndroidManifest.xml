@@ -91,7 +91,8 @@
         <service
             android:name=".app.services.TextToSpeechCallerService"
             android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:foregroundServiceType="location">
 
         </service>
         <service

@@ -11,12 +11,14 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.FlashlightHelper
+import com.mobiai.app.ultils.tts
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.util.*
 
@@ -25,14 +27,12 @@ class MyBroadcastReceiver : BroadcastReceiver() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var serviceIntent: Intent
 
-    @RequiresApi(Build.VERSION_CODES.P)
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val flashlightHelper = context.let { FlashlightHelper.getInstance(it) }
         announcer = context.let { Announcer(it) }
-        Log.d("beforeMode","checkmode : ${SharedPreferenceUtils.checkMode}")
         if (SharedPreferenceUtils.checkMode) {
             SharedPreferenceUtils.beforeMode = audioManager.ringerMode
             val currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -40,12 +40,9 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             SharedPreferenceUtils.currentMusic = currentMusic
             SharedPreferenceUtils.currentRing = currentRing
             SharedPreferenceUtils.checkMode = !SharedPreferenceUtils.checkMode
-            Log.d("beforeMode","checkmode lần 2 : ${SharedPreferenceUtils.checkMode}")
 
         }
         val phoneNumber = intent?.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER)
-        Log.d("BeforeMode", "Phone : $phoneNumber")
-        Log.d("BeforeMode", "Mode : ${SharedPreferenceUtils.beforeMode}")
         if (intent?.action == "android.intent.action.PHONE_STATE") {
             val state = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
             serviceIntent = Intent(context, TextToSpeechCallerService::class.java)
@@ -57,11 +54,50 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                         if (SharedPreferenceUtils.isTurnOnFlash) flashlightHelper.blinkFlash(150)
 
                         if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal)
-                            ContextCompat.startForegroundService(context,serviceIntent)
+                        {
+                            if(!SharedPreferenceUtils.checkCount){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    context.startForegroundService(serviceIntent)
+                                }
+                                else{
+                                    context.startService(serviceIntent)
+
+                                }
+                                SharedPreferenceUtils.checkCount = true
+                            }
+                            else
+                                ContextCompat.startForegroundService(context,serviceIntent)
+                        }
                         else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate)
-                            ContextCompat.startForegroundService(context,serviceIntent)
+                        {
+                            if(!SharedPreferenceUtils.checkCount){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    context.startForegroundService(serviceIntent)
+                                }
+                                else{
+                                    context.startService(serviceIntent)
+
+                                }
+                                SharedPreferenceUtils.checkCount = true
+                            }
+                            else
+                                ContextCompat.startForegroundService(context,serviceIntent)
+                        }
                         else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnModeSilent)
-                            ContextCompat.startForegroundService(context,serviceIntent)
+                        {
+                            if(!SharedPreferenceUtils.checkCount){
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    context.startForegroundService(serviceIntent)
+                                }
+                                else{
+                                    context.startService(serviceIntent)
+
+                                }
+                                SharedPreferenceUtils.checkCount = true
+                            }
+                            else
+                                ContextCompat.startForegroundService(context,serviceIntent)
+                        }
                     }
                 }
                 TelephonyManager.EXTRA_STATE_IDLE -> {
@@ -73,8 +109,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                         },200)
                     }
                     audioManager.ringerMode = SharedPreferenceUtils.beforeMode
-                    flashlightHelper?.stopBlink()
-                    flashlightHelper?.stopFlash()
+                    flashlightHelper.stopBlink()
+                    flashlightHelper.stopFlash()
                     setVolume(context)
                 }
 
@@ -87,8 +123,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                         },200)
                     }
                     audioManager.ringerMode = SharedPreferenceUtils.beforeMode
-                    flashlightHelper?.stopBlink()
-                    flashlightHelper?.stopFlash()
+                    flashlightHelper.stopBlink()
+                    flashlightHelper.stopFlash()
                     setVolume(context)
 
                 }
@@ -102,9 +138,13 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         handler.postDelayed({
             if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL)
+            {
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_RING,
                     SharedPreferenceUtils.currentRing, 0)
+                audioManager.ringerMode = SharedPreferenceUtils.beforeMode
+            }
+
             audioManager.setStreamVolume(
                 AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0)
         }, 500)
