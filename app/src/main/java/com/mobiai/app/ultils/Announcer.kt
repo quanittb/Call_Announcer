@@ -22,7 +22,6 @@ import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.util.Locale
 
 class Announcer(context: Context) : TextToSpeech.OnInitListener {
-    var tts: TextToSpeech? = null
     var context = context
     private var countryLanguage = Locale(SharedPreferenceUtils.languageCode).country.toUpperCase()
     override fun onInit(status: Int) {
@@ -80,3 +79,4 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
         return batteryPercentage
     }
 }
+var tts: TextToSpeech? = null

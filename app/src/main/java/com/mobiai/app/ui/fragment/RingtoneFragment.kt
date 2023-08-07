@@ -154,9 +154,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
                 audioManager.setStreamVolume(
                     AudioManager.STREAM_MUSIC, volumeRing, 0
                 )
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_RING, volumeRing, 0
-                )
                 Log.d("ABCDE","ring: ${audioManager.getStreamVolume(AudioManager.STREAM_RING)} va media : ${audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)} va sharedring : ${SharedPreferenceUtils.volumeRing} va sharedmusic : ${SharedPreferenceUtils.volumeAnnouncer}")
             }
 
@@ -233,7 +230,7 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     override fun onStop() {
         super.onStop()
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC , SharedPreferenceUtils.currentMusic , 0)
-        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.currentRing , 0)
+        //audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.currentRing , 0)
         if (currentPlayingRingtone != null) {
             stopRingtone(currentPlayingRingtone!!)
             mediaPlayer?.release()
@@ -384,7 +381,6 @@ class RingtoneFragment : BaseFragment<FragmentSettingRingtoneBinding>() {
     override fun handlerBackPressed() {
         super.handlerBackPressed()
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC , SharedPreferenceUtils.currentMusic , 0)
-        audioManager.setStreamVolume(AudioManager.STREAM_RING , SharedPreferenceUtils.currentRing , 0)
         closeFragment(this)
     }
 

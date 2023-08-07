@@ -21,6 +21,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import androidx.core.app.NotificationCompat
+import com.mobiai.app.ultils.tts
 
 class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
 
@@ -31,12 +32,12 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         super.onCreate()
         val notification = createNotification()
         startForeground(NOTIFICATION_ID, notification)
-        textToSpeech = TextToSpeech(this, this)
-        audioManager =
-            applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
-        )
+        val workerThread = Thread(Runnable {
+            // Thực hiện tác vụ mất thời gian ở đây
+            textToSpeech = TextToSpeech(this, this)
+        })
+        workerThread.start()
+
     }
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.P)
@@ -46,36 +47,32 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
         )
-        Log.d("BeforeMode","volume announcer : ${SharedPreferenceUtils.volumeAnnouncer}")
+        if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing == 0){
+            audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
+        }
+        if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0)
+            audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
+
         textToSpeech?.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40)
         var textToRead = intent?.getStringExtra("textToRead")
         if(textToRead=="null") textToRead = null
-        Log.d("BeforeMode","phone text : ${textToRead}")
 
         var params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         handler.postDelayed({
             if (!textToRead.isNullOrEmpty()) {
                 if (SharedPreferenceUtils.isUnknownNumber) {
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
-                    )
-                    if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL)
-                        audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
                     var name = ContactInfomation.getContactInfo(this, textToRead)
-                    Log.d("ABCDE","Name : $name va text : $textToRead")
                     if (name == textToRead)
                         textToSpeech?.speak(" ${formatNumber(textToRead)} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
                     else
                         textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
-
                 }
                 else {
                     audioManager.setStreamVolume(
                         AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
                     )
                     var name = ContactInfomation.getContactInfo(this, textToRead)
-                    Log.d("ABCDE","Name : $name va text : $textToRead")
                     if (name != textToRead){
                         if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL)
                             audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
@@ -83,7 +80,7 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
                     }
                 }
             }
-        }, 200)
+        }, 500)
 
         val param2 = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read2")
