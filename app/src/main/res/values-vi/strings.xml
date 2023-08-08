@@ -13,7 +13,6 @@
     <string name="flash">Flash</string>
     <string name="call_notification">Thông báo cuộc gọi</string>
     <string name="unknown_number">Số không xác định</string>
-    <string name="unknown_display_with_numbers_not_in_contacts">Hiển thị không xác định với các số không có trong danh bạ</string>
     <string name="name">Tên</string>
     <string name="display_and_read_the_username">Hiển thị và đọc tên người dùng</string>
     <string name="turn_on">Bật</string>
@@ -87,4 +86,8 @@
     <string name="read_call_log">Đọc nhật ký cuộc gọi</string>
     <string name="permission_to_read_call_log">Quyền đọc nhật ký cuộc gọi</string>
     <string name="write_settings">Cài đặt ghi</string>
+
+    <string name="announce_phone_number_not_in_contacts">Thông báo số điện thoại không có trong danh bạ</string>
+    <string name="announce_name_in_contacts">Thông báo tên trong danh bạ</string>
+    <string name="announce_phone_number_in_contacts">Thông báo số điện thoại trong danh bạ</string>
 </resources>

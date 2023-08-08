@@ -400,10 +400,12 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 if (!SharedPreferenceUtils.isReadNameSms){
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
                     SharedPreferenceUtils.isReadNameSms = true
+                    binding.txtName.text = getString(R.string.announce_name_in_contacts)
                 }
                 else{
                     view.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
                     SharedPreferenceUtils.isReadNameSms = false
+                    binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
                 }
             }
         }
@@ -522,6 +524,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         }
 
         if (SharedPreferenceUtils.isReadNameSms) {
+            binding.txtName.text = getString(R.string.announce_name_in_contacts)
             binding.ivToggle6.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
@@ -530,6 +533,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             )
         }
         else{
+            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
             binding.ivToggle6.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
@@ -551,6 +555,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
         }
     }
     private fun checkStatusResumeOff(){
@@ -561,6 +566,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
         binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
     }
     private fun changeOffToggle(view: ImageView){
         view.setImageDrawable(
@@ -598,6 +604,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                         SharedPreferenceUtils.isReadNameSms = false
                         changeOffToggle(binding.ivToggle5)
                         changeOffToggle(binding.ivToggle6)
+                        binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
                     }
                     if (permission == Manifest.permission.RECORD_AUDIO){
                         SharedPreferenceUtils.isTurnOnSmsNormal = false

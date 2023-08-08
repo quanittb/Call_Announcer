@@ -231,6 +231,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                         SharedPreferenceUtils.isReadName = false
                         changeOffToggle(binding.ivToggle5)
                         changeOffToggle(binding.ivToggle6)
+                        binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
                     }
                     if (permission == Manifest.permission.RECORD_AUDIO){
                         SharedPreferenceUtils.isTurnOnModeNormal = false
@@ -297,6 +298,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
         }
     }
 
@@ -308,6 +310,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+        binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
     }
     override fun onResume() {
         super.onResume()
@@ -409,6 +412,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             }
             if (SharedPreferenceUtils.isReadName){
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                binding.txtName.text = getString(R.string.announce_name_in_contacts)
             }
 
            else{
@@ -418,6 +422,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                 binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
                 binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
+                binding.txtName.text = getString(R.string.announce_name_in_contacts)
                 changeSharePreference(true)
             }
         }
@@ -428,6 +433,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             binding.ivToggle4.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle5.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
             binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
+            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
             //changeSharePreference(false)
         }
     }
@@ -537,6 +543,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
 
             binding.ivToggle5 -> {
                 if (!SharedPreferenceUtils.isUnknownNumber) {
+
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
@@ -545,6 +552,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                     )
                     SharedPreferenceUtils.isUnknownNumber = true
                 } else {
+
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
@@ -557,6 +565,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
 
             binding.ivToggle6 -> {
                 if (!SharedPreferenceUtils.isReadName) {
+                    binding.txtName.text = getString(R.string.announce_name_in_contacts)
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
@@ -565,6 +574,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                     )
                     SharedPreferenceUtils.isReadName = true
                 } else {
+                    binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
                     view.setImageDrawable(
                         AppCompatResources.getDrawable(
                             requireContext(),
@@ -662,6 +672,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
 
         if (SharedPreferenceUtils.isReadName) {
+            binding.txtName.text = getString(R.string.announce_name_in_contacts)
             binding.ivToggle6.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
@@ -670,6 +681,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             )
         }
         else{
+            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
             binding.ivToggle6.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
