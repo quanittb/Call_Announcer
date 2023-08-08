@@ -11,9 +11,12 @@ import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.storage.FirebaseRemote
+import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.app.ultils.NotificationPermission
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
+import com.mobiai.base.basecode.ui.activity.BaseActivity.Companion.initAdsNativeHome
+import com.mobiai.base.basecode.ui.activity.BaseActivity.Companion.initAdsNativeLanguage
 import com.mobiai.databinding.ActivitySplashBinding
 
 class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
@@ -85,7 +88,6 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
             super.onNextAction()
             openNextScreen()
             Admob.getInstance().setOpenActivityAfterShowInterAds(true)
-
             Log.e(TAG, "onNextAction qqqqqq: SPLASH_ACT")
         }
     }
@@ -114,9 +116,9 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
         override fun onAdClosed() {
             super.onAdClosed()
             if (isDestroyed || isFinishing || isOnStop) return
+
             openNextScreen();
             Admob.getInstance().setOpenActivityAfterShowInterAds(true)
-
             Log.i(TAG, "onAdClosed: SPLASH_ACT")
         }
 

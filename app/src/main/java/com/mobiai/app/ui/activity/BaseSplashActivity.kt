@@ -37,72 +37,7 @@ abstract class BaseSplashActivity<V : ViewBinding> : BaseActivity<V>() {
 
     companion object {
         private val  TAG  = BaseSplashActivity::class.java.name
-        var isNativeLanguageLoading = false
-        fun initAdsNativeLanguage(activity: AppCompatActivity) {
-            if (isNativeLanguageLoading) return
-            Log.d(
-                TAG,
-                "-------++++++> purchse : ${AppPurchase.getInstance().isPurchased} :first:  ${SharedPreferenceUtils.firstOpenApp} , value: ${App.getStorageCommon()?.nativeAdLanguage?.value}, ${AdsRemote.showNativeLanguage}"
-            )
-            if (!AppPurchase.getInstance().isPurchased
-                && SharedPreferenceUtils.firstOpenApp
-                && App.getStorageCommon()?.nativeAdLanguage?.value == null
-                && AdsRemote.showNativeLanguage
-            ) {
-                isNativeLanguageLoading = true
 
-                Log.d(
-                    TAG,
-                    "-------> ${AppPurchase.getInstance().isPurchased} : ${SharedPreferenceUtils.firstOpenApp} , value: ${App.getStorageCommon()?.nativeAdLanguage?.value}, ${AdsRemote.showNativeLanguage}"
-                )
-                AperoAd.getInstance().loadNativeAdResultCallback(
-                    activity,
-                    BuildConfig.native_language,
-                    R.layout.layout_native_ads_language,
-                    object : AperoAdCallback() {
-                        override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
-                            super.onNativeAdLoaded(nativeAd)
-                            App.getStorageCommon()?.nativeAdLanguage?.postValue(nativeAd)
-                            Log.d(TAG, "onNativeAdLoaded ---------------> $nativeAd")
-                            isNativeLanguageLoading = false
-                        }
-
-                        override fun onAdFailedToLoad(adError: ApAdError?) {
-                            super.onAdFailedToLoad(adError)
-                            App.getStorageCommon()?.nativeAdLanguage?.postValue(null)
-                            Log.d(TAG, "onAdFailedToLoad ---------------> null")
-                            isNativeLanguageLoading = false
-                        }
-
-                        override fun onAdImpression() {
-                            super.onAdImpression()
-                            Log.i(TAG, "onAdImpression: ---------------->")
-                            isNativeLanguageLoading = false
-
-                        }
-
-                        override fun onAdFailedToShow(adError: ApAdError?) {
-                            super.onAdFailedToShow(adError)
-                            isNativeLanguageLoading = false
-                        }
-
-                        override fun onAdLoaded() {
-                            super.onAdLoaded()
-                            isNativeLanguageLoading = false
-
-                        }
-
-                        override fun onNextAction() {
-                            super.onNextAction()
-                            isNativeLanguageLoading = false
-                        }
-                    }
-                )
-            }else{
-                App.getStorageCommon()?.nativeAdLanguage?.postValue(App.getStorageCommon()?.nativeAdLanguage?.value)
-                isNativeLanguageLoading = false
-            }
-        }
     }
 
     private fun initPermissionLauncher() {
