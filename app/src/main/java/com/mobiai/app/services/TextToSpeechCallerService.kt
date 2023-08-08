@@ -25,7 +25,6 @@ import com.mobiai.app.ultils.tts
 
 class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
 
-//    private lateinit var textToSpeech: TextToSpeech
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var audioManager: AudioManager
     override fun onCreate() {
@@ -44,67 +43,72 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
-        )
-        if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing == 0){
-            audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
-        }
-        if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0)
-            audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
-
-        textToSpeech?.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40)
         var textToRead = intent?.getStringExtra("textToRead")
         if(textToRead=="null") textToRead = null
+        var name = ContactInfomation.getContactInfo(this, textToRead)
+        if(textToRead !=null){
+            if(!SharedPreferenceUtils.isUnknownNumber && name == textToRead ) {
+                if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0)
+                    audioManager.setStreamVolume(AudioManager.STREAM_RING, SharedPreferenceUtils.volumeRing, 0)
+                return START_STICKY
+            }
+            else {
+                audioManager.setStreamVolume(
+                    AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
+                )
+                if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing == 0){
+                    audioManager.ringerMode = AudioManager.RINGER_MODE_VIBRATE
+                }
+                if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0)
+                    audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
+            }
+        }
 
+        textToSpeech?.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40)
+        if(SharedPreferenceUtils.speedSpeak==0)
+            textToSpeech?.setSpeechRate(0.1f)
         var params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         handler.postDelayed({
             if (!textToRead.isNullOrEmpty()) {
-                if (SharedPreferenceUtils.isUnknownNumber) {
-                    var name = ContactInfomation.getContactInfo(this, textToRead)
-                    if (name == textToRead)
-                        textToSpeech?.speak(" ${formatNumber(textToRead)} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                if(name != textToRead && name != null){
+                    if(SharedPreferenceUtils.isReadName){
+                        textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                    }
                     else
-                        textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                        textToSpeech?.speak(" ${formatNumber(textToRead)} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
                 }
-                else {
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_MUSIC, SharedPreferenceUtils.volumeAnnouncer, 0
-                    )
-                    var name = ContactInfomation.getContactInfo(this, textToRead)
-                    if (name != textToRead){
-                        if(SharedPreferenceUtils.beforeMode== AudioManager.RINGER_MODE_NORMAL)
-                            audioManager.setStreamVolume(AudioManager.STREAM_RING, audioManager.getStreamMinVolume(AudioManager.STREAM_RING)+1, 0)
-                        textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                else{
+                    if(SharedPreferenceUtils.isUnknownNumber){
+                        textToSpeech?.speak(" ${formatNumber(textToRead)} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
                     }
                 }
             }
-        }, 500)
+        }, 1000)
 
-        val param2 = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read2")
         textToSpeech?.setOnUtteranceCompletedListener {utteranceId ->
-            if (utteranceId == "read") {
-                if (SharedPreferenceUtils.isUnknownNumber) {
-                    var name = ContactInfomation.getContactInfo(this, textToRead)
-                    if (name == textToRead)
-                        textToSpeech?.speak(" ${textToRead?.let { formatNumber(it) }} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
-                    else
-                        textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, param2, "read")
-                }
-                else {
-                    var name = ContactInfomation.getContactInfo(this, textToRead)
-                    if (name != textToRead){
-                        textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, param2, "read")
+            handler.postDelayed({
+                if (utteranceId == "read") {
+                    if(name != textToRead && name != null){
+                        if(SharedPreferenceUtils.isReadName){
+                            textToSpeech?.speak(" $name ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                        }
+                        else
+                            textToSpeech?.speak(" ${textToRead?.let { formatNumber(it) }} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                    }
+                    else{
+                        if(SharedPreferenceUtils.isUnknownNumber){
+                            textToSpeech?.speak(" ${textToRead?.let { formatNumber(it) }} ${getString(R.string.incoming_call)} ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                        }
+                    }
+                    textToSpeech?.setOnUtteranceCompletedListener {utteranceId ->
+                        if (utteranceId == "read" && SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0 ) {
+                            audioManager.setStreamVolume(AudioManager.STREAM_RING, SharedPreferenceUtils.volumeRing, 0)
+                        }
                     }
                 }
-                textToSpeech?.setOnUtteranceCompletedListener {utteranceId ->
-                    if (utteranceId == "read" && SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.seekBarRing != 0 ) {
-                        audioManager.setStreamVolume(AudioManager.STREAM_RING, SharedPreferenceUtils.volumeRing, 0)
-                    }
-                }
-            }
+            },200)
         }
         return START_STICKY
     }
@@ -167,5 +171,4 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
     }
 }
 var textToSpeech: TextToSpeech? = null
-
 

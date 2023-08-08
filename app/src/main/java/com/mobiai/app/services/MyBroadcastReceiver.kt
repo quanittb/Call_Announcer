@@ -14,6 +14,7 @@ import android.provider.Settings
 import android.speech.tts.TextToSpeech
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.mobiai.app.ultils.Announcer

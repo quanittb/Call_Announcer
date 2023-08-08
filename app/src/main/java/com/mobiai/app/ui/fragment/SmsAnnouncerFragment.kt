@@ -24,6 +24,7 @@ import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.services.TextToSpeechCallerService
+import com.mobiai.app.services.TextToSpeechSmsService
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
@@ -117,6 +118,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 is IsTurnOnSms -> {
                     disableView(true)
                     changeAllToggle(true)
+                    createService()
                 }
 
                 is NetworkConnected -> {
@@ -203,7 +205,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             changeToggle(binding.ivToggle6)
         }
         handlerEvent()
-        createService()
     }
     private val requestMultipleCameraPermissionsLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -218,7 +219,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     fun createService(){
         var announcer = Announcer(requireContext())
         announcer.initTTS(requireContext())
-        var serviceIntent = Intent(requireContext(), TextToSpeechCallerService::class.java)
+        var serviceIntent = Intent(requireContext(), TextToSpeechSmsService::class.java)
         ContextCompat.startForegroundService(requireContext(),serviceIntent)
     }
     private fun showGotoSettingDialog() {

@@ -50,30 +50,37 @@ class TextToSpeechSmsService : Service(), TextToSpeech.OnInitListener {
         var senderName = intent?.getStringExtra("senderName")
         var name = intent?.getStringExtra("name")
         var smsMessagebody = intent?.getStringExtra("smsMessagebody")
-        Log.d("TestABC", "senderName : $senderName va name : $name va smsMessagebody: $smsMessagebody")
         val params = Bundle()
         params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "read")
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,SharedPreferenceUtils.volumeAnnouncer,0)
         textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
-        Log.d("TestABC", "SMS :${SharedPreferenceUtils.isUnknownNumberSms} ")
-
-        handler.postDelayed(
-            {
-                if (SharedPreferenceUtils.isUnknownNumberSms) {
-                    if(name=="null") name = senderName
-                    textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $name ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
-                }
-                else {
-                    if (name != "null"){
-                        textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $name ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
+        if(SharedPreferenceUtils.speedSpeak==0)
+            textToSpeech?.setSpeechRate(0.1f)
+        if(SharedPreferenceUtils.checkCountSms){
+            handler.postDelayed(
+                {
+                    if(name != "null"&& name != senderName){
+                        if(SharedPreferenceUtils.isReadNameSms ){
+                            textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $name ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
+                        }
+                        if(!SharedPreferenceUtils.isReadNameSms )
+                            textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $senderName ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
                     }
-                }
+                    else{
+                        if(SharedPreferenceUtils.isUnknownNumberSms){
+                            textToSpeech.speak(" ${getString(R.string.there_is_a_message_with_content)} $senderName ${getString(R.string.with_content)} $smsMessagebody ", TextToSpeech.QUEUE_FLUSH, params, "read")
 
-            }, 200
-        )
-        textToSpeech.setOnUtteranceCompletedListener {
-            setVolume()
+                        }
+                    }
+
+                }, 200
+            )
+            textToSpeech.setOnUtteranceCompletedListener {
+                setVolume()
+            }
         }
+        else
+            SharedPreferenceUtils.checkCountSms = true
         return START_STICKY
     }
 

@@ -112,6 +112,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                 is IsTurnOnCall -> {
                     disableView(true)
                     changeAllToggle(true)
+                    createService()
                 }
                 is NetworkConnected -> {
                     if (it.isOn) {
@@ -194,7 +195,6 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             changeToggle(binding.ivToggle6)
         }
         handlerEvent()
-        createService()
     }
     fun createService(){
         var announcer = Announcer(requireContext())
@@ -342,7 +342,6 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             // full permission
             disableView(true)
             changeAllToggle(true)
-
         } else {
             disableView(false)
             changeAllToggle(false)

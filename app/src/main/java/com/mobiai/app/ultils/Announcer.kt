@@ -29,7 +29,7 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
             val result = tts!!.setLanguage(Locale.getDefault())
             Log.d("onInit", "onInit: $countryLanguage")
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                openTextToSpeechSettings(this.context)
+//                openTextToSpeechSettings(this.context)
             }
         }
     }
