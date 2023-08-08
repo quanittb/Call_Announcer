@@ -41,6 +41,7 @@ object SharedPreferenceUtils {
     private const val SEEKBAR_MUSIC = "SEEKBAR_MUSIC"
     private const val CHECK_BEFORE = "CHECK_BEFORE"
     private const val CHECK_COUNT = "CHECK_COUNT"
+    private const val CHECK_COUNT_SMS = "CHECK_COUNT_SMS"
 
     private const val IS_PERMISSION_NOTIFICATION = "IS_PERMISSION_NOTIFICATION"
     var firstOpenApp: Boolean
@@ -148,4 +149,7 @@ object SharedPreferenceUtils {
     var checkCount: Boolean
         get() = App.instanceSharePreference.getValueBool(CHECK_COUNT, false)
         set(value) = App.instanceSharePreference.setValueBool(CHECK_COUNT, value)
+    var checkCountSms: Boolean
+        get() = App.instanceSharePreference.getValueBool(CHECK_COUNT_SMS, false)
+        set(value) = App.instanceSharePreference.setValueBool(CHECK_COUNT_SMS, value)
 }
