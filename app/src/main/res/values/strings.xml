@@ -31,7 +31,6 @@
     <string name="flash">Flash</string>
     <string name="call_notification">Call notification</string>
     <string name="unknown_number">Unknown number</string>
-    <string name="unknown_display_with_numbers_not_in_contacts">Unknown display with numbers not in contacts</string>
     <string name="name">Name</string>
     <string name="display_and_read_the_username">Display and read the username</string>
     <string name="turn_on">Turn on</string>
@@ -105,4 +104,8 @@
     <string name="read_call_log">Read call log</string>
     <string name="permission_to_read_call_log">Permission to read call log</string>
     <string name="write_settings">Write Settings</string>
+
+    <string name="announce_phone_number_not_in_contacts">Announce phone number not in contacts</string>
+    <string name="announce_name_in_contacts">Announce name in contacts</string>
+    <string name="announce_phone_number_in_contacts">Announce phone number in contacts</string>
 </resources>

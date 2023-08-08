@@ -13,7 +13,6 @@
     <string name="flash">Flash</string>
     <string name="call_notification">Notificación de llamada</string>
     <string name="unknown_number">Número desconocido</string>
-    <string name="unknown_display_with_numbers_not_in_contacts">Pantalla desconocida con números que no están en los contactos</string>
     <string name="name">Nombre</string>
     <string name="display_and_read_the_username">Mostrar y leer el nombre de usuario</string>
     <string name="turn_on">Activar</string>
@@ -86,4 +85,8 @@
     <string name="read_call_log">Leer registro de llamadas</string>
     <string name="permission_to_read_call_log">Permiso para leer el registro de llamadas</string>
     <string name="write_settings">Configuración de escritura</string>
+
+    <string name="announce_phone_number_not_in_contacts">Anunciar el número de teléfono que no está en los contactos</string>
+    <string name="announce_name_in_contacts">Anunciar nombre en contactos</string>
+    <string name="announce_phone_number_in_contacts">Anunciar el número de teléfono en los contactos</string>
 </resources>

@@ -326,7 +326,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/unknown_display_with_numbers_not_in_contacts" />
+                            android:text="@string/announce_phone_number_not_in_contacts" />
 
                     </LinearLayout>
 
@@ -342,7 +342,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:visibility="gone"
                     android:background="#EEEEEE" />
             </LinearLayout>
 
@@ -353,7 +352,6 @@
                 android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/ln_item_5">
 
                 <LinearLayout
@@ -382,11 +380,12 @@
                             android:text="@string/name" />
 
                         <TextView
+                            android:id="@+id/txt_Name"
                             style="@style/style_content_call_announcer_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
-                            android:text="@string/display_and_read_the_username" />
+                            android:text="@string/announce_phone_number_in_contacts" />
 
                     </LinearLayout>
 
