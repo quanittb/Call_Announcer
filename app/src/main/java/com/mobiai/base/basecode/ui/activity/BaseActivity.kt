@@ -21,9 +21,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.ads.control.ads.AperoAd
+import com.ads.control.ads.AperoAdCallback
+import com.ads.control.ads.wrapper.ApAdError
+import com.ads.control.ads.wrapper.ApNativeAd
+import com.ads.control.billing.AppPurchase
+import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.App
+import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.base.basecode.language.LanguageUtil
+import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ultility.RxBus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -36,6 +45,119 @@ abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
 
     companion object{
         private val  TAG  = BaseActivity::class.java.name
+        var isLoadingNativeHome = false
+        fun initAdsNativeHome(activity: AppCompatActivity) {
+            if (isLoadingNativeHome) return
+
+            if (!AppPurchase.getInstance().isPurchased
+                && App.getStorageCommon()?.nativeAdHome?.value == null
+                && AdsRemote.showNativeHome
+            ) {
+                isLoadingNativeHome = true
+                AperoAd.getInstance().loadNativeAdResultCallback(
+                    activity,
+                    BuildConfig.native_home,
+                    R.layout.layout_native_ads_home,
+                    object : AperoAdCallback() {
+                        override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
+                            super.onNativeAdLoaded(nativeAd)
+                            App.getStorageCommon()?.nativeAdHome?.postValue(nativeAd)
+                            isLoadingNativeHome = false
+                        }
+
+                        override fun onAdFailedToLoad(adError: ApAdError?) {
+                            super.onAdFailedToLoad(adError)
+                            App.getStorageCommon()?.nativeAdHome?.postValue(null)
+                            isLoadingNativeHome = false
+
+                        }
+                        override fun onAdImpression() {
+                            super.onAdImpression()
+                            isLoadingNativeHome = false
+                        }
+
+                        override fun onAdFailedToShow(adError: ApAdError?) {
+                            super.onAdFailedToShow(adError)
+                            isLoadingNativeHome = false
+                        }
+
+                        override fun onAdLoaded() {
+                            super.onAdLoaded()
+                            isLoadingNativeHome = false
+                        }
+
+                    }
+                )
+            }else{
+                App.getStorageCommon()?.nativeAdHome?.postValue(App.getStorageCommon()?.nativeAdHome?.value)
+                isLoadingNativeHome = false
+            }
+        }
+
+        var isNativeLanguageLoading = false
+        fun initAdsNativeLanguage(activity: AppCompatActivity) {
+            if (isNativeLanguageLoading) return
+
+            if (!AppPurchase.getInstance().isPurchased
+                && SharedPreferenceUtils.firstOpenApp
+                && App.getStorageCommon()?.nativeAdLanguage?.value == null
+                && AdsRemote.showNativeLanguage
+            ) {
+                isNativeLanguageLoading = true
+
+                AperoAd.getInstance().loadNativeAdResultCallback(
+                    activity,
+                    BuildConfig.native_language,
+                    R.layout.layout_native_ads_language,
+                    object : AperoAdCallback() {
+                        override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
+                            super.onNativeAdLoaded(nativeAd)
+                            App.getStorageCommon()?.nativeAdLanguage?.postValue(nativeAd)
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onNativeAdLoaded: $isNativeLanguageLoading", )
+
+                        }
+
+                        override fun onAdFailedToLoad(adError: ApAdError?) {
+                            super.onAdFailedToLoad(adError)
+                            App.getStorageCommon()?.nativeAdLanguage?.postValue(null)
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onAdFailedToLoad: $isNativeLanguageLoading")
+                        }
+
+                        override fun onAdImpression() {
+                            super.onAdImpression()
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onAdImpression: $isNativeLanguageLoading")
+
+                        }
+
+                        override fun onAdFailedToShow(adError: ApAdError?) {
+                            super.onAdFailedToShow(adError)
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onAdFailedToShow: $isNativeLanguageLoading")
+                        }
+
+                        override fun onAdLoaded() {
+                            super.onAdLoaded()
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onAdLoaded: $isNativeLanguageLoading")
+
+                        }
+
+                        override fun onNextAction() {
+                            super.onNextAction()
+                            isNativeLanguageLoading = false
+                            Log.i(TAG, "onNextAction: $isNativeLanguageLoading")
+                        }
+                    }
+                )
+            }else{
+                App.getStorageCommon()?.nativeAdLanguage?.postValue(App.getStorageCommon()?.nativeAdLanguage?.value)
+                isNativeLanguageLoading = false
+                Log.i(TAG, "initAdsNativeLanguage: $isNativeLanguageLoading")
+            }
+        }
     }
     protected lateinit var binding : V
     private var onFullscreen = false

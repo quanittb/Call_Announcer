@@ -31,6 +31,7 @@ import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ultils.NetworkConnected
 import com.mobiai.base.basecode.ads.WrapAdsResume
 import com.mobiai.base.basecode.language.LanguageUtil
+import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ultility.RxBus
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -42,55 +43,7 @@ abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
 
     companion object{
         private val  TAG  = BaseActivity::class.java.name
-        var isLoadingNativeHome = false
-        fun initAdsNativeHome(activity: AppCompatActivity) {
-            if (isLoadingNativeHome) return
 
-            if (!AppPurchase.getInstance().isPurchased
-                && App.getStorageCommon()?.nativeAdHome?.value == null
-                && AdsRemote.showNativeHome
-            ) {
-                Log.i(TAG, "initAdsNativeHome: init Adsnative")
-                isLoadingNativeHome = true
-                AperoAd.getInstance().loadNativeAdResultCallback(
-                    activity,
-                    BuildConfig.native_home,
-                    R.layout.layout_native_ads_home,
-                    object : AperoAdCallback() {
-                        override fun onNativeAdLoaded(nativeAd: ApNativeAd) {
-                            super.onNativeAdLoaded(nativeAd)
-                            App.getStorageCommon()?.nativeAdHome?.postValue(nativeAd)
-                            isLoadingNativeHome = false
-                        }
-
-                        override fun onAdFailedToLoad(adError: ApAdError?) {
-                            super.onAdFailedToLoad(adError)
-                            App.getStorageCommon()?.nativeAdHome?.postValue(null)
-                            isLoadingNativeHome = false
-
-                        }
-                        override fun onAdImpression() {
-                            super.onAdImpression()
-                            isLoadingNativeHome = false
-                        }
-
-                        override fun onAdFailedToShow(adError: ApAdError?) {
-                            super.onAdFailedToShow(adError)
-                            isLoadingNativeHome = false
-                        }
-
-                        override fun onAdLoaded() {
-                            super.onAdLoaded()
-                            isLoadingNativeHome = false
-                        }
-
-                    }
-                )
-            }else{
-                App.getStorageCommon()?.nativeAdHome?.postValue(App.getStorageCommon()?.nativeAdHome?.value)
-                isLoadingNativeHome = false
-            }
-        }
     }
     protected lateinit var binding : V
     private var onFullscreen = false

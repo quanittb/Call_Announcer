@@ -269,11 +269,9 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>() {
     override fun onNetworkAvailable() {
         super.onNetworkAvailable()
         runOnUiThread {
-            Handler(Looper.getMainLooper()).postDelayed({
-                if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
-                        BaseSplashActivity.initAdsNativeLanguage(this)
-                }
-            }, 500)
+            if (!intent.getBooleanExtra(OPEN_FROM_MAIN, false)) {
+                initAdsNativeLanguage(this)
+            }
         }
     }
 }
