@@ -232,7 +232,8 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     private fun turnOn(){
         if (!SharedPreferenceUtils.isTurnOnSms){
             val permissions = arrayOf(
-                Manifest.permission.RECORD_AUDIO
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.RECORD_AUDIO,
             )
             if (!NotificationUtils.isNotificationListenerEnabled(requireContext())){
                 addFragment(SmsPermisionFragment.instance())
@@ -574,6 +575,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
     private fun checkPermission() {
         val permissions = arrayOf(
+            Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
         )
@@ -593,13 +595,13 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                         permission
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    /*if (permission == Manifest.permission.READ_CONTACTS){
+                    if (permission == Manifest.permission.READ_CONTACTS){
                         SharedPreferenceUtils.isUnknownNumberSms = false
                         SharedPreferenceUtils.isReadNameSms = false
                         changeOffToggle(binding.ivToggle5)
                         changeOffToggle(binding.ivToggle6)
                         binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
-                    }*/
+                    }
                     if (permission == Manifest.permission.RECORD_AUDIO){
                         SharedPreferenceUtils.isTurnOnSmsNormal = false
                         SharedPreferenceUtils.isTurnOnSmsVibrate = false

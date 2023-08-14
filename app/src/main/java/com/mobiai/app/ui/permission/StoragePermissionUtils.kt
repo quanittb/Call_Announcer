@@ -38,7 +38,7 @@ object StoragePermissionUtils {
     }
     fun requestPhonePermission(resultLauncher: ActivityResultLauncher<Array<String>>){
         PermissionUtils.requestMultiplePermission(
-            arrayOf(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CALL_PHONE,Manifest.permission.ANSWER_PHONE_CALLS),
+            arrayOf(Manifest.permission.READ_PHONE_STATE),
             resultLauncher
         )
     }
