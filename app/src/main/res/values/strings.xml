@@ -113,6 +113,7 @@
     <string name="you_need_permisison_caller_id_and_spam_app">You need permission Caller ID and Spam app</string>
     <string name="you_need_permisison_contact">You need permission Contact</string>
     <string name="you_need_permisison_audio">You need permission Audio</string>
+    <string name="you_need_permisison_phone_state">You need permission phone state</string>
     <string name="read_notification">Read Notification</string>
     <string name="read_notification_when_someone_sends_them">Read notification when someone sends them</string>
     <string name="caller_id_and_spam_app">Caller ID and spam app</string>

@@ -9,7 +9,6 @@
     android:paddingHorizontal="@dimen/_15sdp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ImageView
         android:id="@+id/ic_close"
         android:layout_width="@dimen/_25sdp"
@@ -20,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/title_Header"
         style="@style/style_content_call_announcer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,245 +35,256 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/ic_user"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_user_permission"
-        app:layout_constraintTop_toBottomOf="@id/ic_close"
-        android:layout_marginVertical="@dimen/_10sdp"
-        />
-
-    <TextView
-        android:id="@+id/tv_content_permission"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/we_need_the_following_permissions_to_work_properly"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_15ssp"
-        android:gravity="center"
-        android:layout_marginVertical="@dimen/_20sdp"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:fontFamily="@font/poppins_regular"
-        app:layout_constraintTop_toBottomOf="@id/ic_user"
-        />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_30sdp"
-        app:layout_constraintTop_toBottomOf="@id/tv_content_permission">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_Header"
+        >
+
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/nts_permission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:id="@+id/ll_permission_phone_call_log"
+
+            <ImageView
+                android:id="@+id/ic_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:src="@drawable/ic_user_permission"
                 app:layout_constraintTop_toTopOf="parent"
-                >
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_call_permission"
-                    />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/caller_id_and_spam_app"
-                        android:textSize="@dimen/_14ssp"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_medium"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/detect_phone_number_in_incoming_call_to_announce"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="#66707A"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_regular"
-                        />
-                </LinearLayout>
+                android:layout_marginVertical="@dimen/_10sdp"
+                />
 
-                <ImageView
-                    android:id="@+id/ic_select_callerID"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_6sdp"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_select_permission"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_permission_phone_State"
+            <TextView
+                android:id="@+id/tv_content_permission"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@id/ll_permission_phone_call_log"
-                >
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_notification_permission"
-                    />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/read_phone_state"
-                        android:textSize="@dimen/_14ssp"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_medium"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/listen_to_incoming_call_status"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="#66707A"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_regular"
-                        />
-                </LinearLayout>
+                android:text="@string/we_need_the_following_permissions_to_work_properly"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_15ssp"
+                android:gravity="center"
+                android:layout_marginVertical="@dimen/_20sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_regular"
+                app:layout_constraintTop_toBottomOf="@id/ic_user"
+                />
 
-                <ImageView
-                    android:id="@+id/ic_select_phone_state"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_6sdp"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_select_permission"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_permission_contact"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/nts_permission"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@id/ll_permission_phone_State"
-                >
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_contact_permission"
-                    />
+                app:layout_constraintTop_toBottomOf="@id/tv_content_permission"
+                android:layout_height="wrap_content">
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/ll_permission_phone_call_log"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintTop_toTopOf="parent"
                     >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/contacts"
-                        android:textSize="@dimen/_14ssp"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_medium"
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_call_permission"
                         />
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/required_for_contacts_notification"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="#66707A"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_regular"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/caller_id_and_spam_app"
+                            android:textSize="@dimen/_14ssp"
+                            android:textColor="@color/black"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_medium"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detect_phone_number_in_incoming_call_to_announce"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="#66707A"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_regular"
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ic_select_callerID"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        android:visibility="invisible"
+                        android:src="@drawable/ic_select_permission"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_permission_phone_State"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_permission_phone_call_log"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_notification_permission"
+                        />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/read_phone_state"
+                            android:textSize="@dimen/_14ssp"
+                            android:textColor="@color/black"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_medium"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/listen_to_incoming_call_status"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="#66707A"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_regular"
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ic_select_phone_state"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        android:visibility="invisible"
+                        android:src="@drawable/ic_select_permission"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_permission_contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_permission_phone_State"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_contact_permission"
+                        />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/contacts"
+                            android:textSize="@dimen/_14ssp"
+                            android:textColor="@color/black"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_medium"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/required_for_contacts_notification"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="#66707A"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_regular"
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ic_select_contact"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        android:visibility="invisible"
+                        android:src="@drawable/ic_select_permission"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ll_permission_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_permission_contact"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_micro_permission"
+                        />
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        >
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/audio_recorder"
+                            android:textSize="@dimen/_14ssp"
+                            android:textColor="@color/black"
+                            android:singleLine="true"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_medium"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/required_for_call"
+                            android:textSize="@dimen/_12ssp"
+                            android:textColor="#66707A"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/poppins_regular"
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/ic_select_audio"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/_6sdp"
+                        android:visibility="invisible"
+                        android:src="@drawable/ic_select_permission"
                         />
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/ic_select_contact"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_6sdp"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_select_permission"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_permission_audio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@id/ll_permission_contact"
-                >
-                <ImageView
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_micro_permission"
-                    />
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginHorizontal="@dimen/_10sdp"
-                    >
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/audio_recorder"
-                        android:textSize="@dimen/_14ssp"
-                        android:textColor="@color/black"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_medium"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/required_for_call"
-                        android:textSize="@dimen/_12ssp"
-                        android:textColor="#66707A"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/poppins_regular"
-                        />
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/ic_select_audio"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/_6sdp"
-                    android:visibility="invisible"
-                    android:src="@drawable/ic_select_permission"
-                    />
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_Allow"
@@ -284,7 +295,7 @@
                 android:layout_marginVertical="@dimen/_30sdp"
                 android:layout_marginHorizontal="@dimen/_40sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@id/ll_permission_audio"
+                app:layout_constraintTop_toBottomOf="@id/nts_permission"
                 >
 
                 <TextView
@@ -298,6 +309,7 @@
                     android:gravity="center"
                     />
             </androidx.cardview.widget.CardView>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

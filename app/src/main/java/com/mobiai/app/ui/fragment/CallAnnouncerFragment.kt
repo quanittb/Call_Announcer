@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -209,47 +210,61 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
         )
-        for (permission in permissions) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (!checkRoleStatus() || permission == Manifest.permission.READ_PHONE_STATE){
-                    SharedPreferenceUtils.isTurnOnCall = false
-                    binding.btnTurn.background =
-                        AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
-                    binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
-                    binding.btnTurn.text = (resources.getString(R.string.turn_on))
-                    checkStatusResumeOff()
-                    return
-                }
-                else{
-                    if (permission == Manifest.permission.READ_CONTACTS){
-                        SharedPreferenceUtils.isUnknownNumber = false
-                        SharedPreferenceUtils.isReadName = false
-                        changeOffToggle(binding.ivToggle5)
-                        changeOffToggle(binding.ivToggle6)
-                        binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
+        if (!checkRoleStatus()){
+            permissionDenied()
+            return
+        }
+        else{
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    if (permission == Manifest.permission.READ_PHONE_STATE){
+                        permissionDenied()
+                        return
                     }
-                    if (permission == Manifest.permission.RECORD_AUDIO){
-                        SharedPreferenceUtils.isTurnOnModeNormal = false
-                        SharedPreferenceUtils.isTurnOnModeVibrate = false
-                        SharedPreferenceUtils.isTurnOnModeSilent = false
-                        changeOffToggle(binding.ivToggle1)
-                        changeOffToggle(binding.ivToggle2)
-                        changeOffToggle(binding.ivToggle3)
+                    else{
+                        if (permission == Manifest.permission.READ_CONTACTS){
+                            SharedPreferenceUtils.isUnknownNumber = false
+                            SharedPreferenceUtils.isReadName = false
+                            changeOffToggle(binding.ivToggle5)
+                            changeOffToggle(binding.ivToggle6)
+                            binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
+                            permissionDenied()
+                        }
+                        if (permission == Manifest.permission.RECORD_AUDIO){
+                            SharedPreferenceUtils.isTurnOnModeNormal = false
+                            SharedPreferenceUtils.isTurnOnModeVibrate = false
+                            SharedPreferenceUtils.isTurnOnModeSilent = false
+                            changeOffToggle(binding.ivToggle1)
+                            changeOffToggle(binding.ivToggle2)
+                            changeOffToggle(binding.ivToggle3)
+                            permissionDenied()
+
+                        }
+                        if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
+                        {
+                            SharedPreferenceUtils.isTurnOnFlash = false
+                            changeOffToggle(binding.ivToggle4)
+                            permissionDenied()
+                        }
+
 
                     }
-                    if (!isFlashAvailable && permission == Manifest.permission.CAMERA)
-                    {
-                        SharedPreferenceUtils.isTurnOnFlash = false
-                        changeOffToggle(binding.ivToggle4)
-                    }
                 }
-
             }
         }
+    }
+
+    private fun permissionDenied(){
+        SharedPreferenceUtils.isTurnOnCall = false
+        binding.btnTurn.background =
+            AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
+        binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+        binding.btnTurn.text = (resources.getString(R.string.turn_on))
+        checkStatusResumeOff()
     }
 
     private fun changeOffToggle(view: ImageView){
@@ -418,8 +433,13 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
                 binding.txtName.text = getString(R.string.announce_name_in_contacts)
             }
-
            else{
+                binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
+            }
+
+           if (!SharedPreferenceUtils.isTurnOnModeNormal && !SharedPreferenceUtils.isTurnOnModeSilent && !SharedPreferenceUtils.isTurnOnModeVibrate &&
+               !SharedPreferenceUtils.isTurnOnFlash && !SharedPreferenceUtils.isUnknownNumber && !SharedPreferenceUtils.isReadName){
                 binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
                 binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
                 binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))

@@ -99,4 +99,5 @@
     <string name="detect_phone_number_in_incoming_call_to_announce">Detectar número de telefone na chamada recebida para anunciar</string>
     <string name="read_phone_state">Ler o estado do telefone</string>
     <string name="listen_to_incoming_call_status">Ouvir o status da chamada recebida</string>
+    <string name="you_need_permisison_phone_state">Você precisa de permissão do estado do telefone</string>
 </resources>

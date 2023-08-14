@@ -208,7 +208,7 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                 gotoSetting()
             }
         }
-        goToSettingDialogPhoneState!!.gotoSetingContact()
+        goToSettingDialogPhoneState!!.gotoSetingCallState()
         if (!goToSettingDialogPhoneState!!.isShowing) {
             goToSettingDialogPhoneState!!.show()
         }
@@ -266,8 +266,13 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
             //todo contact
             isGotoSettingContact = false
             binding.icSelectContact.visible()
+
+            SharedPreferenceUtils.isUnknownNumberSms = true
+            SharedPreferenceUtils.isReadNameSms = true
+
             SharedPreferenceUtils.isUnknownNumber = true
             SharedPreferenceUtils.isReadName = true
+
             StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
         } else {
             showGotoSettingContactDialog()
@@ -282,6 +287,7 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
             //todo audio
             isGotoSettingAudio = false
             binding.icSelectAudio.visible()
+            SharedPreferenceUtils.isTurnOnSmsNormal = true
             SharedPreferenceUtils.isTurnOnModeNormal = true
             RxBus.publish(IsTurnOnCall())
             handlerBackPressed()
@@ -298,14 +304,16 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                 if (checkRoleStatus()){
                     binding.icSelectCallerID.visible()
                     if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED ){
+                        && ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
                         RxBus.publish(IsTurnOnCall())
                         Handler().postDelayed({
                             handlerBackPressed()
                         },100)
                     }
                     else{
-                        StoragePermissionUtils.requestContactPermission(requestMultipleContactPermissionsLauncher)
+                        //StoragePermissionUtils.requestContactPermission(requestMultipleContactPermissionsLauncher)
+                        StoragePermissionUtils.requestPhonePermission(requestMultiplePhoneStatePermissionsLauncher)
                     }
                 }
                 else{
@@ -313,6 +321,10 @@ class CallPermisionFragment :BaseFragment<FragmentPermissionCallBinding>()
                     showGotoSettingPhoneCallerIDDialog()
                 }
             }
+        }
+        else if (isGotoSettingPhoneState){
+            checkPermissionOnResume(Manifest.permission.READ_PHONE_STATE)
+
         }
         else if (isGotoSettingContact){
             checkPermissionOnResume(Manifest.permission.READ_CONTACTS)

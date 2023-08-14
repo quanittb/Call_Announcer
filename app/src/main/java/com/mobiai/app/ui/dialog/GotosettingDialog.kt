@@ -32,6 +32,9 @@ class GotosettingDialog(context : Context, callback :  () -> Unit) : BaseDialog(
     fun gotoSetingContact(){
         binding.txtTitle.text = context.getString(R.string.you_need_permisison_contact)
     }
+    fun gotoSetingCallState(){
+        binding.txtTitle.text = context.getString(R.string.you_need_permisison_phone_state)
+    }
 
     fun gotoSetingAudio(){
         binding.txtTitle.text = context.getString(R.string.you_need_permisison_audio)
