@@ -86,15 +86,27 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
         if (permission == Manifest.permission.READ_CONTACTS){
             isGotoSettingContact = false
             if (ActivityCompat.checkSelfPermission(requireContext(),permission) == PackageManager.PERMISSION_GRANTED) {
+
+                SharedPreferenceUtils.isUnknownNumberSms = true
+                SharedPreferenceUtils.isReadNameSms = true
+
+                SharedPreferenceUtils.isUnknownNumber = true
+                SharedPreferenceUtils.isReadName = true
+
                 binding.icSelectContact.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
                     && NotificationUtils.isNotificationListenerEnabled(requireContext())){
+
+                    SharedPreferenceUtils.isTurnOnModeNormal = true
+                    SharedPreferenceUtils.isTurnOnSmsNormal = true
+
                     RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)
                 }
                 else{
+
                     StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
                 }
             }
@@ -178,8 +190,13 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
             //todo contact
             isGotoSettingContact = false
             binding.icSelectContact.visible()
+
             SharedPreferenceUtils.isUnknownNumberSms = true
             SharedPreferenceUtils.isReadNameSms = true
+
+            SharedPreferenceUtils.isUnknownNumber = true
+            SharedPreferenceUtils.isReadName = true
+
             StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
         } else {
             showGotoSettingContactDialog()
@@ -194,6 +211,7 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
             //todo audio
             isGotoSettingAudio = false
             binding.icSelectAudio.visible()
+            SharedPreferenceUtils.isTurnOnModeNormal = true
             SharedPreferenceUtils.isTurnOnSmsNormal = true
             RxBus.publish(IsTurnOnSms())
             handlerBackPressed()
@@ -210,13 +228,14 @@ class SmsPermisionFragment :BaseFragment<FragmentPermissionSmsBinding>()
             if (NotificationUtils.isNotificationListenerEnabled(requireContext())) {
                 binding.icSelectNotify.visible()
                 if (ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED){
+
                     RxBus.publish(IsTurnOnSms())
                     Handler().postDelayed({
                         handlerBackPressed()
                     },100)
                 }
                 else{
-                    StoragePermissionUtils.requestAudioPermission(requestMultipleAudioPermissionsLauncher)
+                    StoragePermissionUtils.requestContactPermission(requestMultipleContactPermissionsLauncher)
                 }
             } else {
                 checkPermission()

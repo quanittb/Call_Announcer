@@ -100,4 +100,5 @@
     <string name="detect_phone_number_in_incoming_call_to_announce">Telefonnummer im eingehenden Anruf zur Ankündigung erkennen</string>
     <string name="read_phone_state">Telefonstatus lesen</string>
     <string name="listen_to_incoming_call_status">Status eingehender Anrufe abhören</string>
+    <string name="you_need_permisison_phone_state">Sie benötigen die Berechtigung zum Telefonstatus</string>
 </resources>

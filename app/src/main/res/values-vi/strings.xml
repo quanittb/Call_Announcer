@@ -101,4 +101,5 @@
     <string name="detect_phone_number_in_incoming_call_to_announce">Phát hiện số điện thoại trong cuộc gọi đến để thông báo</string>
     <string name="read_phone_state">Đọc trạng thái điện thoại</string>
     <string name="listen_to_incoming_call_status">Nghe trạng thái cuộc gọi đến</string>
+    <string name="you_need_permisison_phone_state">Bạn cần cấp phép trạng thái điện thoại</string>
 </resources>

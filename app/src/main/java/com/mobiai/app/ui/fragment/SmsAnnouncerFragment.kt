@@ -117,7 +117,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 is IsTurnOnSms -> {
                     disableView(true)
                     changeAllToggle(true)
-                    //createService()
                 }
 
                 is NetworkConnected -> {
@@ -145,6 +144,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
 
     override fun initView() {
+        Log.d(TAG, "initView: ${SharedPreferenceUtils.isTurnOnSms}")
         showAdsSms()
         if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
             binding.flAds.gone()
@@ -299,6 +299,13 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
             }
             else{
+                binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
+                binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
+            }
+
+            if (!SharedPreferenceUtils.isTurnOnSmsNormal && !SharedPreferenceUtils.isTurnOnSmsSilent && !SharedPreferenceUtils.isTurnOnSmsVibrate &&
+                !SharedPreferenceUtils.isTurnOnFlashSms && !SharedPreferenceUtils.isUnknownNumberSms && !SharedPreferenceUtils.isReadNameSms)
+            {
                 binding.ivToggle1.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_on))
                 binding.ivToggle2.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
                 binding.ivToggle3.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off))
