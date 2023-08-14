@@ -103,7 +103,7 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(IS_TURN_ON_FLASH_ANNOUNCER, false)
         set(value) = App.instanceSharePreference.setValueBool(IS_TURN_ON_FLASH_ANNOUNCER, value)
     var volumeAnnouncer: Int
-        get() = App.instanceSharePreference.getIntValue(VOLUME_ANNOUNCER, 15)
+        get() = App.instanceSharePreference.getIntValue(VOLUME_ANNOUNCER, 7)
         set(value) = App.instanceSharePreference.setIntValue(VOLUME_ANNOUNCER, value)
     var speedSpeak: Int
         get() = App.instanceSharePreference.getIntValue(SPEED_SPEAK, 50)
@@ -115,7 +115,7 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(READ_NAME, false)
         set(value) = App.instanceSharePreference.setValueBool(READ_NAME, value)
     var volumeRing: Int
-        get() = App.instanceSharePreference.getIntValue(VOLUME_RING, 15)
+        get() = App.instanceSharePreference.getIntValue(VOLUME_RING, 7)
         set(value) = App.instanceSharePreference.setIntValue(VOLUME_RING, value)
 
     var currentMusic : Int
