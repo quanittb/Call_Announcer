@@ -44,8 +44,8 @@ class Announcer(context: Context) : OnInitListener {
         val audioManager =
             context.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(
-            AudioManager.STREAM_RING,
-            2,
+            AudioManager.STREAM_MUSIC,
+            SharedPreferenceUtils.volumeAnnouncer,
             0
         )
         tts!!.speak(text, TextToSpeech.QUEUE_FLUSH, params, "read")
