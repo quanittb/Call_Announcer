@@ -1,19 +1,19 @@
 package com.mobiai.app.ui.fragment
 
 import android.Manifest
-import android.content.Intent
+import android.app.role.RoleManager
+import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.speech.tts.TextToSpeech
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.ads.control.admob.AppOpenManager
 import com.ads.control.ads.AperoAd
 import com.ads.control.ads.AperoAdCallback
@@ -24,7 +24,6 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
-import com.mobiai.app.services.TextToSpeechCallerService
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
@@ -37,8 +36,6 @@ import com.mobiai.base.basecode.extensions.visible
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.app.ui.permission.StoragePermissionUtils
-import com.mobiai.app.ultils.Announcer
-import com.mobiai.app.ultils.tts
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentCallAnnouncerBinding
 
@@ -51,6 +48,8 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
     private var isFlashAvailable = false
     private var goToSettingDialog: GotosettingDialog? = null
+    private lateinit var roleManager:RoleManager
+    private val roleName = "android.app.role.CALL_SCREENING"
 
     private var isNativeAdsInit: Boolean = false
     private fun initAdsNativeCall() {
@@ -112,7 +111,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                 is IsTurnOnCall -> {
                     disableView(true)
                     changeAllToggle(true)
-                    createService()
+                 //   createService()
                 }
                 is NetworkConnected -> {
                     if (it.isOn) {
@@ -136,6 +135,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
             }
         }))
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun initView() {
         SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
         if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
@@ -196,16 +196,14 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
         handlerEvent()
     }
-    fun createService(){
-        var announcer = Announcer(requireContext())
-        announcer.initTTS(requireContext())
-        var serviceIntent = Intent(requireContext(), TextToSpeechCallerService::class.java)
-        ContextCompat.startForegroundService(requireContext(),serviceIntent)
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun checkRoleStatus():Boolean {
+        roleManager = requireContext().getSystemService(Context.ROLE_SERVICE) as RoleManager
+        return roleManager.isRoleHeld(roleName)
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun checkPermission() {
         val permissions = arrayOf(
-            Manifest.permission.READ_CALL_LOG,
-            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
@@ -216,7 +214,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (permission == Manifest.permission.READ_CALL_LOG || permission == Manifest.permission.READ_PHONE_STATE){
+                if (!checkRoleStatus()){
                     SharedPreferenceUtils.isTurnOnCall = false
                     binding.btnTurn.background =
                         AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
@@ -312,6 +310,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         binding.ivToggle6.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_togle_off_all))
         binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
     }
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onResume() {
         super.onResume()
         SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
@@ -320,14 +319,18 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun turnOn() {
         if (!SharedPreferenceUtils.isTurnOnCall) {
             val permissions = arrayOf(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.READ_CALL_LOG,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
             )
+            if (!checkRoleStatus()){
+                // Quyền không được cấp, xử lý tương ứng
+                addFragment(CallPermisionFragment.instance())
+                return
+            }
             for (permission in permissions) {
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),

@@ -89,4 +89,14 @@
     <string name="announce_phone_number_not_in_contacts">Anunciar el número de teléfono que no está en los contactos</string>
     <string name="announce_name_in_contacts">Anunciar nombre en contactos</string>
     <string name="announce_phone_number_in_contacts">Anunciar el número de teléfono en los contactos</string>
+
+
+    <string name="you_need_permisison_notify_access">Necesita permiso para notificar el acceso</string>
+    <string name="you_need_permisison_caller_id_and_spam_app">Necesita permiso de identificación de llamadas y aplicación de spam</string>
+    <string name="you_need_permisison_contact">Necesita permiso Contacto</string>
+    <string name="you_need_permisison_audio">Necesita permiso Audio</string>
+    <string name="read_notification">Notificación de lectura</string>
+    <string name="read_notification_when_someone_sends_them">Leer notificaciones cuando alguien las envía</string>
+    <string name="caller_id_and_spam_app">Identificador de llamadas y aplicación de spam</string>
+    <string name="detect_phone_number_in_incoming_call_to_announce">Detectar número de teléfono en llamada entrante para anunciar</string>
 </resources>

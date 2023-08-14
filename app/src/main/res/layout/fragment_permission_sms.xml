@@ -67,7 +67,7 @@
             android:layout_width="@dimen/_30sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_4sdp"
-            android:src="@drawable/ic_sms_permission"
+            android:src="@drawable/ic_notification_permission"
             />
         <LinearLayout
             android:layout_width="0dp"
@@ -79,7 +79,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sms"
+                android:text="@string/read_notification"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/black"
                 android:singleLine="true"
@@ -89,7 +89,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/read_messages_when_someone_sends_them"
+                android:text="@string/read_notification_when_someone_sends_them"
                 android:textSize="@dimen/_12ssp"
                 android:textColor="#66707A"
                 android:singleLine="true"
@@ -99,7 +99,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ic_select_sms"
+            android:id="@+id/ic_select_notify"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="match_parent"
             android:padding="@dimen/_6sdp"
@@ -113,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_30sdp"
         app:layout_constraintTop_toBottomOf="@id/ll_permission_phone"
         >

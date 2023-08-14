@@ -19,6 +19,7 @@ import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
+import com.mobiai.app.ui.permission.StoragePermissionUtils
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
 import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.app.ultils.NetworkConnected
@@ -26,10 +27,9 @@ import com.mobiai.app.ultils.listenEvent
 import com.mobiai.base.basecode.extensions.gone
 import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.extensions.visible
+import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
-import com.mobiai.app.ui.permission.StoragePermissionUtils
-import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentHomeBinding
 
 

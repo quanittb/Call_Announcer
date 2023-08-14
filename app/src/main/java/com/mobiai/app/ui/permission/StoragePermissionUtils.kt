@@ -1,11 +1,13 @@
 package com.mobiai.app.ui.permission
 import android.Manifest
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
+import androidx.annotation.RequiresApi
 import com.mobiai.app.ui.permission.CurrentAPI
 import com.mobiai.app.ui.permission.PermissionUtils
 

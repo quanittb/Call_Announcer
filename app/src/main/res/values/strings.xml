@@ -108,4 +108,13 @@
     <string name="announce_phone_number_not_in_contacts">Announce phone number not in contacts</string>
     <string name="announce_name_in_contacts">Announce name in contacts</string>
     <string name="announce_phone_number_in_contacts">Announce phone number in contacts</string>
+
+    <string name="you_need_permisison_notify_access">You need permission notify access</string>
+    <string name="you_need_permisison_caller_id_and_spam_app">You need permission Caller ID and Spam app</string>
+    <string name="you_need_permisison_contact">You need permission Contact</string>
+    <string name="you_need_permisison_audio">You need permission Audio</string>
+    <string name="read_notification">Read Notification</string>
+    <string name="read_notification_when_someone_sends_them">Read notification when someone sends them</string>
+    <string name="caller_id_and_spam_app">Caller ID and spam app</string>
+    <string name="detect_phone_number_in_incoming_call_to_announce">Detect phone number in incoming call to announce</string>
 </resources>
