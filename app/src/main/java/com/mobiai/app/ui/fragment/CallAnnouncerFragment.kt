@@ -204,6 +204,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun checkPermission() {
         val permissions = arrayOf(
+            Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
@@ -214,7 +215,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
                     permission
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                if (!checkRoleStatus()){
+                if (!checkRoleStatus() || permission == Manifest.permission.READ_PHONE_STATE){
                     SharedPreferenceUtils.isTurnOnCall = false
                     binding.btnTurn.background =
                         AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
@@ -323,6 +324,7 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     private fun turnOn() {
         if (!SharedPreferenceUtils.isTurnOnCall) {
             val permissions = arrayOf(
+                Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
             )

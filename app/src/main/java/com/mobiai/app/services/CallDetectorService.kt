@@ -42,12 +42,13 @@ class CallDetectorService : CallScreeningService() {
         SharedPreferenceUtils.currentMusic = currentMusic
         SharedPreferenceUtils.currentRing = currentRing
 
-        if(phoneNumber.isNotEmpty()){
-            var batteryPhone = announcer.getBatteryPercentage(this)
+        Thread{
+            if(phoneNumber.isNotEmpty()){
+                val batteryPhone = announcer.getBatteryPercentage(this)
                 if (SharedPreferenceUtils.isTurnOnCall &&  batteryPhone >= (SharedPreferenceUtils.batteryMin)) {
                     if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnModeNormal)
                     {
-                            readAnnounce(phoneNumber)
+                        readAnnounce(phoneNumber)
                     }
                     else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnModeVibrate)
                     {
@@ -58,7 +59,8 @@ class CallDetectorService : CallScreeningService() {
                         readAnnounce(phoneNumber)
                     }
                 }
-        }
+            }
+        }.start()
         respondToCall(callDetails, response.build())
     }
 
