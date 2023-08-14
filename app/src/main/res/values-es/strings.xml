@@ -99,4 +99,6 @@
     <string name="read_notification_when_someone_sends_them">Leer notificaciones cuando alguien las envía</string>
     <string name="caller_id_and_spam_app">Identificador de llamadas y aplicación de spam</string>
     <string name="detect_phone_number_in_incoming_call_to_announce">Detectar número de teléfono en llamada entrante para anunciar</string>
+    <string name="read_phone_state">Leer estado del teléfono</string>
+    <string name="listen_to_incoming_call_status">Escuchar el estado de la llamada entrante</string>
 </resources>

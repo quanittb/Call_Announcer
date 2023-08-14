@@ -118,5 +118,5 @@
     <string name="caller_id_and_spam_app">Caller ID and spam app</string>
     <string name="detect_phone_number_in_incoming_call_to_announce">Detect phone number in incoming call to announce</string>
     <string name="read_phone_state">Read phone state</string>
-    <string name="listen_to_incoming_call_status">listen to incoming call status</string>
+    <string name="listen_to_incoming_call_status">Listen to incoming call status</string>
 </resources>

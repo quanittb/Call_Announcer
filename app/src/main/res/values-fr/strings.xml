@@ -97,4 +97,6 @@
     <string name="read_notification_when_someone_sends_them">Lire la notification lorsque quelqu\'un les envoie</string>
     <string name="caller_id_and_spam_app">ID de l\'appelant et application anti-spam</string>
     <string name="detect_phone_number_in_incoming_call_to_announce">Détecter le numéro de téléphone dans l\'appel entrant à annoncer</string>
+    <string name="read_phone_state">Lire l\'état du téléphone</string>
+    <string name="listen_to_incoming_call_status">Écouter l\'état des appels entrants</string>
 </resources>
