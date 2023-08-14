@@ -23,8 +23,6 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
-import com.mobiai.app.services.TextToSpeechCallerService
-import com.mobiai.app.services.TextToSpeechSmsService
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.dialog.TurnOnFlashDialog
@@ -38,6 +36,7 @@ import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.app.ui.permission.StoragePermissionUtils
 import com.mobiai.app.ultils.Announcer
+import com.mobiai.app.ultils.NotificationUtils
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
@@ -118,7 +117,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 is IsTurnOnSms -> {
                     disableView(true)
                     changeAllToggle(true)
-                    createService()
+                    //createService()
                 }
 
                 is NetworkConnected -> {
@@ -216,12 +215,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
             showGotoSettingDialog()
         }
     }
-    fun createService(){
-        var announcer = Announcer(requireContext())
-        announcer.initTTS(requireContext())
-        var serviceIntent = Intent(requireContext(), TextToSpeechSmsService::class.java)
-        ContextCompat.startForegroundService(requireContext(),serviceIntent)
-    }
+
     private fun showGotoSettingDialog() {
         if (goToSettingDialog == null) {
             goToSettingDialog = GotosettingDialog(
@@ -238,12 +232,12 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     private fun turnOn(){
         if (!SharedPreferenceUtils.isTurnOnSms){
             val permissions = arrayOf(
-                Manifest.permission.READ_SMS,
-                Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.READ_CONTACTS,
                 Manifest.permission.RECORD_AUDIO
             )
-
+            if (!NotificationUtils.isNotificationListenerEnabled(requireContext())){
+                addFragment(SmsPermisionFragment.instance())
+                return
+            }
             for (permission in permissions) {
                 if (ActivityCompat.checkSelfPermission(
                         requireContext(),
@@ -255,6 +249,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                     return
                 }
             }
+
             // full permission
             disableView(true)
             changeAllToggle(true)
@@ -579,34 +574,32 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     }
     private fun checkPermission() {
         val permissions = arrayOf(
-            Manifest.permission.READ_SMS,
-            Manifest.permission.RECEIVE_SMS,
-            Manifest.permission.READ_CONTACTS,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA
         )
-        for (permission in permissions) {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    permission
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (permission == Manifest.permission.READ_SMS || permission == Manifest.permission.RECEIVE_SMS){
-                    SharedPreferenceUtils.isTurnOnSms = false
-                    binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
-                    binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
-                    binding.btnTurn.text = (resources.getString(R.string.turn_on))
-                    checkStatusResumeOff()
-                    return
-                }
-                else{
-                    if (permission == Manifest.permission.READ_CONTACTS){
+        if (!NotificationUtils.isNotificationListenerEnabled(requireContext())) {
+            SharedPreferenceUtils.isTurnOnSms = false
+            binding.btnTurn.background = AppCompatResources.getDrawable(requireContext(), R.drawable.bg_turn_on)
+            binding.btnTurn.setTextColor(resources.getColor(R.color.color_text_turn))
+            binding.btnTurn.text = (resources.getString(R.string.turn_on))
+            checkStatusResumeOff()
+            return
+        }
+
+        else{
+            for (permission in permissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        requireContext(),
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    /*if (permission == Manifest.permission.READ_CONTACTS){
                         SharedPreferenceUtils.isUnknownNumberSms = false
                         SharedPreferenceUtils.isReadNameSms = false
                         changeOffToggle(binding.ivToggle5)
                         changeOffToggle(binding.ivToggle6)
                         binding.txtName.text = getString(R.string.announce_phone_number_in_contacts)
-                    }
+                    }*/
                     if (permission == Manifest.permission.RECORD_AUDIO){
                         SharedPreferenceUtils.isTurnOnSmsNormal = false
                         SharedPreferenceUtils.isTurnOnSmsVibrate = false
@@ -625,6 +618,7 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                 }
             }
         }
+
     }
     private fun showDialogTurnOn(){
         val turnOnFlashDialog = TurnOnFlashDialog(requireContext()){

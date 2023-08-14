@@ -88,4 +88,13 @@
     <string name="announce_phone_number_not_in_contacts">Annoncer le numéro de téléphone qui n\'est pas dans les contacts</string>
     <string name="announce_name_in_contacts">Annoncer le nom dans les contacts</string>
     <string name="announce_phone_number_in_contacts">Annoncer le numéro de téléphone dans les contacts</string>
+
+    <string name="you_need_permisison_notify_access">Vous avez besoin d\'une autorisation d\'accès à la notification</string>
+    <string name="you_need_permisison_caller_id_and_spam_app">Vous avez besoin d\'une autorisation d\'identification de l\'appelant et de l\'application Spam</string>
+    <string name="you_need_permisison_contact">Vous avez besoin d\'une autorisation Contact</string>
+    <string name="you_need_permisison_audio">Vous avez besoin de l\'autorisation Audio</string>
+    <string name="read_notification">Lire la notification</string>
+    <string name="read_notification_when_someone_sends_them">Lire la notification lorsque quelqu\'un les envoie</string>
+    <string name="caller_id_and_spam_app">ID de l\'appelant et application anti-spam</string>
+    <string name="detect_phone_number_in_incoming_call_to_announce">Détecter le numéro de téléphone dans l\'appel entrant à annoncer</string>
 </resources>

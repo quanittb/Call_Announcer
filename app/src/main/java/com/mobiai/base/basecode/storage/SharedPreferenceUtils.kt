@@ -150,6 +150,6 @@ object SharedPreferenceUtils {
         get() = App.instanceSharePreference.getValueBool(CHECK_COUNT, false)
         set(value) = App.instanceSharePreference.setValueBool(CHECK_COUNT, value)
     var checkCountSms: Boolean
-        get() = App.instanceSharePreference.getValueBool(CHECK_COUNT_SMS, false)
+        get() = App.instanceSharePreference.getValueBool(CHECK_COUNT_SMS, true)
         set(value) = App.instanceSharePreference.setValueBool(CHECK_COUNT_SMS, value)
 }

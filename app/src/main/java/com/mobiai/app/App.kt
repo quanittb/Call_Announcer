@@ -1,9 +1,5 @@
 package com.mobiai.app
 
-import android.content.Intent
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import com.ads.control.admob.Admob
 import com.ads.control.admob.AppOpenManager
 import com.ads.control.ads.AperoAd
@@ -12,10 +8,8 @@ import com.ads.control.config.AdjustConfig
 import com.ads.control.config.AperoAdConfig
 import com.google.android.gms.ads.AdActivity
 import com.mobiai.BuildConfig
-import com.mobiai.app.services.TextToSpeechCallerService
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.ui.activity.SplashActivity
-import com.mobiai.app.ultils.Announcer
 import com.mobiai.base.basecode.storage.SharedPreferencesManager
 import com.mobiai.base.basecode.storage.StorageCommon
 

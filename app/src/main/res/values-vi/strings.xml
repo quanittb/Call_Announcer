@@ -90,4 +90,13 @@
     <string name="announce_phone_number_not_in_contacts">Thông báo số điện thoại không có trong danh bạ</string>
     <string name="announce_name_in_contacts">Thông báo tên trong danh bạ</string>
     <string name="announce_phone_number_in_contacts">Thông báo số điện thoại trong danh bạ</string>
+
+    <string name="you_need_permisison_notify_access">Bạn cần có quyền thông báo quyền truy cập</string>
+    <string name="you_need_permisison_caller_id_and_spam_app">Bạn cần có quyền ID người gọi và ứng dụng Spam</string>
+    <string name="you_need_permisison_contact">Bạn cần có quyền Liên hệ</string>
+    <string name="you_need_permisison_audio">Bạn cần có quyền Âm thanh</string>
+    <string name="read_notification">Đọc thông báo</string>
+    <string name="read_notification_when_someone_sends_them">Đọc thông báo khi ai đó gửi</string>
+    <string name="caller_id_and_spam_app">ID người gọi và ứng dụng spam</string>
+    <string name="detect_phone_number_in_incoming_call_to_announce">Phát hiện số điện thoại trong cuộc gọi đến để thông báo</string>
 </resources>

@@ -31,10 +31,9 @@ class TextToSpeechCallerService : Service(), TextToSpeech.OnInitListener {
         super.onCreate()
         val notification = createNotification()
         startForeground(NOTIFICATION_ID, notification)
-        val workerThread = Thread(Runnable {
-            // Thực hiện tác vụ mất thời gian ở đây
+        val workerThread = Thread {
             textToSpeech = TextToSpeech(this, this)
-        })
+        }
         workerThread.start()
 
     }

@@ -1,27 +1,20 @@
 package com.mobiai.app.ultils
 
-import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.media.AudioManager
 import android.os.BatteryManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.tts.TextToSpeech
 import android.speech.tts.TextToSpeech.OnInitListener
-import android.text.PrecomputedText.Params
 import android.util.Log
 import android.widget.Toast
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable.Param
-import com.google.android.gms.common.util.SharedPreferencesUtils
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import java.util.Locale
 
-class Announcer(context: Context) : TextToSpeech.OnInitListener {
+class Announcer(context: Context) : OnInitListener {
     var context = context
     private var countryLanguage = Locale(SharedPreferenceUtils.languageCode).country.toUpperCase()
     override fun onInit(status: Int) {
@@ -36,11 +29,20 @@ class Announcer(context: Context) : TextToSpeech.OnInitListener {
 
     fun initTTS(context: Context) {
         tts = TextToSpeech(context, this)
+
     }
 
+    fun setSpeechRate(value:Int){
+        if (value==0){
+            tts?.setSpeechRate(0.1f)
+        }
+        else{
+            tts?.setSpeechRate(value / 40f)
+        }
+    }
     fun readText(text: String, params: Bundle?) {
-        var audioManager =
-            context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val audioManager =
+            context.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioManager.setStreamVolume(
             AudioManager.STREAM_RING,
             2,

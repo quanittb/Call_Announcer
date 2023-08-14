@@ -30,10 +30,10 @@ class MyBroadcastReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val audioManager =
+       /* val audioManager =
             context?.applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val flashlightHelper = context.let { FlashlightHelper.getInstance(it) }
-        announcer = context.let { Announcer(it) }
+        announcer = Announcer(context)
         if (SharedPreferenceUtils.checkMode) {
             SharedPreferenceUtils.beforeMode = audioManager.ringerMode
             val currentMusic = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
@@ -131,7 +131,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                 }
             }
 
-        }
+        }*/
     }
 
     fun setVolume(context: Context?) {

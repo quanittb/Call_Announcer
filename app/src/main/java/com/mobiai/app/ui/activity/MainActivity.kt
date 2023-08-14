@@ -53,11 +53,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
         //initAdsInterHome()
         attachFragment()
-        this.testModelDB.insertModelTest(
-            ModelTestDB(
-                null, "TEST_INSERT", System.currentTimeMillis()
-            )
-        )
     }
 
     private fun attachFragment() {
