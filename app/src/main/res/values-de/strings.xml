@@ -98,4 +98,6 @@
     <string name="read_notification_when_someone_sends_them">Lesebenachrichtigung, wenn jemand sie sendet</string>
     <string name="caller_id_and_spam_app">Anrufer-ID und Spam-App</string>
     <string name="detect_phone_number_in_incoming_call_to_announce">Telefonnummer im eingehenden Anruf zur Ankündigung erkennen</string>
+    <string name="read_phone_state">Telefonstatus lesen</string>
+    <string name="listen_to_incoming_call_status">Status eingehender Anrufe abhören</string>
 </resources>
