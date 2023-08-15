@@ -1,16 +1,12 @@
 package com.mobiai.app.services
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.media.AudioManager
-import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.speech.tts.TextToSpeech
-import android.util.Log
 import com.mobiai.R
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.ContactInfomation
@@ -32,22 +28,14 @@ class MyNotificationListenerService : NotificationListenerService(), TextToSpeec
         audioManager =
             applicationContext?.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         SharedPreferenceUtils.beforeMode = audioManager.ringerMode
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (audioManager.ringerMode == AudioManager.RINGER_MODE_NORMAL ) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_RING,
-                    SharedPreferenceUtils.volumeRing,
-                    0
-                )
-            }
-        }
+
         announcer = Announcer(this)
         val title = sbn.notification.extras.getString("android.title")
         val message = sbn.notification.extras.getString("android.text")
 
             if (sbn.packageName == "com.google.android.apps.messaging" || sbn.packageName == "com.android.mms") {
                 val titleNumber = ContactInfomation.getPhoneNumberFromContacts(this,title.toString())
-                if (SharedPreferenceUtils.isTurnOnFlashSms){
+                if (SharedPreferenceUtils.isTurnOnFlashSms && SharedPreferenceUtils.isTurnOnSms){
                     flashlightHelper.blinkFlash(150)
                     handler.postDelayed({
                         flashlightHelper.stopFlash()
@@ -55,31 +43,34 @@ class MyNotificationListenerService : NotificationListenerService(), TextToSpeec
                     }, 1000) // Đợi 2 giây trước khi thực hiện lệnh
                 }
 
-                Thread{
-                    audioManager.setStreamVolume(
-                        AudioManager.STREAM_MUSIC,
-                        SharedPreferenceUtils.volumeAnnouncer,0)
-                    textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
-                    if(SharedPreferenceUtils.speedSpeak==0)
-                        textToSpeech.setSpeechRate(0.1f)
+                if (SharedPreferenceUtils.isReadNameSms || SharedPreferenceUtils.isUnknownNumberSms){
+                    Thread{
+                        audioManager.setStreamVolume(
+                            AudioManager.STREAM_MUSIC,
+                            SharedPreferenceUtils.volumeAnnouncer,0)
+                        textToSpeech.setSpeechRate(SharedPreferenceUtils.speedSpeak.toFloat() / 40.toFloat())
+                        if(SharedPreferenceUtils.speedSpeak==0)
+                            textToSpeech.setSpeechRate(0.1f)
 
-                    val batteryPhone = announcer.getBatteryPercentage(this)
+                        val batteryPhone = announcer.getBatteryPercentage(this)
 
-                    if (SharedPreferenceUtils.isTurnOnSms &&  batteryPhone >= (SharedPreferenceUtils.batteryMin)) {
-                        if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal)
-                        {
-                            readAnnounce(title,message,titleNumber)
+                        if (SharedPreferenceUtils.isTurnOnSms &&  batteryPhone >= (SharedPreferenceUtils.batteryMin)) {
+                            if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL && SharedPreferenceUtils.isTurnOnSmsNormal)
+                            {
+
+                                readAnnounce(title,message,titleNumber)
+                            }
+                            else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate)
+                            {
+                                readAnnounce(title,message,titleNumber)
+                            }
+                            else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent)
+                            {
+                                readAnnounce(title,message,titleNumber)
+                            }
                         }
-                        else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_VIBRATE && SharedPreferenceUtils.isTurnOnSmsVibrate)
-                        {
-                            readAnnounce(title,message,titleNumber)
-                        }
-                        else if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_SILENT && SharedPreferenceUtils.isTurnOnSmsSilent)
-                        {
-                            readAnnounce(title,message,titleNumber)
-                        }
-                    }
-                }.start()
+                    }.start()
+                }
             }
     }
     fun containsLetters(input: String): Boolean {
@@ -109,13 +100,6 @@ class MyNotificationListenerService : NotificationListenerService(), TextToSpeec
         audioManager.setStreamVolume(
             AudioManager.STREAM_MUSIC, SharedPreferenceUtils.currentMusic, 0
         )
-        handler.postDelayed({
-            if (SharedPreferenceUtils.beforeMode == AudioManager.RINGER_MODE_NORMAL) {
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_RING, SharedPreferenceUtils.currentRing, 0
-                )
-            }
-        }, 1000)
     }
     fun readAnnounce(title : String? , message : String?, titleNumber : String?) {
         handler.postDelayed(
