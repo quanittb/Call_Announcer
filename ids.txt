@@ -1,5 +1,5 @@
 appRelease {
-manifestPlaceholders = [admob_app_id: "ca-app-pub-6530974883137971~8303976052"]
+            manifestPlaceholders = [admob_app_id: "ca-app-pub-6530974883137971~8303976052"]
             buildConfigField "boolean", "build_debug", "false"
 
             buildConfigField "String", "inter_splash", "\"ca-app-pub-6530974883137971/8690988868\""
@@ -14,4 +14,4 @@ manifestPlaceholders = [admob_app_id: "ca-app-pub-6530974883137971~8303976052"]
             buildConfigField "String", "ad_resume", "\"ca-app-pub-6530974883137971/1814589325\""
 
             buildConfigField "String","banner","\"ca-app-pub-6530974883137971/3451421855\""
-    }
+        }

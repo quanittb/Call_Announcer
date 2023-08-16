@@ -15,8 +15,8 @@ android {
         applicationId "com.callername.smsannouncer.calleridannounce"
         minSdk 23
         targetSdk 33
-        versionCode 7
-        versionName "1.0"
+        versionCode 8
+        versionName "1.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         project.ext.set("defaultBuildVariant", "appTest")
