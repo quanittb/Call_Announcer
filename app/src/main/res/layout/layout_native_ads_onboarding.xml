@@ -42,7 +42,7 @@
                 <com.google.android.gms.ads.nativead.MediaView
                     android:id="@+id/ad_media"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_130sdp"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_gravity="center" />
 
             </LinearLayout>
@@ -75,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
-                        android:src="@color/color_button" />
+                        android:src="@color/color_button_ads" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -107,7 +107,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:fontFamily="@font/poppins_medium"
+                        android:fontFamily="@font/poppins_semibold"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:text="helloaaaaaaaaaasaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"

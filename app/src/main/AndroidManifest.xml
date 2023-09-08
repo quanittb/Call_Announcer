@@ -87,6 +87,22 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".app.ui.activity.SettingActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".app.ui.activity.CallActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".app.ui.activity.SMSActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <receiver
             android:name=".app.services.MyBroadcastReceiver"
             android:enabled="true"

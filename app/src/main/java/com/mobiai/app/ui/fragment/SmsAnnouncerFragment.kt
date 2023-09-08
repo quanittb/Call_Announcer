@@ -37,6 +37,7 @@ import com.mobiai.base.basecode.ui.fragment.BaseFragment
 import com.mobiai.app.ui.permission.StoragePermissionUtils
 import com.mobiai.app.ultils.Announcer
 import com.mobiai.app.ultils.NotificationUtils
+import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.databinding.FragmentSmsAnnouncerBinding
 
@@ -91,7 +92,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
 
     private fun showAdsSms() {
         if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeSms) {
-            Log.i(TAG, "showAdsSms: nativeSms")
             binding.flAds.gone()
         } else {
             App.getStorageCommon()?.nativeAdSms?.observe(this) {
@@ -127,7 +127,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
                             }
                             if (isAdded){
                                 if (!isNativeAdsInit) {
-                                    Log.i(TAG, "handlerEvent: nativeSms")
                                     initAdsNativeSms()
                                 }
                             }
@@ -146,12 +145,6 @@ class SmsAnnouncerFragment :BaseFragment<FragmentSmsAnnouncerBinding>(){
     override fun initView() {
         Log.d(TAG, "initView: ${SharedPreferenceUtils.isTurnOnSms}")
         showAdsSms()
-        if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
-            binding.flAds.gone()
-        }else{
-            initAdsNativeSms()
-        }
-
         checkStatus()
 
         isFlashAvailable =

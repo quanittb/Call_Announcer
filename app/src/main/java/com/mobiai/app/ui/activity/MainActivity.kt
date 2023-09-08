@@ -3,6 +3,7 @@ package com.mobiai.app.ui.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Looper
 import android.util.Log
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
@@ -24,8 +25,10 @@ import com.mobiai.base.basecode.service.db.testModelDB
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.activity.BaseActivity
 import com.mobiai.databinding.ActivityMainBinding
+import java.util.logging.Handler
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
+    private val TAG = MainActivity::javaClass.name
     companion object {
         fun startMain(context: Context, clearTask: Boolean) {
             val intent = Intent(context, MainActivity::class.java).apply {
@@ -56,6 +59,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun attachFragment() {
+        Log.i(TAG, "attachFragment: ACTmain aaaaaaaaaaa")
         addFragment(HomeFragment.instance())
     }
 
@@ -73,7 +77,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         )
         if (!AppPurchase.getInstance().isPurchased
             && AdsRemote.showInterHome
-            && App.getStorageCommon()?.mInterHome == null
+            && App.getStorageCommon().mInterHome == null
         ) {
             Log.i("TAG", "initAdsInterAddZodiac: compatibility fragment")
             AperoAd.getInstance().getInterstitialAds(
@@ -82,7 +86,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 object : AperoAdCallback() {
                     override fun onInterstitialLoad(interstitialAd: ApInterstitialAd?) {
                         super.onInterstitialLoad(interstitialAd)
-                        App.getStorageCommon()?.mInterHome = interstitialAd
+                        App.getStorageCommon().mInterHome = interstitialAd
                     }
                 }
             )
@@ -91,10 +95,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun onNetworkAvailable() {
         runOnUiThread{
-            if (App.getStorageCommon()?.mInterHome != null){
-                App.getStorageCommon()?.mInterHome = null
-            }
-            initAdsInterHome()
+            android.os.Handler(Looper.getMainLooper()).postDelayed({
+                Log.i(TAG, "onNetworkAvailable: ACTmain bbbbbbbb")
+                initAdsInterHome()
+            }, 100)
         }
         super.onNetworkAvailable()
     }

@@ -45,7 +45,7 @@
                     android:layout_width="52dip"
                     android:layout_height="52dip"
                     android:adjustViewBounds="true"
-                    android:src="@color/color_button" />
+                    android:src="@color/color_button_ads" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"

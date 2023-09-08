@@ -1,6 +1,7 @@
 package com.mobiai.base.basecode.ads
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.ads.control.ads.AperoAd
@@ -11,16 +12,19 @@ import com.ads.control.billing.AppPurchase
 import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.storage.AdsRemote
+import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.base.basecode.ads.TypeLoadAds.Companion.ALTERNATE
 import com.mobiai.base.basecode.ads.TypeLoadAds.Companion.OLD
 import com.mobiai.base.basecode.ads.TypeLoadAds.Companion.SAMETIME
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 
 class WrapAdsNative(
+    val context: Context,
     val activity: Activity,
     val onLoadNativeListener: OnLoadNativeListener?,
     var idNormal: String,
-    var layoutAds: Int
+    var layoutAds: Int,
+    var conditionToLoadAds : Boolean
 ) {
 
     private val TAG = WrapAdsNative::class.java.name
@@ -52,7 +56,8 @@ class WrapAdsNative(
     }
 
     fun initAdsNativeOld() {
-        if (!AppPurchase.getInstance().isPurchased) {
+        Log.i(TAG, "initAdsNativeOld: $conditionToLoadAds ")
+        if (!AppPurchase.getInstance().isPurchased && conditionToLoadAds && NetWorkChecker.instance.isNetworkConnected(context)) {
             AperoAd.getInstance().loadNativeAdResultCallback(
                 activity,
                 idNormal,
@@ -79,6 +84,8 @@ class WrapAdsNative(
                         onLoadNativeListener?.onAdsImpression()
                     }
                 })
+        }else{
+            onLoadNativeListener?.onLoadAdsFail()
         }
     }
 

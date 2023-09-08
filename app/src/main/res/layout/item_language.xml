@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_8sdp"
         android:background="@drawable/bg_border_gray_10sdp"
         android:backgroundTint="#F2F2F2"
         android:paddingHorizontal="@dimen/_10sdp"
