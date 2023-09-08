@@ -9,13 +9,13 @@ plugins {
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.callername.smsannouncer.calleridannounce"
         minSdk 23
-        targetSdk 33
-        versionCode 8
+        targetSdk 34
+        versionCode 9
         versionName "1.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -140,7 +140,7 @@ dependencies {
 
     //lottie animation
     def lottieVersion = "3.4.0"
-    implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation "com.airbnb.android:lottie:6.0.0"
 
 
     //apero update inapp
@@ -167,4 +167,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-identity:18.0.1'
     implementation 'com.google.android.gms:play-services-auth:20.6.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+    implementation 'com.android.billingclient:billing:6.0.1'
+
+
 }

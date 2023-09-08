@@ -155,6 +155,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                     override fun onAdLoaded() {
                         super.onAdLoaded()
+                        isBannerShowed = true
+                        isInitingBanner = false
                         Log.e(TAG, "onAdLoaded: BottomFragment", )
                     }
                 })
@@ -235,6 +237,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                             binding.flAds.gone()
                         }*/
                         if (!isBannerShowed) {
+                            Log.i(TAG, "handlerEvent: aaaaaaaaaaaaaaaaaa")
                             binding.flAds.gone()
                             binding.lineSpaceAds.gone()
                         }
