@@ -3,6 +3,7 @@ package com.mobiai.app.ui.fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.mobiai.R
 import com.mobiai.base.basecode.extensions.invisible
 import com.mobiai.base.basecode.extensions.visible

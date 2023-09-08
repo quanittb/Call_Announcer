@@ -79,7 +79,7 @@ object AdsRemote {
 
     var showCollapsibleBanner : Boolean
         get() =
-            if (BuildConfig.DEBUG) false else
+            if (BuildConfig.DEBUG) true else
                 App.instanceSharePreference.getValueBool(REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER, value)
 
