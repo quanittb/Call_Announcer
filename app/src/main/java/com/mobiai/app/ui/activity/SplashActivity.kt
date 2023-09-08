@@ -6,13 +6,17 @@ import com.ads.control.admob.Admob
 import com.ads.control.ads.AperoAd
 import com.ads.control.ads.AperoAdCallback
 import com.ads.control.ads.wrapper.ApAdError
+import com.ads.control.ads.wrapper.ApNativeAd
 import com.apero.inappupdate.AppUpdateManager
 import com.mobiai.BuildConfig
 import com.mobiai.R
+import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
 import com.mobiai.app.storage.FirebaseRemote
 import com.mobiai.app.ultils.NetWorkChecker
 import com.mobiai.app.ultils.NotificationPermission
+import com.mobiai.base.basecode.ads.OnLoadNativeListener
+import com.mobiai.base.basecode.ads.WrapAdsNative
 import com.mobiai.base.basecode.language.LanguageUtil
 import com.mobiai.base.basecode.storage.SharedPreferenceUtils
 import com.mobiai.base.basecode.ui.activity.BaseActivity.Companion.initAdsNativeHome
@@ -22,7 +26,7 @@ import com.mobiai.databinding.ActivitySplashBinding
 class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
 
     companion object {
-        private const val TIME_OUT = 20000L
+        private const val TIME_OUT = 30000L
         private const val TIME_DELAY = 2000L
 
         private val TAG = SplashActivity::class.java.name
@@ -50,6 +54,24 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
     }
 
     override fun openNextScreen() {
+        if ( !SharedPreferenceUtils.isCompleteOnboarding && AdsRemote.showNativeOnboard) {
+            WrapAdsNative(this,this, object : OnLoadNativeListener {
+                override fun onLoadAdsFail() {
+                }
+
+                override fun onAdsImpression() {
+                }
+
+                override fun onLoadAdsFinish(nativeAd: ApNativeAd?) {
+                    App.getStorageCommon().nativeAdOnboard.apply {
+                        if (this.value == null){
+                            Log.i(TAG, "onLoadAdsFinish: splash checkvalueads ${this.value}")
+                            postValue(nativeAd)
+                        }
+                    }
+                }
+            }, BuildConfig.native_onboard, R.layout.layout_native_ads_onboarding, AdsRemote.showNativeOnboard).initAdsNativeOld()
+        }
         if (SharedPreferenceUtils.languageCode == null) {
             LanguageActivity.start(this, clearTask = true)
         }
@@ -100,8 +122,8 @@ class SplashActivity : BaseSplashActivity<ActivitySplashBinding>() {
                     .loadSplashInterstitialAds(
                         this,
                         BuildConfig.inter_splash,
-                        20000,
-                        2000,
+                        30000,
+                        5000,
                         true,
                         adAperoCallBack
                     )

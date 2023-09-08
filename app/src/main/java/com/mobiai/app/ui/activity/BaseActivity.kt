@@ -281,6 +281,7 @@ abstract class BaseActivity<V:ViewBinding > : AppCompatActivity(){
         AdsRemote.showNativeSms = firebaseRemoteConfig.getBoolean(AdsRemote.REMOTE_ADS_NATIVE_SMS)
         AdsRemote.showInterHome = firebaseRemoteConfig.getBoolean(AdsRemote.REMOTE_ADS_INTER_HOME)
         AdsRemote.showAdsResume =  firebaseRemoteConfig.getBoolean(AdsRemote.REMOTE_ADS_RESUME)
+        AdsRemote.showCollapsibleBanner =  firebaseRemoteConfig.getBoolean(AdsRemote.REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER)
         WrapAdsResume.instance.setUpAdsResume(AdsRemote.showAdsResume)
         Log.d("TAG", "getRemoteValue: fetdata = ${firebaseRemoteConfig.getBoolean(AdsRemote.REMOTE_ADS_SPLASH)}")
 

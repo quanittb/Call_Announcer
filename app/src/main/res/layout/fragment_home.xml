@@ -165,17 +165,26 @@
 
     </androidx.cardview.widget.CardView>
 
+    <View
+        android:id="@+id/line_space_ads"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:visibility="gone"
+        android:background="@color/color_line_space_ads"
+        app:layout_constraintBottom_toTopOf="@id/flAds" />
+
     <FrameLayout
-        android:id="@+id/fl_ads"
+        android:id="@+id/flAds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginHorizontal="@dimen/_10ssp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <include
-            android:id="@+id/include_ads_native"
-            layout="@layout/layout_loading_native_home" />
+        <include layout="@layout/layout_banner_control" />
+
     </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

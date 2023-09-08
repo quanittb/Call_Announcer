@@ -17,9 +17,9 @@ class App : AdsMultiDexApplication() {
 
     companion object {
         private var instance: App? = null
-        private var storageCommon: StorageCommon? = null
+        private lateinit var storageCommon: StorageCommon
 
-        fun getStorageCommon(): StorageCommon? {
+        fun getStorageCommon(): StorageCommon {
             return storageCommon
         }
 

@@ -15,6 +15,7 @@ object AdsRemote {
 
     const val REMOTE_ADS_INTER_HOME = "inter_home"
     const val REMOTE_ADS_BANNER = "banner"
+    const val REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER = "collapsiblebanner_home"
 
 
     var showAdsSplash : Boolean
@@ -75,6 +76,12 @@ object AdsRemote {
             if (BuildConfig.DEBUG) true else
                 App.instanceSharePreference.getValueBool(REMOTE_ADS_BANNER, true)
         set(value) = App.instanceSharePreference.setValueBool(REMOTE_ADS_BANNER, value)
+
+    var showCollapsibleBanner : Boolean
+        get() =
+            if (BuildConfig.DEBUG) false else
+                App.instanceSharePreference.getValueBool(REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER, true)
+        set(value) = App.instanceSharePreference.setValueBool(REMOTE_SHOW_ADS_COLLAPSIBLE_BANNER, value)
 
 
 }

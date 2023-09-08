@@ -72,14 +72,14 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): T
 
     fun addFragment(fragment: Fragment){
-        (requireActivity() as MainActivity).addFragment(fragment)
+        (requireActivity() as BaseActivity<*>).addFragment(fragment)
     }
 
     fun replaceFullViewFragment(fragment: Fragment, addToBackStack: Boolean){
         (requireActivity()  as BaseActivity<*>).replaceFragment(fragment, android.R.id.content, addToBackStack)
     }
     fun replaceFragment(fragment: Fragment) {
-        (requireActivity()  as MainActivity).replaceFragment(fragment)
+        (requireActivity()  as BaseActivity<*>).replaceFragment(fragment)
     }
     open fun closeFragment(fragment: Fragment) {
         (requireActivity() as BaseActivity<*>).handleBackpress()

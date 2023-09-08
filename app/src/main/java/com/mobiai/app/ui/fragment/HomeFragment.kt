@@ -13,11 +13,18 @@ import com.ads.control.ads.AperoAdCallback
 import com.ads.control.ads.wrapper.ApAdError
 import com.ads.control.ads.wrapper.ApNativeAd
 import com.ads.control.billing.AppPurchase
+import com.ads.control.funtion.AdCallback
 import com.facebook.shimmer.ShimmerFrameLayout
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.LoadAdError
 import com.mobiai.BuildConfig
 import com.mobiai.R
 import com.mobiai.app.App
 import com.mobiai.app.storage.AdsRemote
+import com.mobiai.app.storage.FirebaseRemote
+import com.mobiai.app.ui.activity.CallActivity
+import com.mobiai.app.ui.activity.SMSActivity
+import com.mobiai.app.ui.activity.SettingActivity
 import com.mobiai.app.ui.dialog.GotosettingDialog
 import com.mobiai.app.ui.permission.StoragePermissionUtils
 import com.mobiai.app.ui.safe_click.setOnSafeClickListener
@@ -45,7 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var isNativeAdsShowed = false
     private var isGotoSettingNotify = false
     private var goToSettingDialogNotify: GotosettingDialog? = null
-
+    private var isBannerShowed: Boolean = false
+    private var isInitingBanner: Boolean = false
     private fun initAdsNativeHome() {
         if (!AppPurchase.getInstance().isPurchased
             && AdsRemote.showNativeHome
@@ -80,8 +88,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+
     private fun showNativeAdsHome() {
-        if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeHome) {
+      /*  if (AppPurchase.getInstance().isPurchased || !AdsRemote.showNativeHome) {
             binding.flAds.invisible()
         } else {
             App.getStorageCommon()?.nativeAdHome?.observe(this) {
@@ -97,6 +106,62 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     binding.flAds.invisible()
                 }
             }
+        }*/
+    }
+
+    private fun initAdsCollapsibleBanner() {
+        if (isInitingBanner) return
+        if (!AppPurchase.getInstance().isPurchased && AdsRemote.showCollapsibleBanner) {
+            isInitingBanner = true
+            AperoAd.getInstance().loadCollapsibleBanner(
+                requireActivity(),
+                BuildConfig.collapsiblebanner_home,
+                "bottom",
+                object : AdCallback() {
+                    override fun onAdImpression() {
+                        super.onAdImpression()
+                        Log.e(TAG, "onAdImpression: BottomFragment")
+                        isBannerShowed = true
+                        isInitingBanner = false
+                    }
+
+                    override fun onAdFailedToLoad(i: LoadAdError?) {
+                        super.onAdFailedToLoad(i)
+                        isInitingBanner = false
+                        isBannerShowed = false
+                        Log.e(TAG, "onAdFailedToLoad: BottomFragment", )
+                    }
+
+                    override fun onAdFailedToShow(adError: AdError?) {
+                        super.onAdFailedToShow(adError)
+                        Log.e(TAG, "onAdFailedToShow: BottomFragment", )
+                        isInitingBanner = false
+                        isBannerShowed = false
+                        binding.lineSpaceAds.invisible()
+                    }
+
+                    override fun onAdClosed() {
+                        super.onAdClosed()
+                        isInitingBanner = false
+                        isBannerShowed = false
+                        Log.e(TAG, "onAdClosed: BottomFragment", )
+
+                    }
+
+                    override fun onAdLeftApplication() {
+                        super.onAdLeftApplication()
+                        Log.e(TAG, "onAdLeftApplication: BottomFragment ", )
+                    }
+
+                    override fun onAdLoaded() {
+                        super.onAdLoaded()
+                        Log.e(TAG, "onAdLoaded: BottomFragment", )
+                    }
+                })
+        } else {
+            isInitingBanner = false
+            binding.flAds.gone()
+            binding.lineSpaceAds.gone()
         }
     }
 
@@ -106,14 +171,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (!AppPurchase.getInstance().isPurchased
             && AdsRemote.showInterHome
         ) {
-            Admob.getInstance().setOpenActivityAfterShowInterAds(true)
+           // Admob.getInstance().setOpenActivityAfterShowInterAds(true)
             AperoAd.getInstance().forceShowInterstitial(
                 requireContext(),
                 App.getStorageCommon()?.mInterHome,
                 object : AperoAdCallback() {
                     override fun onNextAction() {
                         super.onNextAction()
-                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                        //Admob.getInstance().setOpenActivityAfterShowInterAds(false)
                         if (isNextActionEnable) {
                             isNextActionEnable = false
                             callback()
@@ -121,21 +186,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     }
                     override fun onAdFailedToShow(adError: ApAdError?) {
                         super.onAdFailedToShow(adError)
-                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                       // Admob.getInstance().setOpenActivityAfterShowInterAds(false)
                     }
 
                     override fun onAdFailedToLoad(adError: ApAdError?) {
                         super.onAdFailedToLoad(adError)
-                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                      //  Admob.getInstance().setOpenActivityAfterShowInterAds(false)
                     }
                     override fun onAdClosed() {
                         super.onAdClosed()
-                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                      //  Admob.getInstance().setOpenActivityAfterShowInterAds(false)
 
                     }
                     override fun onAdImpression() {
                         super.onAdImpression()
-                        Admob.getInstance().setOpenActivityAfterShowInterAds(false)
+                      //  Admob.getInstance().setOpenActivityAfterShowInterAds(false)
                     }
 
                 }, true
@@ -150,20 +215,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             when (it) {
                 is NetworkConnected -> {
                     if (it.isOn) {
-                            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
+                            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showCollapsibleBanner){
                                 binding.flAds.visible()
                             }
                         Handler(Looper.getMainLooper()).postDelayed({
                         if (isAdded){
-                                if (!isNativeAdsShowed) {
+                               /* if (!isNativeAdsShowed) {
                                     initAdsNativeHome()
+                                }*/
+                                if (!isBannerShowed) {
+                                    Log.e(TAG, "handlerEvent: initBaner BottomFragment", )
+                                    initAdsCollapsibleBanner()
                                 }
                             }
                         }, 700)
 
                     }else{
-                        if (!isNativeAdsShowed){
+                       /* if (!isNativeAdsShowed){
                             binding.flAds.gone()
+                        }*/
+                        if (!isBannerShowed) {
+                            binding.flAds.gone()
+                            binding.lineSpaceAds.gone()
                         }
                     }
                 }
@@ -198,40 +271,49 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     }
     override fun initView() {
-        if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
-            binding.flAds.gone()
-        }
-        showNativeAdsHome()
-
+        initAds()
         if (!SharedPreferenceUtils.isPermission && StoragePermissionUtils.isAPI33OrHigher()){
             StoragePermissionUtils.requestNotifyPermission(requestMultipleNotifyPermissionsLauncher)
         }
         binding.cvItemHomeCall.setOnSafeClickListener(500) {
             showInterHome {
-                replaceFragment(CallAnnouncerFragment.instance())
+                CallActivity.start(requireContext())
             }
         }
 
         binding.cvItemHomeSMS.setOnSafeClickListener(500) {
             showInterHome {
-                replaceFragment(SmsAnnouncerFragment.instance())
+                SMSActivity.start(requireContext())
             }
         }
 
         binding.cvItemHomeSetting.setOnSafeClickListener(500) {
-            replaceFragment(SettingFragment.instance())
+                SettingActivity.start(requireContext())
         }
         handlerEvent()
     }
+
+    private fun initAds() {
+        /* if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
+           binding.flAds.gone()
+       }
+       showNativeAdsHome()*/
+        if (!AppPurchase.getInstance().isPurchased && NetWorkChecker.instance.isNetworkConnected(requireContext()) && AdsRemote.showCollapsibleBanner && !isBannerShowed) {
+            binding.flAds.visible()
+            binding.lineSpaceAds.visible()
+            initAdsCollapsibleBanner()
+        }
+    }
+
     override fun onStop() {
         super.onStop()
-        stopAds()
+        //stopAds()
     }
     private fun stopAds() {
         binding.flAds.removeAllViews()
     }
     private fun resumeAds() {
-        if (nativeAdHome != null && !AppPurchase.getInstance().isPurchased) {
+        /*if (nativeAdHome != null && !AppPurchase.getInstance().isPurchased) {
             Log.d(TAG, "onResume: HOMEEE")
             AperoAd.getInstance().populateNativeAdView(
                 requireActivity(),
@@ -239,21 +321,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.flAds,
                 binding.includeAdsNative.shimmerContainerNative as ShimmerFrameLayout
             )
-        }
+        }*/
     }
 
     override fun onResume() {
         super.onResume()
         SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
-        resumeAds()
-            if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
+       // resumeAds()
+           /* if (!AppPurchase.getInstance().isPurchased && AdsRemote.showNativeCall){
                 binding.flAds.visible()
             }
             if (isAdded){
                 if (!isNativeAdsShowed) {
                     initAdsNativeHome()
                 }
-            }
+            }*/
     }
 
     override fun handlerBackPressed() {

@@ -138,12 +138,6 @@ class CallAnnouncerFragment :BaseFragment<FragmentCallAnnouncerBinding>(){
     }
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun initView() {
-        SharedPreferenceUtils.languageCode?.let { LanguageUtil.changeLang(it, requireContext()) }
-        if (!NetWorkChecker.instance.isNetworkConnected(requireContext())){
-            binding.flAds.gone()
-        }else{
-            initAdsNativeCall()
-        }
         showAdsCall()
         checkStatus()
         isFlashAvailable =
