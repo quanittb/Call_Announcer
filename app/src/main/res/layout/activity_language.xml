@@ -57,7 +57,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginEnd="@dimen/_10sdp"
-                app:tint="@color/black" />
+                app:tint="#7288FA" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -88,7 +88,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
-            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <include

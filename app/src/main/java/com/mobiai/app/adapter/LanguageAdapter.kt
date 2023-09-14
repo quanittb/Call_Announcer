@@ -1,9 +1,11 @@
 package com.mobiai.app.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import com.mobiai.R
 import com.mobiai.base.basecode.adapter.BaseAdapter
 import com.mobiai.base.basecode.language.Language
@@ -20,8 +22,10 @@ class LanguageAdapter(val context : Context, val listener : OnLanguageClickListe
         binding.imgIconLanguage.setImageDrawable(AppCompatResources.getDrawable(context, item.flag))
         if(item.isChoose){
             binding.imgChooseLanguage.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_select_language))
+            binding.txtNameLanguage.setTextColor(ContextCompat.getColor(context,R.color.black))
         }else{
             binding.imgChooseLanguage.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_un_select_lang))
+            binding.txtNameLanguage.setTextColor(Color.parseColor("#78828A"))
         }
         binding.root.setOnClickListener {
             listener.onClickItemListener(item)
