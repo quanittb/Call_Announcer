@@ -10,11 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_53sdp"
         android:layout_marginTop="@dimen/_6sdp"
-        android:background="@drawable/bg_border_gray_10sdp"
-        android:backgroundTint="#F2F2F2"
-        android:paddingRight="@dimen/_10sdp"
-        android:paddingLeft="@dimen/_14sdp"
-        android:paddingVertical="@dimen/_8sdp">
+        android:background="@drawable/bg_border_language"
+        android:paddingHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_14sdp">
 
         <ImageView
             android:id="@+id/imgIconLanguage"
@@ -31,12 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:textColor="#78828A"
-            android:paddingVertical="@dimen/_5sdp"
-            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp"
             android:text="langugaeeeeeeeeeeeee"
             android:gravity="center|start"
-            android:fontFamily="@font/poppins_semibold"
+            android:fontFamily="@font/poppins_medium"
             app:layout_constraintBottom_toBottomOf="@+id/imgIconLanguage"
             app:layout_constraintEnd_toStartOf="@+id/imgChooseLanguage"
             app:layout_constraintStart_toEndOf="@+id/imgIconLanguage"
